@@ -3,13 +3,13 @@ package com.kh.winepicker.product.model.dao;
 import java.util.List;
 
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineImage;
 
 public interface ProductDao {
 
-	List<Wine> selectList();
+	int insertWine(Wine wine);
 
-	int enrollWine();
+	int insertWineImg(WineImage wi);
 
-	int deleteWine();
 
 }

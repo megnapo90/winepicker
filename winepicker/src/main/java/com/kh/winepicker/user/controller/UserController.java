@@ -48,6 +48,53 @@ public class UserController {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	//마이페이지로 이동
+	@GetMapping("/myPage")
+	public String showMyPage() {
+		return "user/myPage";
+	}
+	
+	//리뷰관리로 이동
+	@GetMapping("/myReview")
+	public String showMyReview() {
+		return "user/myReview";
+	}
+	
+	//최근 본 상품으로 이동
+	@GetMapping("/myRecentProduct")
+	public String showMyRecentProduct() {
+		return "user/myRecentProduct";
+	}
+
+	//관심상품으로 이동
+	@GetMapping("/myWishList")
+	public String showMyWishList() {
+		return "user/myWishList";
+	}
+		
+	//mypage 메뉴 중 고객센터로 이동
+	@GetMapping("/callCenter")
+	public String userCallCenter() {
+		return "user/callCenter";
+	}
+	
+	//mypage 메뉴 중 공지사항으로 이동
+	@GetMapping("/userNotice")
+	public String userNotice() {
+		return "user/userNotice";
+	}
+	
+	
+	
+	
+	
+	
 }
 
 

@@ -25,31 +25,56 @@
   overflow: hidden;
   background: #FFFFFF;
 }
-.mapagemain .mypagemain .frame-20 {
+
+<!-- sidebar css 시작 -->
+#sidebar {
   position: absolute;
-  top: 498px;
-  left: 69px;
-  width: 164px;
-  height: 825px;
+  top: 500px;
+  left: 70px;
+  width: 180px;
+  height: 900px;
   overflow: hidden;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(180deg, #eecccc 15%, rgba(255, 255, 255, 0) 100%);
+  flex-direction: column;
 }
-.mapagemain .mypagemain .frame-20 .text--- {
+
+.mapagemain .mypagemain .sidebar * {
+  position: absolute; /* 공통 */
+  width: 134px;
+  height: 23px;
+  color: #2E0000;	/* 선택된 메뉴만 색이 다름 선택되지 않은 메뉴는 색이 동일*/
+  white-space: nowrap; /* 공통 */
+  font-family: "Oranienbaum";  /* 공통 */
+  font-size: 20px;  /* 공통 */
+  line-height: 23px;  /* 공통 */
+  font-weight: 400;  /* 공통 */
+  letter-spacing: 10px;  /* 공통 */
+  text-align: center;  /* 공통 */
+  margin: auto;
+}
+
+
+
+
+
+
+
+/* .mapagemain .mypagemain .sidebar .search-history {
   position: absolute;
   top: 62px;
   left: 14.5px;
   width: 134px;
-  height: 23px;
-  color: #2E0000;
-  white-space: nowrap;
-  font-family: "Oranienbaum";
-  font-size: 20px;
-  line-height: 23px;
-  font-weight: 400;
-  letter-spacing: 10px;
-  text-align: center;
+  height: 23px; 
+  color: #2E0000;	
+  white-space: nowrap; 
+  font-family: "Oranienbaum"; 
+  font-size: 20px; 
+  line-height: 23px; 
+  font-weight: 400; 
+  letter-spacing: 10px; 
+  text-align: center;  
 }
-.mapagemain .mypagemain .frame-20 .text----1 {
+.mapagemain .mypagemain .sidebar .review {
   position: absolute;
   top: 106px;
   left: 39px;
@@ -64,7 +89,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mapagemain .mypagemain .frame-20 .text----2 {
+.mapagemain .mypagemain .sidebar .recent-product {
   position: absolute;
   top: 185px;
   left: 26px;
@@ -79,7 +104,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mapagemain .mypagemain .frame-20 .text----3 {
+.mapagemain .mypagemain .sidebar .wishlist {
   position: absolute;
   top: 229px;
   left: 39px;
@@ -94,7 +119,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mapagemain .mypagemain .frame-20 .text----4 {
+.mapagemain .mypagemain .sidebar .change-myinfo {
   position: absolute;
   top: 308px;
   left: 25px;
@@ -109,7 +134,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mapagemain .mypagemain .frame-20 .text----5 {
+.mapagemain .mypagemain .sidebar .call-center {
   position: absolute;
   top: 352px;
   left: 40px;
@@ -124,7 +149,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mapagemain .mypagemain .frame-20 .text----6 {
+.mapagemain .mypagemain .sidebar .exit-user {
   position: absolute;
   top: 431px;
   left: 41px;
@@ -138,7 +163,10 @@
   font-weight: 400;
   letter-spacing: 10px;
   text-align: center;
-}
+} */
+<!-- sidebar css 종료 -->
+
+
 .mapagemain .mypagemain .text- {
   position: absolute;
   top: 268px;
@@ -942,242 +970,7 @@
   font-weight: 400;
   letter-spacing: 10px;
 }
-.mapagemain .mypagemain .footerbar {
-  position: absolute;
-  top: 1485px;
-  left: 0px;
-  width: 1440px;
-  height: 183px;
-  overflow: hidden;
-}
-.mapagemain .mypagemain .footerbar .rectangle- {
-  position: absolute;
-  top: -3px;
-  left: 0px;
-  width: 1440px;
-  height: 186px;
-  background: url(https://image-resource.creatie.ai/131184926775412/131184970815644/2892ec27424cc49e7c97067577ba1b8e.png);
-  object-fit: cover;
-  background-repeat: no-repeat;
-  background-size: 1440px 182.95px;
-  background-position: 0px 3.05px;
-}
-.mapagemain .mypagemain .footerbar .text------------123-12-123456------123-1 {
-  position: absolute;
-  top: 46px;
-  left: 194px;
-  width: 284px;
-  height: 100px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
-}
-.mapagemain .mypagemain .footerbar .rectangle--1 {
-  position: absolute;
-  top: 18px;
-  left: 167px;
-  width: 232px;
-  height: 42px;
-  object-fit: cover;
-}
-.mapagemain .mypagemain .footerbar .market-red-white-sparkling {
-  position: absolute;
-  top: 26px;
-  left: 626px;
-  width: 76px;
-  height: 113px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
-}
-.mapagemain .mypagemain .footerbar .text--faq--11- {
-  position: absolute;
-  top: 26px;
-  left: 764px;
-  width: 76px;
-  height: 113px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
-}
-.mapagemain .mypagemain .footerbar .contact-us-email--adminwinepickercom {
-  position: absolute;
-  top: 26px;
-  left: 912px;
-  width: 299px;
-  height: 96px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
-}
-.mapagemain .mypagemain .footerbar .copyright--winepicker-all-right-reserved {
-  position: absolute;
-  top: 146px;
-  left: 546px;
-  width: 349px;
-  height: 24px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 16px;
-  line-height: 19px;
-  font-weight: 400;
-}
-.mapagemain .mypagemain .footerbar .text---- {
-  position: absolute;
-  top: 97px;
-  left: 908px;
-  width: 299px;
-  height: 62px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 14px;
-  line-height: 17px;
-  font-weight: 400;
-}
-.mapagemain .mypagemain .mainloginbar {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 1440px;
-  height: 210px;
-  overflow: hidden;
-}
-.mapagemain .mypagemain .mainloginbar .rectangle--2 {
-  position: absolute;
-  top: -4px;
-  left: 0px;
-  width: 1440px;
-  height: 156px;
-  background: url(https://image-resource.creatie.ai/131184926775412/131184970815644/2892ec27424cc49e7c97067577ba1b8e.png);
-  object-fit: cover;
-  background-repeat: no-repeat;
-  background-size: 1440px 160.33px;
-  background-position: 0px 2.67px;
-}
-.mapagemain .mypagemain .mainloginbar .rectangle-25 {
-  position: absolute;
-  top: 152px;
-  left: 0px;
-  width: 1440px;
-  height: 58px;
-  background: #84515F;
-}
-.mapagemain .mypagemain .mainloginbar .shopping-bag-2-fill {
-  position: absolute;
-  top: 18px;
-  left: 1385px;
-  width: 31px;
-  height: 30px;
-}
-.mapagemain .mypagemain .mainloginbar .user-3-fill {
-  position: absolute;
-  top: 18px;
-  left: 1302px;
-  width: 30px;
-  height: 30px;
-}
-.mapagemain .mypagemain .mainloginbar .frame-67 {
-  position: absolute;
-  top: 152px;
-  left: 0px;
-  width: 720px;
-  height: 58px;
-  overflow: hidden;
-  border-width: 0px 1px 0px 0px;
-  border-style: solid;
-  border-color: #FFFFFF;
-}
-.mapagemain .mypagemain .mainloginbar .frame-67 .text--19 {
-  position: absolute;
-  top: 9px;
-  left: 259px;
-  width: 216px;
-  height: 41px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 30px;
-  line-height: 36px;
-  font-weight: 400;
-  text-align: center;
-}
-.mapagemain .mypagemain .mainloginbar .frame-68 {
-  position: absolute;
-  top: 153px;
-  left: 720px;
-  width: 720px;
-  height: 58px;
-  overflow: hidden;
-}
-.mapagemain .mypagemain .mainloginbar .frame-68 .text--20 {
-  position: absolute;
-  top: 8px;
-  left: 247px;
-  width: 216px;
-  height: 41px;
-  color: #FFFFFF;
-  font-family: "Inter";
-  font-size: 30px;
-  line-height: 36px;
-  font-weight: 400;
-  text-align: center;
-}
-.mapagemain .mypagemain .mainloginbar .kakaotalk-20240627-210722285 {
-  position: absolute;
-  top: 4px;
-  left: 649px;
-  width: 142px;
-  height: 141px;
-  background: url(https://image-resource.creatie.ai/131184926775412/131184970815644/9807466d9fc7c804bee814979ae75873.png);
-  object-fit: cover;
-  background-repeat: no-repeat;
-  background-size: 142px 181.89px;
-  background-position: 0px -23.51px;
-}
-.mapagemain .mypagemain .mainloginbar .path-4 {
-  position: absolute;
-  top: 10%;
-  left: 93.75%;
-  right: 4.86%;
-  bottom: 78.1%;
-}
-.mapagemain .mypagemain .mainloginbar .picker {
-  position: absolute;
-  top: 28px;
-  left: 806px;
-  width: 365px;
-  height: 92px;
-  color: #FFFFFF;
-  white-space: nowrap;
-  font-family: "Judson";
-  font-size: 80px;
-  line-height: 92px;
-  font-weight: 400;
-  letter-spacing: 30px;
-  text-align: center;
-}
-.mapagemain .mypagemain .mainloginbar .wine {
-  position: absolute;
-  top: 28px;
-  left: 379px;
-  width: 255px;
-  height: 92px;
-  color: #FFFFFF;
-  white-space: nowrap;
-  font-family: "Judson";
-  font-size: 80px;
-  line-height: 92px;
-  font-weight: 400;
-  letter-spacing: 30px;
-  text-align: center;
-}
+
 
 </style>
 
@@ -1190,26 +983,26 @@
 	
 	    <div class="mapagemain">
 	        <div class="mypagemain">
-	            <div class="frame-20">
-	                <div class="text---" onclick="location.href='${contextPath}/user/myPage'">
+	            <div id="sidebar">
+	                <div class="search-history" onclick="location.href='${contextPath}/user/myPage'">
 	                    주문 배송 조회
 	                </div>
-	                <div class="text----1" onclick="location.href='${contextPath}/user/myReview'">
+	                <div class="review" onclick="location.href='${contextPath}/user/myReview'">
 	                    리뷰 관리
 	                </div>
-	                <div class="text----2" onclick="location.href='${contextPath}/user/myRecentProduct'" >
+	                <div class="recent-product" onclick="location.href='${contextPath}/user/myRecentProduct'" >
 	                    최근 본 상품
 	                </div>
-	                <div class="text----3" onclick="location.href='${contextPath}/user/myWishList'">
+	                <div class="wishlist" onclick="location.href='${contextPath}/user/myWishList'">
 	                    관심 상품
 	                </div>
-	                <div class="text----4"> <!--onclick="location.href='${contextPath}/user/myReview'"  -->
+	                <div class="change-myinfo"> <!--onclick="location.href='${contextPath}/user/myReview'"  -->
 	                    내 정보 변경
 	                </div>
-	                <div class="text----5" onclick="location.href='${contextPath}/user/callCenter'">
+	                <div class="call-center" onclick="location.href='${contextPath}/user/callCenter'">
 	                    고객 센터
 	                </div>
-	                <div class="text----6"> <!-- onclick="location.href='${contextPath}/user/myReview'"  --> 
+	                <div class="exit-user"> <!-- onclick="location.href='${contextPath}/user/myReview'"  --> 
 	                    회원 탈퇴
 	                </div>
 	            </div>

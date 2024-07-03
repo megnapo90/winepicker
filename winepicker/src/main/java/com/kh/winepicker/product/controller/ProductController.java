@@ -9,6 +9,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.winepicker.common.Utils;
 import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
 import com.kh.winepicker.product.model.service.ProductService;
 
@@ -96,8 +98,41 @@ public class ProductController {
 		return url;
 	}
 	
+	@GetMapping("/updatewine/{wineNo}")
+	public String updateWine(
+			@PathVariable("wineNo") int wineNo,
+			Model model
+			) {
+		
+		WineExt wine = (WineExt)productService.selectWine(wineNo);
+		wine.setContent(Utils.newLineclear(wine.getContent()));
+		
+		model.addAttribute("wine", wine);
+		return "product/productUpdateForm";
+		
+	}
 	
 	
+	
+	
+	
+	@PostMapping("/deletewine/{wineNo}")
+	public String deleteWine(
+			@PathVariable("wineNo") int wineNo
+			) {
+		
+				try {
+
+					productService.deleteWine(wineNo);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+		return "redirect:/admin/adminPage";
+		
+	}
+
 	
 	
 	

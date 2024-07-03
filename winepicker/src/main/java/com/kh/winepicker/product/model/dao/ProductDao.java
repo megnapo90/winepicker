@@ -14,5 +14,17 @@ public interface ProductDao {
 
 	int insertWinetaste(Characteristic taste);
 
+	Wine selectWine(int wineNo);
+
+	void deleteWine(int wineNo);
+
+	WineImage getWineNum(int wineNo);
+
+
+
+	
+
+	
+	
 
 }

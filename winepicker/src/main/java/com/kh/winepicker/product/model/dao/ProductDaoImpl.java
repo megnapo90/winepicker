@@ -32,6 +32,28 @@ public class ProductDaoImpl implements ProductDao{
 		return sqlSession.insert("product.insertTaste", taste);
 	}
 
+	@Override
+	public Wine selectWine(int wineNo) {
+		return sqlSession.selectOne("product.selectWine",wineNo);
+	}
+
+	@Override
+	public void deleteWine(int wineNo) {
+		sqlSession.delete("product.deleteWine", wineNo);
+	}
+
+	@Override
+	public WineImage getWineNum(int wineNo) {
+		
+		return sqlSession.selectOne("product.getWineNum",wineNo);
+	}
+
+	
+
+
+
+	
+
 	
 	
 	

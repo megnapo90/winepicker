@@ -35,7 +35,8 @@
 	</c:if>
 
 	<c:set var="contextPath" value="<%= request.getContextPath() %>" scope="session"/>
-	헤더
+	<p>===================================== 헤더 =============================================</p>
+	
 	<script>
 		
 	</script>

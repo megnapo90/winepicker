@@ -32,6 +32,14 @@
 		VALUES (#{wineNo}, #{originName}, #{changeName})
 	</insert>
 
+	<!-- 와인 맛 등록 -->
+	<insert id="insertTaste">
+		INSERT INTO CHARACTERISTIC
+		VALUES (#{wineNo},#{body},#{sweet},#{bitter},#{sour})
+	
+	
+	</insert>
+	
 
 	<update id="deleteWine">
 		UPDATE WINE

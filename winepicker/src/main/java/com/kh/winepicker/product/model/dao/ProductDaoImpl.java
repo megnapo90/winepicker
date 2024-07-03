@@ -5,6 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineImage;
 
@@ -24,6 +25,11 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public int insertWineImg(WineImage wi) {
 		return sqlSession.insert("product.insertWineImg", wi);
+	}
+
+	@Override
+	public int insertWinetaste(Characteristic taste) {
+		return sqlSession.insert("product.insertTaste", taste);
 	}
 
 	

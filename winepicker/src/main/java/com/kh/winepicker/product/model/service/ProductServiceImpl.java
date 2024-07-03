@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.winepicker.common.Utils;
+import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineImage;
 import com.kh.winepicker.product.model.dao.ProductDao;
@@ -27,7 +28,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	@Transactional(rollbackFor = {Exception.class})
-	public int insertWine(Wine wine, WineImage wi) throws Exception {
+	public int insertWine(Wine wine, WineImage wi, Characteristic taste) throws Exception {
 		String wineName = wine.getWineName();
 		String content = wine.getContent();
 		
@@ -41,12 +42,18 @@ public class ProductServiceImpl implements ProductService{
 		int result = productDao.insertWine(wine);
 		
 		int wineNo = wine.getWineNo();
+		
 		wi.setWineNo(wineNo);
-		
-		if(wi != null) {
-			result *= productDao.insertWineImg(wi);
-		}
-		
+		taste.setWineNo(wineNo);
+		   
+	    if (wi != null) {
+	        result *= productDao.insertWineImg(wi);
+	    }
+	    
+	    if (taste != null) {
+	        result *= productDao.insertWinetaste(taste);
+	    }
+	    
 		if(result == 0) {
 			throw new Exception("예외 발생");
 		}

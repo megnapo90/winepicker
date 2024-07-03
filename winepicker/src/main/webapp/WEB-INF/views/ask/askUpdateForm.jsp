@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1:1 문의사항 등록</title>
+<title>1:1 문의사항 수정</title>
 <style>
 .mypageonebyoneinput {
   width: 1440px;
@@ -319,11 +319,11 @@
   font-weight: 400;
   letter-spacing: 10px;
 }
-.mypageonebyoneinput .mypageonebyoneinput-1 .frame-26 .frame-30 .frame-31 .frame-40 .frame-43 {
-  position: absolute;
-  top: 266px;
+.mypageonebyoneinput .mypageonebyoneinput-1 .frame-26 .frame-30 .frame-31 .frame-40 .update-file .frame-43 {
+  position: relative;
+  /* top: 0px; */
   left: 0px;
-  width: 779px;
+  width: 750px;
   height: 29px;
   overflow: hidden;
   border: 1px solid #000000;
@@ -635,6 +635,14 @@
   text-align: center;
 }
 
+.update-file{
+  position: absolute;
+  top: 266px;
+  left: 0px;
+  width: 790px;
+  height: 29px;
+}
+
 
 </style>
 </head>
@@ -686,7 +694,7 @@
                     </div>
                 </div>
                 <div class="frame-30">
-                	<form action="${contextPath}/ask/askInsert" id="enrollForm" method="post" enctype="multipart/form-data">
+                	<form action="${contextPath}/ask/update/${askNo}" id="updateForm" method="post" enctype="multipart/form-data">
                     <div class="frame-31">
                         <div class="text--1">
                             제목
@@ -698,18 +706,29 @@
                             첨부 파일
                         </div>
                         <div class="frame-40">
-                            <input type="text" id="title" class="frame-41" name="askTitle" required placeholder="문의 제목" >
+                            <input type="text" id="title" class="frame-41" name="askTitle" value="${ask.askTitle }" required>
                             
-	                        <textarea class="frame-42" id="content" name="askContent" rows="10" cols="50" required placeholder="문의 내용"></textarea>
+	                        <textarea class="frame-42" id="content" name="askContent" rows="10" cols="50" required>${ask.askContent}</textarea>
                         	
-                        	<input type="file" id="upfile" class="frame-43" name="upfile">
-                            
+                        	<span class="update-file" >
+                        		<input type="file" id="upfile" class="frame-43" name="upfile" value="${ask.originName }">&times;
+                        	</span>
                         </div>
+                        
+                       <%--  <tr>
+                     <th>첨부파일</th>
+                     <td><input type="file" id="upfile" class="form-control" name="upfile">
+                        <span id="originName">${board.attachment.originName }</span>
+                        <span class="delete-image" data-no="${board.attachment.boardImgNo }">&times;</span>
+                        <input type="hidden" name="boardImgNo" value="${empty board.attachment.boardImgNo ? '0' : board.attachment.boardImgNo}"/>
+                     </td>
+                  </tr> --%>
+                        
                       
                     </div>
      				
-	                <div class="askEnroll">
-		                <input type="submit" id="formSubmit" value="등록">
+	                <div class="askUpdate">
+		                <input type="submit" id="formSubmit" value="수정">
 	                </div>
                     </form>
             	</div>
@@ -747,7 +766,7 @@
 
 <c:if test="${not empty errorMsg }">
 		<script>   
-        	alertify.alert("글 작성이 실패하였습니다.",'${errorMsg}');
+        	alertify.alert("글 수정 실패하였습니다.",'${errorMsg}');
         </script>
 		<c:remove var="errorMsg"/>
 </c:if>

@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1:1 문의사항 등록</title>
+<title>1:1 문의사항 상세조회</title>
 <style>
 .mypageonebyoneinput {
   width: 1440px;
@@ -350,7 +350,7 @@
   font-weight: 400;
   letter-spacing: 10px;
 }
-.mypageonebyoneinput .mypageonebyoneinput-1 .frame-30 .askEnroll {
+.mypageonebyoneinput .mypageonebyoneinput-1 .frame-30 .askUpdate {
   position: absolute;
   top: 520px;
   left: 916px;
@@ -358,7 +358,22 @@
   height: 40px;
 }
 
-.askEnroll>#formSubmit{
+.askUpdate #updateAsk{
+	width : 100%;
+	height : 100%;
+	background: #5E5E5E;
+	color: #ffffff;
+}
+
+.mypageonebyoneinput .mypageonebyoneinput-1 .frame-30 .askDelete {
+  position: absolute;
+  top: 520px;
+  left: 980px;
+  width: 75px;
+  height: 40px;
+}
+
+.askUpdate #deleteAsk{
 	width : 100%;
 	height : 100%;
 	background: #5E5E5E;
@@ -677,42 +692,6 @@
                     이용약관 및 개인정보처리 방침
                 </div>
             </div>
-            <div class="frame-26">
-                <div class="frame-27">
-                    <div class="frame-29">
-                        <div class="text-11-">
-                            1:1 문의작성
-                        </div>
-                    </div>
-                </div>
-                <div class="frame-30">
-                	<form action="${contextPath}/ask/askInsert" id="enrollForm" method="post" enctype="multipart/form-data">
-                    <div class="frame-31">
-                        <div class="text--1">
-                            제목
-                        </div>
-                        <div class="text--2">
-                            내용
-                        </div>
-                        <div class="text---2">
-                            첨부 파일
-                        </div>
-                        <div class="frame-40">
-                            <input type="text" id="title" class="frame-41" name="askTitle" required placeholder="문의 제목" >
-                            
-	                        <textarea class="frame-42" id="content" name="askContent" rows="10" cols="50" required placeholder="문의 내용"></textarea>
-                        	
-                        	<input type="file" id="upfile" class="frame-43" name="upfile">
-                            
-                        </div>
-                      
-                    </div>
-     				
-	                <div class="askEnroll">
-		                <input type="submit" id="formSubmit" value="등록">
-	                </div>
-                    </form>
-            	</div>
             
             <div class="frame-20">
                 <div class="text--5">
@@ -738,21 +717,69 @@
                 </div>
             </div>
             
+            <div class="frame-26">
+                <div class="frame-27">
+                    <div class="frame-29">
+                        <div class="text-11-">
+                            1:1 문의작성
+                        </div>
+                    </div>
+                </div>
+                <div class="frame-30">
+                	<form>
+                    <div class="frame-31">
+                        <div class="text--1">
+                            제목
+                        </div>
+                        <div class="text--2">
+                            내용
+                        </div>
+                        <c:if test="${ask.originName ne null}">
+	                        <div class="text---2">
+	                            첨부 파일
+	                        </div>
+                        </c:if>
+                        <div class="frame-40">
+                        	
+                            <div id="title" class="frame-41" >${ask.askTitle}</div>
+                            
+                            <div class="frame-42" id="content" >${ask.askContent}</div>
+							<c:if test="${ask.originName ne null}">
+                            	<div class="frame-43" id="upfile" >${ask.originName}</div>
+                            </c:if>
+                        </div>
+                      
+                    </div>
+     				
+     				<c:if test="${fn:contains(ask.responseStatus, 'N')}">
+		                <div class="askUpdate">
+			                <input type="button" id="updateAsk" value="수정" onclick="updateAskDetail(${ask.askNo})">
+		                </div>
+	                </c:if>
+	                <div class="askDelete">
+		                <input type="button" id="deleteAsk" value="삭제" onclick="deleteAskDetail(${ask.askNo})">
+	                </div>
+                    </form>
+            	</div>
         </div>
     </div>
 	</div>
 	</div>
+	
+	<script>
+		function deleteAskDetail(ano){
+			var bool = confirm("삭제하시겠습니까?");
+			
+			if(bool){
+				location.href="${contextPath}/ask/delete/"+ano;
+			}
+		}
+		function updateAskDetail(ano){
+			location.href="${contextPath}/ask/update/"+ano;
+		}
+	
+	</script>
 
-
-
-<c:if test="${not empty errorMsg }">
-		<script>   
-        	alertify.alert("글 작성이 실패하였습니다.",'${errorMsg}');
-        </script>
-		<c:remove var="errorMsg"/>
-</c:if>
-
-<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
 </body>
 </html>

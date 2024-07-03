@@ -867,8 +867,8 @@
 			                </div>
 		                </c:when>
 		                <c:otherwise>
-		                 <c:forEach var="ask" items="${askList}">
-						    <div class="frame-27">
+		                <c:forEach var="ask" items="${askList}">
+						    <div class="frame-27" onclick="movePage(${ask.askNo})">
 						        <div class="frame-29">
 						            <div class="text-1">
 						                ${ask.askNo}
@@ -878,7 +878,7 @@
 						            ${ask.askTitle}
 						        </div>
 						        <div class="text-2024-06-27">
-						            ${ask.createDate}
+						            ${ask.modifyDate}
 						        </div>
 						        <div class="text-">
 						            <c:choose>
@@ -889,16 +889,6 @@
 						            	<p>답변완료</p>
 						            </c:otherwise>
 						            </c:choose>
-						        </div>
-						        <div class="rectangle-40">
-						        </div>
-						        <div class="text--1">
-						            수정
-						        </div>
-						        <div class="rectangle-41">
-						        </div>
-						        <div class="text--2">
-						            삭제
 						        </div>
 						    </div>
 		                  </c:forEach>
@@ -969,6 +959,10 @@
 	
 	function showNotice(){
 		location.href="${contextPath}/user/userNotice"
+	}
+	
+	function movePage(ano){
+		location.href="${contextPath}/ask/detail/"+ano
 	}
 
 </script>

@@ -4,10 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ask">
 	
-	<insert id="insertAsk">
+	<insert id="insertAsk" parameterType="ask" useGeneratedKeys="true" >
+		<selectKey keyProperty="askNo" resultType="int" order="BEFORE">
+			SELECT SEQ_ASK_NO.NEXTVAL FROM DUAL
+		</selectKey>
 		INSERT INTO ASK
 		VALUES (
-			SEQ_ASK_NO.NEXTVAL,
+			#{askNo},
 			#{askTitle},
 			#{askContent},
 			DEFAULT,
@@ -26,5 +29,56 @@
 		WHERE USER_NO = #{loginUserNo}
 		
 	</select>
+
+	<select id="selectAskDetail" parameterType="int" resultType="ask">
+		SELECT *
+		FROM ASK
+		WHERE ASK_NO = #{askNo}
+	</select>
+	
+	<delete id="deleteAskDetail" parameterType="int">
+		DELETE FROM ASK
+		WHERE ASK_NO = #{askNo}
+	</delete>
+	
+	<update id="updateAskDetail" parameterType="ask">
+		
+		UPDATE ASK 
+		SET 
+			ASK_TITLE = #{askTitle},
+			ASK_CONTENT = #{askContent},
+			MODIFY_DATE = DEFAULT,
+			ORIGIN_NAME = #{originName},
+			CHANGE_NAME = #{changeName}
+		WHERE
+			ASK_NO = #{askNo}
+	
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 </mapper>

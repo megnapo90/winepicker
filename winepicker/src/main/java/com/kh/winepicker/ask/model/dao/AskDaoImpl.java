@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.winepicker.model.vo.Ask;
 
@@ -22,8 +23,21 @@ public class AskDaoImpl implements AskDao {
 
 	@Override
 	public List<Ask> showAskList(int loginUserNo) {
-		
 		return session.selectList("ask.showAskList", loginUserNo);
-		
+	}
+
+	@Override
+	public Ask selectAskDetail(int askNo) {
+		return session.selectOne("ask.selectAskDetail", askNo);
+	}
+
+	@Override
+	public int deleteAskDetail(int askNo) {
+		return session.delete("ask.deleteAskDetail", askNo);
+	}
+
+	@Override
+	public int updateAskDetail(Ask ask) {
+		return session.update("ask.updateAskDetail", ask);
 	}
 }

@@ -68,6 +68,8 @@ button:hover {
 
 <body>
 
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+
    <div class="container">
         <h1>와인 등록</h1>
         <form action="${contextPath }/admin/enrollWine" id="enrollWine" method="post" enctype="multipart/form-data">
@@ -126,7 +128,21 @@ button:hover {
                 <option value="Y">Y</option>
                 <option value="N">N</option>
             </select>
+            
+              
+        <label for="body">바디:</label>
+        <input type="number" id="body" name="body" min="1" max="5" required>
 
+        <label for="sweet">단맛:</label>
+        <input type="number" id="sweet" name="sweet" min="1" max="5" required>
+
+        <label for="bitter">쓴맛:</label>
+        <input type="number" id="bitter" name="bitter" min="1" max="5" required>
+
+        <label for="sour">신맛:</label>
+        <input type="number" id="sour" name="sour" min="1" max="5" required>
+            
+			
 
             <label>이미지 파일:</label>
             <input type="file" id="upfile" name="upfile" >

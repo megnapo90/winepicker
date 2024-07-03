@@ -12,4 +12,5 @@ public class WineImage {
 	private int wineNo;
 	private String originName;
 	private String changeName;
+	
 }

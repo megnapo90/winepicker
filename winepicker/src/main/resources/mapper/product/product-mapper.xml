@@ -32,10 +32,80 @@
 		VALUES (#{wineNo}, #{originName}, #{changeName})
 	</insert>
 
+	<!-- 와인 맛 등록 -->
+	<insert id="insertTaste">
+		INSERT INTO CHARACTERISTIC
+		VALUES (#{wineNo},#{body},#{sweet},#{bitter},#{sour})
+	
+	
+	</insert>
+	
+	<resultMap type="wineExt" id="wineExtMap">
+		<id column="WINE_NO" property="wineNo"/>
+		<result column="WINE_NAME" property="wineName"/>
+		<result column="GRAPE_NO" property="grapeNo"/>
+		<result column="COUNTRY_NO" property="countryNo"/>
+		<result column="VINTAGE" property="vintage"/>
+		<result column="PRICE" property="price"/>
+		<result column="VOLUME" property="volume"/>
+		<result column="QUANTITY" property="quantity"/>
+		<result column="CONTENT" property="content"/>
+		<result column="STATUS" property="status"/>
+		
+		<association property="attachment">
+			<id column="WINE_NO" property="wineNo"/>
+			<result column="ORIGIN_NAME" property="originName"/>
+			<result column="CHANGE_NAME" property="changeName"/>
+			
+		</association>
 
-	<update id="deleteWine">
-		UPDATE WINE
-		SET STATUS = 'N'
-	</update>
+		<association property="taste">
+			<id column="WINE_NO" property="wineNo"/>
+			<id column="BODY" property="body"/>
+			<id column="SWEET" property="sweet"/>
+			<id column="BITTER" property="bitter"/>
+			<id column="SOUR" property="sour"/>	
+		</association>
+
+	</resultMap>	
+		<select id="selectWine" resultMap="wineExtMap">
+		
+		SELECT
+		W.WINE_NO AS WINE_NO, WINE_NAME, W.GRAPE_NO AS GRAPE_NO, G.GRAPE_NAME, W.COUNTRY_NO AS COUNTRY_NO, C.COUNTRY_NAME, VINTAGE, PRICE, VOLUME, QUANTITY, CONTENT, STATUS,
+		
+		ORIGIN_NAME, CHANGE_NAME,
+		
+		BODY, SWEET, BITTER, SOUR
+		
+		FROM WINE W
+		LEFT JOIN GRAPE G ON (G.GRAPE_NO=W.GRAPE_NO)
+		LEFT JOIN COUNTRY C ON (C.COUNTRY_NO = W.COUNTRY_NO)
+		LEFT JOIN WINE_IMAGE WI ON (WI.WINE_NO = W.WINE_NO)
+		LEFT JOIN CHARACTERISTIC T ON (T.WINE_NO = W.WINE_NO)
+		WHERE W.WINE_NO = #{wineNo}
+		
+		</select>
+
+
+
+
+
+
+	<delete id="deleteWine" parameterType="int">
+		BEGIN
+        DELETE FROM CHARACTERISTIC WHERE WINE_NO = #{wineNo};
+        DELETE FROM WINE_IMAGE WHERE WINE_NO = #{wineNo};
+        DELETE FROM WINE WHERE WINE_NO = #{wineNo};
+        
+        COMMIT;
+    	
+    	END;
+		
+		
+		
+		
+	</delete>
+	
+	
 
 </mapper>

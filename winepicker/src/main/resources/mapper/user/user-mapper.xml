@@ -4,9 +4,29 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="user">
 
-	<select id="selectUserList">
+	<select id="selectUserList" >
 		SELECT *
 		FROM USER
 	</select>
 
+	<select id="selectFaqList" resultType="faq">
+		SELECT *
+		FROM FAQ	
+	
+	</select>
+	
+	<select id="selectFaq" resultType="faq" parameterType="int">
+		SELECT *
+		FROM FAQ
+			WHERE FAQ_NO = #{faqNo} 
+	</select>
+	
+	<select id="selectMyWishList" resultType="wine" parameterType="int">
+		SELECT *
+		FROM 
+			WISH
+			LEFT JOIN WINE USING (WINE_NO)
+		WHERE USER_NO = #{userNo}
+	</select>
+	
 </mapper>

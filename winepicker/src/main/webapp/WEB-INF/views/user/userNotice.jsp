@@ -880,7 +880,7 @@
             </div>
             <div class="frame-22">
                 <div class="text--">
-                    홍길동님, 환영합니다. <!--  로그인 유저 성명 -->
+                    ${loginUser.userName }님, 환영합니다. <!--  로그인 유저 성명 -->
                 </div>
             </div>
             <div class="text---1">

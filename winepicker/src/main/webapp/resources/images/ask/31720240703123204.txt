@@ -1,0 +1,637 @@
+<2024-06-10>
+
+지정된 경로로 접속 (/mvc)
+
+>>>>>>공통 Filter 및 JDBCTemplate 작성 
+
+<기능 1. 로그인>
+
+1-1 ID, PWD 입력 (View)
+1-2 form 제출 > 제출 시 action으로 설정된 경로 접속 (View)
+1-3 1-2 action 경로로 지정된 Servlet 실행 (Controller)
+	
+	>> 로그인 비지니스 로직 실행
+1-4 입력 받은 id, pwd를 MemberService로 전달 (Controller)
+1-5 MemberService 실행 (Model)
+	1-5-1 DB 연결할 Connection 객체 생성 
+	1-5-2 Connection 객체, 1-4에서 전달받은 id, pwd를 모두 MemberDao로 전달
+
+>>>>> DB에 접속하여 실행시킬 sql문은  properties 객체를 이용하여 xml 파일에서 가져옴. 
+
+1-5 MemberDao 실행, 1-5-2에서 전달받은 Connection 객체, id, pwd를 이용 (Model)
+
+1-6 미완성 SQL 문을 완성 및 실행시킨 후 결과 값을 new vo클래스에 저장 (Model)
+	1-6-1 사용이 종료된 sql문 관련 객체들(pstmt, reset) 종료시키기.
+1-7 1-6 결과(Member객체)를 MemberService에 결과값으로 반환. (Model)
+	1-7-1 1-4에서 생성한 Connection 객체 사용이 종료되었으므로 Connection 종료시키기.
+1-8 1-7 결과를 Controller로 반환 (Controller)
+1-9 반환 받은 값이 null이 아닌 경우 (조건 확인)(Controller)
+	해당 결과를 session에 저장 (Controller)
+	response.sendRedirect 방식으로 초기화한 후 종료
+	>>로그인 실패 경우 추가 	
+1-10 session에 저장한 값을 이용하여 로그인 성공 후의 화면을 보여줌 (View)
+	
+
+#####
+sendRedirect vs getRequestDispatcher.forward
+
+sendRedirect  ==> 서버가 request에 대해 response하고 난 뒤 메서드에 입력된 경로로 이동한다는 뜻
+		이동 후 통신 종료. response 객체와 함께 응답하며 통신을 끝내는 것
+
+getRequestDispatcher.forward ==> response하지 않고 응답을 끌면서 다른 리소스로 전달함. 다른 리소스로 패스.
+
+
+<기능 2. 로그아웃>
+
+2-1 로그아웃 버튼 클릭 (View)
+2-2 버튼 클릭시 지정된 경로로 연결 (View)
+2-3 지정 경로로 접속시 mapping되는 Servlet 실행 (Controller)
+2-4 세션 객체를 가져옴. (Controller)
+2-5 세션 객체에 저장되어있는 정보를 날려준다. (Controller)
+	session.removeAttribute("loginUser"); 또는 session.invalidate();	
+	session정보를 날려주는 역할
+2-6 기본 화면으로 redirect 후 종료 (Controller)-(View)
+
+<기능 3. 회원가입> - /member/insert Servlet의 doGet메소드로 회원가입 페이지 출력
+ 
+3-1 회원가입 버튼 클릭 (View)
+3-2 버튼 클릭시 onclick으로 연결된 함수가 실행, (location.href="접속할 경로") 이용한 페이지 이동 (View)
+3-3 "경로"와 mapping되는 Servlet 실행 (Controller)
+3-4 doGet 메소드 실행으로 회원가입 페이지로 경로 이동 (getRequestDispatcher) (Controller)
+3-5 3-4 경로에 해당하는 회원가입 화면을 사용자에게 보여줌 (View)
+
+<기능 4. ID 중복확인>
+
+4-1 회원가입 페이지 상에서 아이디 입력 후 중복확인 버튼 클릭 
+4-2 중복체크 함수 실행 (ajax 비동기 처리 - 새로고침 없이 서버와 통신?)
+
+중복확인 후 회원가입 버튼의 disabled 속성을 삭제하여 활성화 시킴
+
+
+
+<2024-06-11>
+
+<기능 5. 회원가입> - /member/insert Servlet의 doPost메소드로 회원가입 진행
+
+5-1 3-5 출력 화면으로 회원가입 진행
+
+<기능 6. 공지사항 목록>
+<기능 7. 공지사항 글작성> + AdminFilter(글작성 권한 확인) + jsp에서 조건으로 버튼 활성화
+<기능 8. 공지사항 상세>
+
+
+
+-----------------------------------------------------------------------------------
+properties에서 Sql문 작성시 문장 끝에 세미콜론은 기입하지 않는다. (오류)
+
+myBatis
+sql - mybatis-config.xml 작성
+SqlSession 객체 생성 클래스 작성
+SqlSession 이용하여 db와 연결 통신
+
+JDBC에서 사용했던 Connection 객체 및 기타 메소드들을 SqlSession 이용하여 처리
+
+<2024-06-12>
+insertStudentMap
+Map 이용하여 값등록 >> student-mapper.xml
+
+DispatcherServlet 작성 ---------------------------------------------------
+1. DispatcherServlet이 실행. (*.do)로 경로 설정 
+
+2. DispatcherServlet의 init 메소드 실행 (Handler Mapping 역할)
+	init메소드 실행시 작업 >
+		properties파일을 읽어옴. (handlerMapping-info.properties)
+		
+		handlerMapping-info.properties 파일 내용 == (경로:실행할 Controller full Class 주소)
+	
+		Properties 객체 생성 후 properties 파일의 경로 가져온 후 파일 읽어들이기. 
+		prop.load(new FileReader(fileName));
+		
+		key(url-pattern) : value(controller) 으로 값을 가져옴. 	
+	
+		정의해둔 map 객체에 저장.
+		
+3. doGet (doPost) 메소드 실행
+	클라이언트의 요청주소 가져오기
+	
+	init에서 실행된 결과에서 요청주소와 매핑되는 Controller 객체 호출
+	method 값에 따라 호출된 Controller의 메소드 실행 (doGet or doPost)
+	viewResolver
+	반환되는 결과값(보여줄 화면 경로)을 받아 경로를 다듬은 후 forwarding 또는 redirect 한 후 종료	
+
+------------------------------------------------------------------------
+
+1. 사용자 요청
+2. DispatcherServlet 실행
+3. 요청경로에 따른 controller 실행
+4. 비지니스 로직 실행 
+5. Service 실행
+	(sqlSession 생성 및 매개변수 있는 경우 함께 Dao에 전달, 리턴 후 session 종료)
+6. Dao 실행 
+	(sqlSession를 이용하여 sql.mapper에 id로 정의된 지정된 sql문 실행 후 해당 결과를 리턴)	
+
+
+#####
+sql.mapper ? student-mapper.xm
+
+!DOCTYPE mapper >> myBatis에서 제공하는 기능???
+
+Mapper XML 파일
+마이바티스의 가장 큰 장점은 매핑구문이다. 마이바티스는 SQL을 작성하는데 집중하도록 만들어졌다.
+
+
+
+
+
+
+<2024-06-13>
+
+emp 
+
+테이블 접속 관련 DB 작업 
+1. DB접속하여 MYBATIS 계정에 KH에 들어있는 EMPLOYEE, JOB, DEPARTMENT 테이블에 접속/수정할 수 있는 권한 부여 
+	(관리자 계정으로 권한 부여 실행)
+2. MYBATIS 계정에 테이블 동의어 생성할 수 있는 권한 부여 (관리자 계정으로 권한 부여 실행 - SYNONYM)
+3. 동의어 생성(MYBATIS 계정)
+
+--------------------------------------------------------------------------------
+
+1. index.jsp 접속 경로 추가
+2. 경로 접속 시 실행시킬 Controller 추가 (EmpSearchController1)
+
+search1.jsp => 직원검색 / 검색한 경우, 하지 않은 경우를 구분지어 로직 설정 (검색조건 하나 : searchType, searchKeyword)
+				선택한 조건은 유지하여 보여줌.
+search2.jsp => 직원검색 / 여러 조건의 검색조건을 받아서 해당 조건을 만족하는 결과값을 반환하는 화면
+				선택한 조건은 유지하여 보여줌.
+search3.jps => DB에 입력되어있는 부서코드, 직급코드를 모두 반환하여 선택할 수 있는 checkbox를 보여줌. 
+				검색조건을 받아서 해당 조건을 만족하는 결과값을 반환하는 화면
+				선택한 조건은 유지하여 보여줌.
+	
+	updateEmp.jsp => empId 선택 시 해당 직원 정보 조회 & 수정 화면  				
+
+mybatis-config.xml에 새로 추가한 mapper를 등록해야 함. 
+sql-mapper 작성시 작성 방법 >> ${} #{}
+동적쿼리문!!
+
+자바 -> sql 문 검색 시 : java.sql. ~~~~
+sql 검색 -> 자바로 가져올 시 : java.util.~~~
+
+xml 파일의 mapper
+
+
+<2024-06-14> 해야할 것
+sql mapper 작성 방법과 jsp상에서의 반복문 및 값을 가져오는 코드 작성방법 확인!!!!!!!!!!!!!!!!!!!!!
+
+sql mapper -> 적용할 환경 설정을 mybatis-config.xml에 작성 
+settings > setting tag 이용하여
+
+--------------------
+spring sts
+
+1. spring sts 다운 및 설치
+2. apache maven 다운 및 설치
+3. maven 내부 repository 폴더 생성
+4. lombok 다운 및 설치/ IDE경로 설정
+
+Spring 환경설정 -- eclipse에서 진행한 환경설정과 동일 UTF-8 인코딩, 서버 apache tomcat 설정
+
+src.main.java - > 자바 파일
+src.main.resources -> 자바 파일 제외한 spl, mapper, properties
+
+src/main/webapp/resources -> 정적 파일 css, html 등...
+
+appServlet 
+servlet-context.xml -> 
+root-context.xml
+
+pom.xml -> maven이 관리하는 파일 
+설정 후 
+DB계정 생성
+
+-----
+
+일반 자바클래스, 인터페이스로 생성/작성 후 어노테이션을 통해 역할 부여
+어노테이션으로 역할 부여시 추가 코드 작성 없이 해당 기능을 수행할 수 있음. 
+
+어노테이션 부여 시 해당 클래스?가 servlet-context.xml의 beans graph에 등록됨을 확인할 수 있음!
+
+<2024-06-17>
+
+1. 회원가입 화면/기능 -> 회원가입 완료 후 다시 메인페이지로 돌아옴
+2. 아이디 중복체크 기능
+3. 로그아웃
+	@ResponseBody // 스프링 방식에서 비동기 요청시 필요한 어노테이션
+	-> 형변환을 위한 의존성 등록해야 함. 
+	=> 비동기 처리를 위해서는 servlet-context.xml 상에 jsonView bean 객체 등록을 해야 함. & 의존성 등록
+	
+4. 내정보 수정 -> 접속한 loginUser 객체를 체크하여 정보를 불러옴. 
+5. main 페이지에서의 회원 정보 조회
+
+ResponseEntity
+
+6. 에러 exception
+
+	<예외처리 방법>
+	1. try~catch / thorws 메소드별로 예외처리가 가능하며 항상 1순위로 예외처리를 함. 
+	2. 하나의 컨트롤러 발생하는 예외를 모아서 처리하는 방법 
+		-> @ExceptionHandler 어노테이션 추가 2순위로 작동함. (컨트롤러 클래스 내부에 존재)
+	3. 어플리케이션 전역에서 발생하는 예외를 모아서 처리하는 방법 (별도의 클래스로 존재)
+		-> @ControllerAdvice 어노테이션으로 추가 3순위로 작동. ( @ControllerAdvice 내부 @ExceptionHandler )
+
+7. log 조회 
+
+Logging Level
+
+	- fatal : 아주 심각한 에러 -> 지금은 존재하지 않음.
+	- error : 요청 처리 중 발생하는 오류에 사용(Exception 클래스에서 사용)
+	- warn : 경고성 메시지. 실행에는 문제 없지만, 향후 오류가 발생할 경우가 있을 때 사용
+	- info : 요청 처리 중 발생하는 정보성 메시지 출력시 사용
+	- debug : 개발 중 필요한 로그가 있을 경우 사용
+	- trace : 개발용 debug 범위를 한정해서 출력 
+
+(로깅 프레임워크) 애플리케이션에서 발생하는 로그 메시지를 수집, 포맷, 출력하는 데 사용되는 라이브러리
+log4j.xml(mapper와 같이 src/main/resources 폴더 하단에 존재하며 log 출력을 위한 설정들을 정의함.)
+		 
+log4j : 
+       - 프로그램 작동시 로그를 남기기 위한 자바기반 오픈소스 라이브러리
+       - 로그의 레벨을 지정하여 지정한 레벨 이상의 로그정보만 출력(기록)하는 방식으로 작동
+       - 일반 출력문보다 속도나 성능면에서 최적화 되어있으며, 로그를 찍기위한 다양한 방법들을 가지고 있음.
+	   
+	   
+	appender : 로그 메시지를 특정 출력 대상으로 보내는 역할.
+		ConsoleAppender : 콘솔창에 로그정보를 출력하는 클래스.
+		FileAppender    : 파일에 로그정보를 출력하는 클래스.
+		
+		layout을 정의하여 로그를 원하는 형식으로 지정하여 출력할 수 있음.
+		
+		
+		
+		
+<2024-06-18>
+
+
+@RequiredArgsConstructor 의존성 주입 대체하는 어노테이션
+변수를  final 필드붙여 만든 후 위 어노테이션을 붙이면 생성자 의존성 주입
+클래스의 final 필드와 @NonNull이 붙은 필드에 대한 생성자를 자동으로 생성
+-------------------------------------
+인터셉터 Interceptor
+
+servlet-context.xml 내부에 interceptors, interceptor 내부에 
+	beans:bean으로 interceptor의 기능을 부여할 클래스를 지정
+
+<mapping path=""/> 이용하여 어느 경로로 접속시 해당 interceptor 실행시킬지 정의
+
+
+HandlerInterceptor 인터페이스를 implements 하여 구현
+
+preHandle : 컨트롤러에 요청이 전달되기 전에 실행
+			반환값이 true -> 컨트롤러 요청 전달/ false -> 요청 중단
+postHandle : 컨트롤러가 요청을 처리한 후, 뷰가 렌더링되기 전에 실행
+
+
+DB에 들어있는 boardType을 List로 받아와서 header에 뿌려줌.
+DB에서 boardTypeList를 조회한 후 ServletContext에 저장.
+어플리케이션 시작 후 한번만 실행하면 됨.
+
+ServletContext : 웹 애플리케이션 내의 모든 서블릿과 JSP가 공유하는 전역적인 저장소 역할(application)을 하며, 웹 애플리케이션의 설정, 초기화 파라미터, 로깅 등을 관리
+
+------------------------------------
+
+게시글 목록 보이기
+
+@GetMapping("/list/{boardCode}") {boardCode} 문자열을 받아서 경로 처리 
+동적 파라미터 설정
+@PathVariable("boardCode") 경로에 포함되어 있는 것을 변수로 가져올 수 있는 어노테이션
+@PathVariable로 등록된 변수는 request에 자동저장
+ <!-- Controller 내의 @PathVariable 통해 request 영역에 boardCode가 등록되어있음. -->
+ 
+ 
+ 의존성 주입 -> 빈객체 등록
+ 
+ 
+ 파일등록	
+ 
+ 
+ 
+ --------------------------------------------
+ 
+ <2024-06-19>
+ 
+ mapper - 파일등록 및 순번 가져오는 sql문 selectKey
+ 
+ log.debug(""); => log4j.xml 내 application logger 단위를 info -> debug 단위로 수정
+ 
+ ** Model 객체는 View 페이지를 꾸며줄 수 있는 값들을 가지고 있는 객체!
+ Model 객체 이용하여 값을 view 페이지로 넘겨 꾸밈! (Model + View = JSP)
+ 
+ ResourceLoader
+	spring framework에서 제공하는 자원을 로드(입력)하는데 사용되는 인터페이스
+	resourceLoader를 통해 파일 시스템, 클래스 패스, URL 자원 등을 모두 하나의 클래스로 로드가 가능하다. 
+	classpath:/mapper/**/..xml, file:C://,,,, , url://
+ 
+ 
+ C:\SpringWorkspace\01_spring\src\main\webapp => application단의 RealPath 경로 
+ 
+ 
+ --------
+ <게시글 등록 & 파일 등록 (board & boardImage)>
+ 
+ 1. Controller 의 insertBoard 메소드 실행 
+ 
+ 메소드 실행시 필요한 매개변수 
+ 1) @PathVariable("boardCode") : 동적 파라미터 설정으로 들어오는 경로값을 가져와 변수로 사용 
+ 2) Board b : insert할 board 객체
+ 3) @ModelAttribute("loginUser") Member loginUser																							
+ 4) Model model : errorMsg 저장
+ 5) RedirectAttributes ra : alertMsg 발생을 위한 변수
+ 6) @RequestParam(value="upfile", required=false) MultipartFile upfile  : jsp 화면에서 upfile에 값이 들어왔을 때 받아줄 변수
+								//required=false 로 명시적으로 표시해주어 값이 넘어오지 않았을 때 오류를 발생시키지 않게하기 위함. 
+ 
+ 업무 로직
+ 게시글 등록에 부가 조건으로 클라이언트의 파일 저장 유무가 내부 로직으로 포함되어있음. 
+ 1) 웹서버에 클라이언트가 전달한 file 저장
+	1-1) 클라이언트가 전달한 file 정보를 저장할 객체 만들어 null로 초기화.
+	
+	1-2) 클라이언트가 전달한 file이 없는 경우 + 매개변수로 들어온 upfile 객체의 이름이 빈칸인 경우를 확인
+		
+		1-2-1) 첨부파일, 이미지 등을 저장할 저장경로 얻어옴.
+		1-2-2) 파일을 저장할 경로가 존재하는지 확인
+			1-2-2-1) 디렉토리 존재하지 않으면 디렉토리를 생성하는 코드를 추가
+					디렉토리 생성시 1-2-1에서 얻어온 저장경로 이용. 
+		1-2-3) 사용자가 등록한 첨부파일의 이름 수정 (관리차원..? 인코딩 오류 방지 차원??)
+			1-2-3-1) 첨부파일 이름 수정은 common 하위의 Utils 클래스 이용.
+		1-2-4) 1-1)에서 생성한 객체에 파일정보를 setting 한다. 
+
+2) 저장완료시 파일이 저장된 경로를 BOARD_IMG에 등록 후 테이블에 추가
+	2-1) Board Insert
+	2-2) Board_IMG Insert > 클라이언트가 upfile에 데이터를 작성했을 때만 
+
+
+
+
+
+
+
+
+
+ ----------
+ 
+ 
+<조건 검색>
+
+<게시글 조회> --> DetailView
+
+
+<조회수 증가> --> 쿠키 클래스 이용
+
+
+<첨부파일 다운로드>.........................
+
+
+<게시글 수정>
+1. 게시글 조회
+
+2. 게시글 수정 처리 
+	2-1. 이미지 있는 경우
+	
+	2-2. 이미지 없는 경우
+	
+	
+	
+----------------------------------------------------
+<2024-06-20>
+enctype="multipart/form-data" 파일 업로드 시 인코딩 타입을 설정해줘야 함.
+의존성 추가, root-context에 최대 업로드 크기 설정 등 인코딩 처리와 관련한 설정 등록이 필요.
+
+ResourceLoader
+Resource
+ResponseEntity
+addFlashAttribute
+
+useGeneratedKeys
+selectKey => DML(insert, update, delete) 구문 실행 시 해당 구문의 전 또는 후에 실행시킬 수 있는 구문
+
+1. opentChatRoom 이름의 insert 문이 실행
+2. order="AFTER" 설정에 따라 위 insert문 이후에 selectKey 구문이 실행됨. 
+3. select문 실행된 결과값이 "chatRoomNo"라는 속성에 int 자료형으로 저장된 후 
+4. opentChatRoom 구문의 parameterType으로 들어온 chatRoom에 함께 저장되어 결과로 반환됨. 
+
+결과 : insert문 실행 시 selectkey태그의 select구문의 결과도 함께 저장되어 반환됨. 
+
+----------------------------------------------------
+
+첨부파일 삭제
+update 시의 고려해야 할 경우의 수
+	// upfile가 있으면 이미지 테이블 수정 또는 추가 
+	// 사진이 없던 곳에서 새롭게 추가된 경우 -> INSERT
+	// 사진이 있던 곳에서 새롭게 추가된 경우 -> UPDATE
+	// 사진이 있던 곳에서 삭제가 된 경우 -> DELETE
+	// 원래 사진이 없었고, 추가된 것도 없는 경우 -> 아무것도 안함.
+	
+	
+--------------------------------------------------------------------------------------------------------------------------	
+<채팅 기능>
+ => 실시간 정보가 필요한 부분에는 websocket이 필요함.
+
+websocket 사용을 위한 설정 순서 
+pom.xml 의존성 주입 : 메이븐 레파지토리의 spring-websocket를 dependency에 추가
+-> servlet-context에 websocket bean 객체 추가 : namespaces의 websocket 선택
+-> xmlns에 추가됨. 
+----------------------------
+
+ChatWebsocket 클래스 생성 (TextWebSocketHandler를 상속)
+**WebSocket?
+- 웹소켓은 하나의 TCP접속에 이중으로 통신채널을 만들어서 제공하는 HTTP기반 통신 프로토콜
+- 실시간으로 제공해야하는 서비스를 만들 때 사용되는 클래스이다.
+EX) 실시간 채팅, 주식거래사이트, 실시간 알람
+
+**TextWebSocketHandler
+- 웹소켓을 위한 메소드를 지원하는 핸들러
+- 문자열과 관련된 기능을 다룰 때 사용한다. 
+
+
+해당 클래스에 @Component 추가 
+MVC모델과 상관없는 websocket 같은 것들을 bean 객체 등록하기 위한 어노테이션
+bean id="chatWebsocket" (규칙!)
+
+WebSocketSession을 Collections의 synchronizedSet 메소드 이용하여 동기화 처리한 후 set 형태로 선언
+(synchronizedSet : 동기화 처리된 set 반환해주는 메소드.)
+(멀티스레드 환경에서 하나의 공유자원에 여러 스레드가 동시에 접근하면 경쟁상태에 들어가고, 문제 발생할 수 있으므로 동기화 처리가 필수.)
+
+클라이언트와 서버 연결, 연결된 후 afterConnectionEstablished 메소드 실행됨. (클라이언트와 서버간에 웹소켓 연결이 완료된 이후, 즉 통신할 준비가 되었을 때 실행되는 함수) 
+-> 메소드 실행시 매개변수로 들어온 WebSocketSession을 위에서 선언해둔 set에 저장한다.
+-> 매개변수로 전달받은 WebSocketSession은 클라이언트와 연결된 세션.
+
+클라이언트가 메시지를 보냈을 때 handleTextMessage 메소드 실행, 매개변수로 session과 message를 가지고 있음. 
+
+메시지 발송 업무로직
+	1) 전달받은 메시지를 db에 insert
+	2) 서버에서 세션에 접속 중인 사용자들에게 메시지 전달
+		- 같은 채팅방에 참여중인 사용자들에게만 전달
+	
+------------------------------
+기능 목록 
+
+1. 채팅 클릭 시 > 채팅방 목록 화면
+채팅방 목록 화면을 보여줄 때 DB에 저장된 채팅방 목록을 모두 가져와 보여주는 업무를 수행한다.
+selectList 업무 수행
+받아오는 결과값은 List<ChatRoom>, 결과값을 model에 담아 화면에 이관함. 
+------
+2. 로그인 했을 때 채팅방 만들기!
+채팅방 만들기 버튼 클릭시 모달창으로 채팅방 제목 입력받음.
+만들기 버튼 클릭시 채팅방 만들기를 위한 경로가 실행됨. 
+(form action="${contextPath}/chat/openChatRoom" method="post")
+
+컨트롤러에서 @PostMapping("/openChatRoom")으로 정의해둔 메소드가 실행. 
+메소드 실행시 필요한 매개변수들
+1)생성한 채팅방 정보를 받을 chatRoom 객체
+2)결과 화면 redirect 해주면서 팝업 메세지 창을 보여주기 위한 RedirectAttributes
+3)로그인한 사용자 정보 받을 @ModelAttribute("loginUser") Member loginUser
+
+log.debug 통해 메소드 실행시 들어온 매개변수가 어떤 값을 가지고 있는지 확인해본다!!!!
+chatRoom과 loginUser 정보 확인시 chatRoom에는 userNo가 저장되어있지 않아
+loginUser에 담긴 userNo 정보를 가져와 chatRoom의 변수에 값을 저장한다. (setter함수 호출)
+
+매개변수로 들어온 chatroom 객체를 이용하여 채팅방 개설 업무로직을 실행한다. (insert)
+==> 업무 로직 수행 시 mapper에서 selectKey 태그 이용하여 chatRoomNo 속성을 하나 추가로 생성하여 객체를 반환. 
+
+결과에 따라 반환해줄 url을 꾸며주며, return url을 실행하며 메소드 종료.
+------
+3. 채팅방 입장!
+@GetMapping("/room/{chatRoomNo}") joinChatRoom 메소드 실행시 insert, select 두 업무가 실행됨.
+컨트롤러에서 joinChatRoom 메소드 실행시 필요한 매개변수
+1. @PathVariable를 이용하여 chatRoomNo를 변수로 받아옴.
+2. 화면에 정보를 반환해줄 때 필요한 정보를 넣을 Model 객체
+3. 결과 화면 redirect 해주면서 팝업 메세지 창을 보여주기 위한 RedirectAttributes
+4. 채팅방에 입장한 로그인 완료한 사용자 정보 받을 @ModelAttribute("loginUser") Member loginUser
+5. 누가 어떤 채팅방에 접속했는지 매칭할 수 있는 chatRoomJoin 객체.
+
+log.debug 통해 메소드 실행시 들어온 매개변수가 어떤 값을 가지고 있는지 확인해본다!!!!
+chatRoomJoin이 가지고 있는 값들을 확인!
+chatRoomJoin에는 userNo가 저장되어있지 않아 loginUser에 담긴 userNo 정보를 가져와 chatRoomJoin 변수에 값을 저장하여 초기화를 완료한다. 
+
+초기화 완료한 chatRoomJoin을 이용하여 업무 로직 메소드 구성. 
+
+각각의 업무는 service에서 분리하여 구성함. 
+1) insert -> 채팅방에 참여.  
+			chatRoomJoin에 담긴 정보를 이용하여 CHAT_ROOM_JOIN 테이블에 해당 정보를 insert 시킨다. 
+
+2) select -> 채팅메시지를 조회해 옴.
+			insert 완료 후 매개변수로 받은 chatRoomJoin의 chatRoomNo를 가져와 해당 chatRoomNo를 매개변수로 이용하여 메세지를 모두 조회한다. 
+
+select 결과를 list형태로 받아 화면에 보여준다. 
+
+-----------------------------------------------------------------------
+4. 메세지 보내기!
+insertMessage -> 사용자가 입력한 메세지를 db에 insert하는 메소드 
+이 경우에는 ChatWebsocket의 handleTextMessage 메소드 실행 후 Controller를 거치지 않고 Service 단으로 바로 이동시킨다. (실시간 작업이 필요한)
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 채팅방 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+chatRoom.jsp & chat.js 확인
+
+
+-------
+의문....? Q!!!
+<select id="selectChatRoomList" resultType="chatRoom">  ->  별칭 부여된chatRoom 은 어디있는거여???
+
+ChatMessage, ChatRoomJoin 클래스는 왜 생성자 생성하는 어노테이션을 붙이지 않는 것인가??
+
+joinChatRoom 메소드 실행을 위해 chatRoomNo를 sessionAttribute에 저장한 이유가 뭐였더라.. 
+==> 채팅메시지 결과 반환시에도 같은 chatRoomNo를 유지해야 하기 때문에 sessionAttribute에 저장한건가...
+
+
+
+
+
+
+<2024-06-21> 
+채팅방 나가기! 
+
+업무로직 
+1. 내가 채팅방을 나간다. --> chatRoomJoin에서 (나-채팅방번호)를 삭제한다.
+2. 채팅방의 남은 인원수를 확인한다. --> select count from chatRoomJoin
+3. 남은 인원수가 0일 경우 채팅방 정보를 삭제한다. --> chatroom의 chatRoomNo의 status를 'n'으로 변경 
+----------
+
+댓글! (모든 처리가 비동기)
+
+댓글은 게시글의 하위 속성이라고 볼 수 있으므로 관련 클래스를 모두 board 패키지 주소에 포함하여 생성한다. 
+
+비동기 처리+controller역할 => @RestController
+@RestController 어노테이션 이용 == @ResponseBody + @Controller
+메소드들 내부에는 비동기 방식으로 통신하는 메소드들로만 구현되어 있을 예정
+Rest(Representational state Transfer) : 자원을 url 이름으로 구분하여 자원의 상태(state)를 주고받는 것
+프론트엔드 / 백엔드 서버가 나눠져 있을 때 Rest를 사용함.
+
+댓글 조회(비동기)
+방법1. 화면 조회 시 script 내부 함수 실행으로 댓글이 조회됨.
+
+방법2. 게시글 조회 시 board select 서비스 실행 시 - reply select 서비스도 함께 실행되어 반환되는 board 객체 안에 reply 객체 정보도 함께 전달됨. 
+	<board-mapper> selectBoard 실행시 collection 태그 이용하여 selectReplyList 실행하여 결과값을 boardExt 객체안에 함께 담아 반환한다. 
+	
+	mapper에서의 association, collection tag 역할
+	association - association 태그 통해 결과값을 vo클래스로 매핑 가능
+	collection - 실행되는 sql문 이외 다른 select 쿼리문을 추가 실행하여 결과값을 받아오게 할 수 있다. 
+
+	collection의 속성들
+		property = 매핑시킬 필드명
+		javaType = 반환시킬 자바의 자료형
+		ofType	= 제네릭타입 
+
+댓글 등록(비동기)
+댓글 수정(비동기)
+댓글 삭제(비동기)
+
+AOP
+<LoggingInterceptor> : url에 접속한 사용자 정보를 가져옴. (ip, 접속 경로, 등등)
+<LoginInterceptor> 	: 로그인 여부 확인 > 허용한 범위를 벗어날 경우 로그인이 필요하다는 alert message. 와 함께 contextPath 이용하여 redirect시킴. 
+					  로그인 시 마지막으로 접속했던 url로 화면을 반환해줌. 
+servlet-context.xml에서 interceptor 클래스 등록
+<mapping path=""/> 이용하여 어느 경로로 접속시 해당 interceptor 실행시킬지 정의
+<exclude-mapping path="/board/list/**"/> 이용하여 interceptor 실행을 제어할 경로 설정
+
+LoginInterceptor
+로그인 체크 인터셉터 로그인을 하지 않은 상태로 허용하지 않은 url 이용시 메인페이지로 리다이렉트하게 만듦.
+1.요청정보 url 정보 확인
+	요청이 들어온 uri 정보에서 contextPath를 가져와 그 길이를 기준으로 substring 하여 요청 url 정보 확인!!!
+	(/spring/board/list/T -> /board/list/T)
+
+2. 로그인한 사용자 정보 조회
+	HttpSession 객체 이용하여 로그인 사용자 정보를 가져옴.
+	1) 로그인 사용자 정보가 빈객체가 아니면 return true -> 사용자가 요청한 그 업무 수행.
+	2) 로그인 사용자 정보가 빈객체라면 return false -> session에 alert 메시지를 담아 보여줌. 
+		2-1) 로그인 완료후 이동할 url을 session에 저장 (사용자가 요청한 경로를 queryString에 담아 가지고 있음.)
+		2-2) 이후 로그인 완료시 저장해둔 경로로 이동됨.
+
+
+
+
+-------------------------
+의문....? Q!!!
+jackson data binding
+
+
+<2024-06-24>
+AOP
+joinpoint
+
+크론 표현식
+
+Spring Scheduler?
+매일, 매분, 매초, 매달, 매주.. 반복적으로 실행해야하는 작업이 있는 경우 스프링 스케쥴러를 사용하면 간단하게 세팅 가능
+
+ref : bean객체의 변수명(bean graph를 통해 확인)
+	method : ref에서 지정한 bean 클래스의 "스케쥴 대상 메소드"
+	cron : 
+		* * * * * * 
+        초 분 시 일 월 요일 
+          * : 모든 값(매시 매분 매주 매초)
+          ? : 어떤 값이든 상관없다.
+          - : 범위지정(1-2)1에서2초
+          , : 여러값을지정. (1,5)1초랑 5초
+          / : 증분값. 0/2 -> 0초부터 매 2초마다 . (증가치설정가능)
+          L : 지정할수 있는 범위의 마지막값 (매달 말일)
+          W : 가장 가까운 "평일"을 설정할때
+          # : N번째 특정 요일을 설정할때
+		  
+		  

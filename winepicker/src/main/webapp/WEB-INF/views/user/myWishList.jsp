@@ -90,7 +90,7 @@
   width: 1083px;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
-.mypagepick .frame-24 {
+.mypagepick .wish-list {
   position: absolute;
   top: 656px;
   left: 295px;
@@ -98,7 +98,7 @@
   height: 829px;
   overflow: hidden;
 }
-.mypagepick .frame-24 .frame-26 {
+.mypagepick .wish-list .frame-26 {
   position: absolute;
   top: 171px;
   left: 0px;
@@ -109,7 +109,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
 }
-.mypagepick .frame-24 .frame-26 .frame-35 {
+.mypagepick .wish-list .frame-26 .frame-35 {
   position: absolute;
   top: 0px;
   left: 691px;
@@ -120,7 +120,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-35 .text-30-000 {
+.mypagepick .wish-list .frame-26 .frame-35 .text-30-000 {
   position: absolute;
   top: 66px;
   left: 11px;
@@ -134,7 +134,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-35 .text--1 {
+.mypagepick .wish-list .frame-26 .frame-35 .text--1 {
   position: absolute;
   top: 40px;
   left: 40.5px;
@@ -149,7 +149,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-32 {
+.mypagepick .wish-list .frame-26 .frame-32 {
   position: absolute;
   top: 0px;
   left: 91px;
@@ -160,7 +160,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-32 .text-----1 {
+.mypagepick .wish-list .frame-26 .frame-32 .text-----1 {
   position: absolute;
   top: 66px;
   left: 0px;
@@ -174,7 +174,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-32 .text--2 {
+.mypagepick .wish-list .frame-26 .frame-32 .text--2 {
   position: absolute;
   top: 40px;
   left: 57px;
@@ -188,7 +188,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-29 {
+.mypagepick .wish-list .frame-26 .frame-29 {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -199,7 +199,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-29 .rectangle-2 {
+.mypagepick .wish-list .frame-26 .frame-29 .rectangle-2 {
   position: absolute;
   top: 15px;
   left: 0px;
@@ -207,7 +207,7 @@
   height: 141px;
   object-fit: cover;
 }
-.mypagepick .frame-24 .frame-26 .frame-37 {
+.mypagepick .wish-list .frame-26 .frame-37 {
   position: absolute;
   top: 0px;
   left: 383px;
@@ -218,7 +218,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-37 .text--- {
+.mypagepick .wish-list .frame-26 .frame-37 .text--- {
   position: absolute;
   top: 56px;
   left: 0px;
@@ -232,7 +232,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-37 .text---3 {
+.mypagepick .wish-list .frame-26 .frame-37 .text---3 {
   position: absolute;
   top: 43px;
   left: 115.5px;
@@ -247,7 +247,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .text--3 {
+.mypagepick .wish-list .frame-26 .text--3 {
   position: absolute;
   top: 111px;
   left: 831px;
@@ -262,7 +262,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .text--4 {
+.mypagepick .wish-list .frame-26 .text--4 {
   position: absolute;
   top: 111px;
   left: 952px;
@@ -277,14 +277,14 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .close-fill {
+.mypagepick .wish-list .frame-26 .close-fill {
   position: absolute;
   top: 31px;
   left: 1002px;
   width: 20px;
   height: 20px;
 }
-.mypagepick .frame-24 .frame-25 {
+.mypagepick .wish-list .frame-25 {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -295,7 +295,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
 }
-.mypagepick .frame-24 .frame-25 .frame-36 {
+.mypagepick .wish-list .frame-25 .frame-36 {
   position: absolute;
   top: 0px;
   left: 691px;
@@ -306,7 +306,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-36 .text-300-000 {
+.mypagepick .wish-list .frame-25 .frame-36 .text-300-000 {
   position: absolute;
   top: 66px;
   left: 11px;
@@ -320,7 +320,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-36 .text--5 {
+.mypagepick .wish-list .frame-25 .frame-36 .text--5 {
   position: absolute;
   top: 40px;
   left: 40.5px;
@@ -335,7 +335,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-38 {
+.mypagepick .wish-list .frame-25 .frame-38 {
   position: absolute;
   top: 0px;
   left: 383px;
@@ -346,7 +346,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-38 .text---- {
+.mypagepick .wish-list .frame-25 .frame-38 .text---- {
   position: absolute;
   top: 66px;
   left: 0px;
@@ -360,7 +360,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-38 .text---4 {
+.mypagepick .wish-list .frame-25 .frame-38 .text---4 {
   position: absolute;
   top: 43px;
   left: 115.5px;
@@ -375,7 +375,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-33 {
+.mypagepick .wish-list .frame-25 .frame-33 {
   position: absolute;
   top: 0px;
   left: 91px;
@@ -386,7 +386,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-33 .text---5 {
+.mypagepick .wish-list .frame-25 .frame-33 .text---5 {
   position: absolute;
   top: 66px;
   left: 0px;
@@ -400,7 +400,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-33 .text--6 {
+.mypagepick .wish-list .frame-25 .frame-33 .text--6 {
   position: absolute;
   top: 40px;
   left: 57px;
@@ -414,7 +414,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-30 {
+.mypagepick .wish-list .frame-25 .frame-30 {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -425,7 +425,7 @@
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-30 .rectangle-1 {
+.mypagepick .wish-list .frame-25 .frame-30 .rectangle-1 {
   position: absolute;
   top: 18px;
   left: 17px;
@@ -433,7 +433,7 @@
   height: 136px;
   object-fit: cover;
 }
-.mypagepick .frame-24 .frame-25 .text--7 {
+.mypagepick .wish-list .frame-25 .text--7 {
   position: absolute;
   top: 111px;
   left: 831px;
@@ -448,7 +448,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .text--8 {
+.mypagepick .wish-list .frame-25 .text--8 {
   position: absolute;
   top: 111px;
   left: 952px;
@@ -463,14 +463,14 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .close-fill-1 {
+.mypagepick .wish-list .frame-25 .close-fill-1 {
   position: absolute;
   top: 30px;
   left: 1003px;
   width: 20px;
   height: 20px;
 }
-.mypagepick .frame-24 .rectangle-41 {
+.mypagepick .wish-list .rectangle-41 {
   position: absolute;
   top: 368px;
   left: 882px;
@@ -478,7 +478,7 @@
   height: 26px;
   background: #5E5E5E;
 }
-.mypagepick .frame-24 .text--9 {
+.mypagepick .wish-list .text--9 {
   position: absolute;
   top: 372px;
   left: 910px;
@@ -871,7 +871,9 @@
             </div>
             <div class="line-6">
             </div>
-            <div class="frame-24">
+            
+            <div class="wish-list">
+                
                 <div class="frame-26">
                     <div class="frame-35">
                         <div class="text-30-000">
@@ -994,29 +996,6 @@
                     주문 배송 조회
                 </div>
                 
-               <%-- 
-               		다른 화면들에 적용된 순서
-               		 <div class="text---" onclick="location.href='${contextPath}/user/myPage'">
-	                    주문 배송 조회
-	                </div>
-	                <div class="text----1" onclick="location.href='${contextPath}/user/myReview'">
-	                    리뷰 관리
-	                </div>
-	                <div class="text----2" onclick="location.href='${contextPath}/user/myRecentProduct'" >
-	                    최근 본 상품
-	                </div>
-	                <div class="text----3" onclick="location.href='${contextPath}/user/myWishList'">
-	                    관심 상품
-	                </div>
-	                <div class="text----4"> <!--onclick="location.href='${contextPath}/user/'"  -->
-	                    내 정보 변경
-	                </div>
-	                <div class="text----5" onclick="location.href='${contextPath}/user/callCenter'">
-	                    고객 센터
-	                </div>
-	                <div class="text----6"> 
-	                    회원 탈퇴
-	                </div> --%>
                
             </div>
             

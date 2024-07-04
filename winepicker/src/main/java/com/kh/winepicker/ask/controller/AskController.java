@@ -142,14 +142,17 @@ public class AskController {
 			Ask ask,
 			Model model,
 			RedirectAttributes ra,
-			@RequestParam(value="upfile", required=false) MultipartFile upfile
+			@RequestParam(value="upfile", required=false) MultipartFile upfile,
+			String deleteImageName
 			) {
 		log.info("ask ? {}", ask);
 		
-		int result = askService.updateAskDetail(ask, upfile);
+		int result = askService.updateAskDetail(ask, upfile, deleteImageName);
 		
 		model.addAttribute("ask", ask);
+		
 		String url = "";
+		
 		if(result > 0) {
 			ra.addFlashAttribute("alertMsg", "수정에 성공하였습니다.");
 			url = "redirect:/ask/detail/"+ask.getAskNo();

@@ -328,6 +328,23 @@
   overflow: hidden;
   border: 1px solid #000000;
 }
+
+.response{
+	position: absolute;
+	top: 300px;
+	left: 10px;
+
+}
+
+.response .response-detail{
+  position: absolute;
+  left: 150px;
+  width: 779px;
+  height: 29px;
+  overflow: hidden;
+  border: 1px solid #000000;
+}
+
 .mypageonebyoneinput .mypageonebyoneinput-1 .frame-26 .frame-30 .frame-31 .rectangle-42 {
   position: absolute;
   top: 295px;
@@ -750,6 +767,14 @@
                         </div>
                       
                     </div>
+     				<c:if test="${fn:contains(ask.responseStatus, 'Y')}">
+	     				<div class="response">
+	     					<div>답변</div>
+	     					<div class="response-detail">${ask.responseContent }</div>
+	     				</div>
+     				</c:if>
+     				
+     				
      				
      				<c:if test="${fn:contains(ask.responseStatus, 'N')}">
 		                <div class="askUpdate">
@@ -760,6 +785,7 @@
 		                <input type="button" id="deleteAsk" value="삭제" onclick="deleteAskDetail(${ask.askNo})">
 	                </div>
                     </form>
+                    
             	</div>
         </div>
     </div>

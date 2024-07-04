@@ -271,7 +271,7 @@
   left: 166px;
   width: 779px;
   height: 295px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .mypageonebyoneinput .mypageonebyoneinput-1 .frame-26 .frame-30 .frame-31 .frame-40 .frame-41 {
   position: absolute;
@@ -279,7 +279,7 @@
   left: 0px;
   width: 779px;
   height: 29px;
-  overflow: hidden;
+  /* overflow: hidden; */
   border: 1px solid #000000;
 }
 .mypageonebyoneinput .mypageonebyoneinput-1 .frame-26 .frame-30 .frame-31 .frame-40 .frame-41 .text---3 {
@@ -302,7 +302,7 @@
   left: 0px;
   width: 779px;
   height: 188px;
-  overflow: hidden;
+  /* overflow: hidden; */
   border: 1px solid #000000;
 }
 .mypageonebyoneinput .mypageonebyoneinput-1 .frame-26 .frame-30 .frame-31 .frame-40 .frame-42 .text--- {
@@ -325,7 +325,7 @@
   left: 0px;
   width: 750px;
   height: 29px;
-  overflow: hidden;
+  /* overflow: hidden; */
   border: 1px solid #000000;
 }
 .mypageonebyoneinput .mypageonebyoneinput-1 .frame-26 .frame-30 .frame-31 .rectangle-42 {
@@ -711,22 +711,13 @@
 	                        <textarea class="frame-42" id="content" name="askContent" rows="10" cols="50" required>${ask.askContent}</textarea>
                         	
                         	<span class="update-file" >
-                        		<input type="file" id="upfile" class="frame-43" name="upfile" value="${ask.originName }">&times;
+                        		<input type="file" id="upfile" class="frame-43" name="upfile" >
+                        		<span id="origin-name">${ask.originName}</span>
+                        		<span class="delete-img" data-name="${ask.changeName}">&times;</span>
                         	</span>
                         </div>
-                        
-                       <%--  <tr>
-                     <th>첨부파일</th>
-                     <td><input type="file" id="upfile" class="form-control" name="upfile">
-                        <span id="originName">${board.attachment.originName }</span>
-                        <span class="delete-image" data-no="${board.attachment.boardImgNo }">&times;</span>
-                        <input type="hidden" name="boardImgNo" value="${empty board.attachment.boardImgNo ? '0' : board.attachment.boardImgNo}"/>
-                     </td>
-                  </tr> --%>
-                        
-                      
                     </div>
-     				
+     				<input type="hidden" id="delete-img-name" value="" name="deleteImageName">
 	                <div class="askUpdate">
 		                <input type="submit" id="formSubmit" value="수정">
 	                </div>
@@ -762,14 +753,38 @@
 	</div>
 	</div>
 
+	<script>
+		$(function(){
+			
+			var $deleteImage = $(".delete-img");
+			var $deleteImageName = $("#delete-img-name");
+			
+			$deleteImage.each(function(index, ele){
+				$(ele).click(function(e){
+					
+					var imgName = $(this).data("name");  
+					var originName = $("#origin-name");
+					
+					$deleteImageName.val(imgName);
+					
+					originName.remove();
+					$(this).remove();
+					
+				})
+			})
+			
+		})
+	
+	
+	</script>
 
 
-<c:if test="${not empty errorMsg }">
-		<script>   
-        	alertify.alert("글 수정 실패하였습니다.",'${errorMsg}');
-        </script>
-		<c:remove var="errorMsg"/>
-</c:if>
+	<c:if test="${not empty errorMsg }">
+			<script>   
+	        	alertify.alert("글 수정 실패하였습니다.",'${errorMsg}');
+	        </script>
+			<c:remove var="errorMsg"/>
+	</c:if>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 

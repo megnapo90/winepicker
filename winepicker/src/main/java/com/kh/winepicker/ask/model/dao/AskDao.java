@@ -18,4 +18,6 @@ public interface AskDao {
 
 	int updateAskDetail(Ask ask);
 
+	int updateAskDetailExceptImg(Ask ask);
+
 }

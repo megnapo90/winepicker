@@ -55,6 +55,17 @@
 	
 	</update>
 	
+	<update id="updateAskDetailExceptImg" parameterType="ask">
+		UPDATE ASK
+		SET 
+			ASK_TITLE = #{askTitle},
+			ASK_CONTENT = #{askContent},
+			MODIFY_DATE = DEFAULT
+		WHERE
+			ASK_NO = #{askNo}
+	
+	</update>
+	
 	
 	
 	

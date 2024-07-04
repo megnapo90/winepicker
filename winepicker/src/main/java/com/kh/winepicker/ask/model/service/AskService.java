@@ -16,6 +16,6 @@ public interface AskService {
 
 	int deleteAskDetail(int askNo);
 
-	int updateAskDetail(Ask ask, MultipartFile upfile);
+	int updateAskDetail(Ask ask, MultipartFile upfile, String deleteImageName);
 
 }

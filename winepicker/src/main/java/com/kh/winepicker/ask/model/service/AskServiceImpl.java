@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.winepicker.ask.model.dao.AskDao;
@@ -23,7 +22,6 @@ public class AskServiceImpl implements AskService {
 	private final ServletContext application;
 	
 	@Override
-	@Transactional(rollbackFor = {Exception.class})
 	public int insertAsk(Ask ask, MultipartFile upfile) {
 		
 		//첨부파일 저장 경로 설정
@@ -64,15 +62,14 @@ public class AskServiceImpl implements AskService {
 	}
 
 	@Override
-	@Transactional(rollbackFor = {Exception.class})
-	public int updateAskDetail(Ask ask, MultipartFile upfile) {
+	public int updateAskDetail(Ask ask, MultipartFile upfile, String deleteImageName) {
 		
-		//첨부파일 x -> o or 첨부파일이 o -> o (변경) 
-		if(ask.getOriginName() != upfile.getOriginalFilename() 
-				&& upfile != null 
-				&& !upfile.isEmpty()) {
-			String webPath = "/resources/images/ask/";
-			String serverFolderPath = application.getRealPath(webPath);
+		int result = 0;
+		String webPath = "/resources/images/ask/";
+		String serverFolderPath = application.getRealPath(webPath);
+
+		//첨부파일 x -> o 
+		if(upfile != null && !upfile.isEmpty()) {
 
 			//디렉토리 없을 경우 생성
 			File dir = new File(serverFolderPath);
@@ -85,8 +82,29 @@ public class AskServiceImpl implements AskService {
 
 			ask.setChangeName(changeName);
 			ask.setOriginName(upfile.getOriginalFilename());
+		
+			result = askDao.updateAskDetail(ask);
+			
+		} else if(!deleteImageName.equals("") && upfile != null && !upfile.isEmpty()
+				) {
+			//첨부파일이 o -> o (변경)
+			//사용자가 등록한 첨부파일 이름 수정
+			String changeName = Utils.saveFile(upfile, serverFolderPath);
+
+			ask.setChangeName(changeName);
+			ask.setOriginName(upfile.getOriginalFilename());
+		
+			result = askDao.updateAskDetail(ask);
+			
+		} else if(!deleteImageName.equals("") && (upfile == null || upfile.isEmpty())) {
+			//첨부파일 ㅇ -> x
+			result = askDao.updateAskDetail(ask);
+		} else {
+			//첨부파일이 o -> o (변경X), x -> x
+			result = askDao.updateAskDetailExceptImg(ask);
+			
 		}
 		
-		return askDao.updateAskDetail(ask);
+		return result;
 	}
 }

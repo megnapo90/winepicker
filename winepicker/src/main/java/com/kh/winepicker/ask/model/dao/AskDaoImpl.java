@@ -40,4 +40,9 @@ public class AskDaoImpl implements AskDao {
 	public int updateAskDetail(Ask ask) {
 		return session.update("ask.updateAskDetail", ask);
 	}
+
+	@Override
+	public int updateAskDetailExceptImg(Ask ask) {
+		return session.update("ask.updateAskDetailExceptImg", ask);
+	}
 }

@@ -1,11 +1,17 @@
 package com.kh.winepicker.user.model.dao;
 
-import java.util.List;
-
 import com.kh.winepicker.model.vo.User;
+
+import java.util.List;
 
 public interface UserDao {
 
+	User login(User user);
+
+	int insertUser(User user);
+
 	List<User> selectUserList();
+
+	int idCheck(String userId);
 
 }

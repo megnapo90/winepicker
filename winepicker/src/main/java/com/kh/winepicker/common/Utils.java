@@ -9,6 +9,8 @@ public class Utils {
 
 	public static String saveFile(MultipartFile upfile, String path) {
 
+		//랜덤 파일명 생성(랜덤3자리숫자+저장시점시간)
+	
 		String originName = upfile.getOriginalFilename();
 		String currentTime = new java.text.SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date());
 
@@ -44,11 +46,7 @@ public class Utils {
 	public static String newLineclear(String content) {
 		return content.replaceAll("<br>","\n");
 	}
-	
-	
 
-	
-	
 	
 	
 }

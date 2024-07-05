@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@
 .mypagefaq {
   width: 1440px;
   height: 1668px;
-  overflow: hidden;
+  overflow: ;
   background: #FFFFFF;
 }
 .mypagefaq .text- {
@@ -33,7 +34,7 @@
   left: 69px;
   width: 219px;
   height: 46px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .frame-22 .text-- {
   position: absolute;
@@ -70,6 +71,7 @@
   width: 1306px;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
+
 .mypagefaq .line-6 {
   position: absolute;
   top: 498px;
@@ -77,13 +79,14 @@
   width: 1083px;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
+
 .mypagefaq .frame-24 {
   position: absolute;
   top: 657px;
   left: 288px;
   width: 1076px;
   height: 828px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .frame-24 .frame-25 {
   position: absolute;
@@ -91,7 +94,7 @@
   left: 0px;
   width: 1076px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -102,7 +105,7 @@
   left: 0px;
   width: 75px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .frame-24 .frame-25 .frame-29 .q1 {
   position: absolute;
@@ -140,7 +143,7 @@
   left: 0px;
   width: 1076px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -151,7 +154,7 @@
   left: 0px;
   width: 75px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .frame-24 .frame-26 .frame-30 .q2 {
   position: absolute;
@@ -188,7 +191,7 @@
   left: 0px;
   width: 1076px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -199,7 +202,7 @@
   left: 0px;
   width: 75px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .frame-24 .frame-27 .frame-31 .q3 {
   position: absolute;
@@ -236,7 +239,7 @@
   left: 0px;
   width: 1076px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -247,7 +250,7 @@
   left: 0px;
   width: 75px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .frame-24 .frame-28 .frame-32 .q4 {
   position: absolute;
@@ -284,7 +287,7 @@
   left: 0px;
   width: 1076px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -295,7 +298,7 @@
   left: 0px;
   width: 75px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .frame-24 .frame-33 .frame-34 .q5 {
   position: absolute;
@@ -332,7 +335,7 @@
   left: 288px;
   width: 1076px;
   height: 65px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -408,7 +411,7 @@
   left: 0px;
   width: 1440px;
   height: 183px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .footerbar .rectangle- {
   position: absolute;
@@ -508,7 +511,7 @@
   left: 69px;
   width: 164px;
   height: 825px;
-  overflow: hidden;
+  overflow: ;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(180deg, #eecccc 15%, rgba(255, 255, 255, 0) 100%);
 }
 .mypagefaq .frame-20 .text--1 {
@@ -622,7 +625,7 @@
   left: 0px;
   width: 1440px;
   height: 210px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .mainloginbar .rectangle--2 {
   position: absolute;
@@ -664,7 +667,7 @@
   left: 0px;
   width: 720px;
   height: 58px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: #FFFFFF;
@@ -688,7 +691,7 @@
   left: 720px;
   width: 720px;
   height: 58px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagefaq .mainloginbar .frame-68 .text--3 {
   position: absolute;
@@ -753,6 +756,26 @@
   text-align: center;
 }
 
+.faq-list{
+
+  position: absolute;
+  top: 657px;
+  left: 288px;
+  width: 1076px;
+  height: 500px;
+  overflow: hidden ;
+  border-width: 0px 0px 1px 0px;
+
+}
+.faq-list>tr{
+
+  border-width: 0px 0px 1px 0px;
+  border-color: rgba(0, 0, 0, 0.5);
+  border-style: solid;
+
+}
+
+
 </style>
 </head>
 <body>
@@ -766,7 +789,7 @@
             </div>
             <div class="frame-22">
                 <div class="text--">
-                    홍길동님, 환영합니다. <!--  로그인 유저 성명 -->
+                    ${loginUser.userName} 님 , 환영합니다.
                 </div>
             </div>
             <div class="text---1">
@@ -776,58 +799,19 @@
             </div>
             <div class="line-6">
             </div>
-            <div class="frame-24">
-                <div class="frame-25">
-                    <div class="frame-29">
-                        <div class="q1">
-                            Q1
-                        </div>
-                    </div>
-                    <div class="text---">
-                        배송은 얼마나 걸리나요?
-                    </div>
-                </div>
-                <div class="frame-26">
-                    <div class="frame-30">
-                        <div class="q2">
-                            Q2
-                        </div>
-                    </div>
-                    <div class="text----">
-                        재입고 되기까지 얼마나 걸리나요?
-                    </div>
-                </div>
-                <div class="frame-27">
-                    <div class="frame-31">
-                        <div class="q3">
-                            Q3
-                        </div>
-                    </div>
-                    <div class="text----1">
-                        대량 주문가능 한가요?
-                    </div>
-                </div>
-                <div class="frame-28">
-                    <div class="frame-32">
-                        <div class="q4">
-                            Q4
-                        </div>
-                    </div>
-                    <div class="text-----">
-                        주문 취소하려면 어떻게 해야 하나요?
-                    </div>
-                </div>
-                <div class="frame-33">
-                    <div class="frame-34">
-                        <div class="q5">
-                            Q5
-                        </div>
-                    </div>
-                    <div class="text-----1">
-                        배송지 변경을 하고 싶습니다.
-                    </div>
-                </div>
-            </div>
+            
+            <table class="faq-list">
+            	
+            	<c:forEach items="${faqList }" var="faq">
+            		<tr id="${faq.faqNo }" onclick=showFaqDetail(${faq.faqNo});>
+            			<th>Q${faq.faqNo }</th>
+            			<td>${faq.faqTitle }</td>
+            		</tr>
+            	</c:forEach>
+            	
+            </table>
+            
+           
             <div class="frame-35">
                 <div class="rectangle-39">
 	                <div class="faq" onclick=showFaq()>
@@ -883,12 +867,41 @@
 	
 	function showFaq(){
 		location.href="${contextPath}/user/callCenter"
+		
 	}
 	
 	function showNotice(){
 		location.href="${contextPath}/user/userNotice"
 	}
 
+	function showFaqDetail(fno){
+		$.ajax({
+			
+			url : "${contextPath}/user/faqDetail/"+fno,
+			data : {
+				faqNo : "${faqNo}"
+			},
+			type : "get",
+			success : function showFaqContent(faq){
+				console.log(faq);
+				
+				var content = "";
+					content += '<tr class="faq-detail" onclick=removeFaqDetail(this);>';
+					content += `<th>A\${faq.faqNo}</th>`; 
+					content += `<td>\${faq.faqContent}</td>`;
+					content += '</tr>';
+				var faqNo = faq.faqNo;
+				
+				$(".faq-list #"+faqNo+"").after(content);
+			}
+		})
+	}
+	
+	function removeFaqDetail(faq){
+		$(faq).remove();
+	}
+	
+	
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

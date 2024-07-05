@@ -6,7 +6,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.winepicker.model.vo.Wine;
-import com.kh.winepicker.model.vo.WineImage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,16 +16,17 @@ public class ProductDaoImpl implements ProductDao{
 	private final SqlSessionTemplate sqlSession;
 
 	@Override
-	public int insertWine(Wine wine) {
-		return sqlSession.insert("product.insertWine", wine);
+	public List<Wine> selectList() {
+		return sqlSession.selectList("product.selectList");
 	}
 
 	@Override
-	public int insertWineImg(WineImage wi) {
-		return sqlSession.insert("product.insertWineImg", wi);
+	public int enrollWine() {
+		return sqlSession.insert("product.enrollWine");
 	}
 
-	
-	
-	
+	@Override
+	public int deleteWine() {
+		return sqlSession.update("product.deleteWine");
+	}
 }

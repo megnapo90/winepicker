@@ -1,35 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="${contextPath}/resources/css/common.css">
 </head>
-<style>
-main{
-margin-top: 300px;
-}
-</style>
 <body>
-	<header>
-		<%@ include file="/WEB-INF/views/common/header.jsp"%>
-	</header>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 
-<main>
-	<div class=main>
-		<c:set var="contextPath" value="<%=request.getContextPath()%>"
-			scope="session" />
-		<div class="content">
-		</div>
-	</div>
-</main>
-
-
-	<footer>
-	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-	</footer>
+	<div id="list">
 	
+	<ul class="ul">
+		<li><a href="${contextPath}/admin/adminPage">관리자페이지</a></li>
+		<li><a href="${contextPath}/admin/info/main">정보글 메인페이지</a></li>
+	</ul>
+	
+	</div>
+	
+	
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

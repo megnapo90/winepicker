@@ -3,15 +3,12 @@ package com.kh.winepicker.model.vo;
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import oracle.net.jdbc.TNSAddress.Address;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
 	private int userNo;
@@ -26,6 +23,5 @@ public class User {
 	private Date enrollDate;
 	private Date modifyDate;
 	private char status;
-	private Address userAddress;
 
 }

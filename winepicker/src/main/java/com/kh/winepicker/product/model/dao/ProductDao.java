@@ -2,29 +2,14 @@ package com.kh.winepicker.product.model.dao;
 
 import java.util.List;
 
-import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.Wine;
-import com.kh.winepicker.model.vo.WineImage;
 
 public interface ProductDao {
 
-	int insertWine(Wine wine);
+	List<Wine> selectList();
 
-	int insertWineImg(WineImage wi);
+	int enrollWine();
 
-	int insertWinetaste(Characteristic taste);
-
-	Wine selectWine(int wineNo);
-
-	void deleteWine(int wineNo);
-
-	WineImage getWineNum(int wineNo);
-
-
-
-	
-
-	
-	
+	int deleteWine();
 
 }

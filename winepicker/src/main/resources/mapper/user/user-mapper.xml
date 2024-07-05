@@ -1,13 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="user">
 
-	<select id="selectUserList" >
-		SELECT *
-		FROM USER
+
+	<select id="selectUserList"> SELECT * FROM USER
 	</select>
+
+	<select id="login" parameterType="user" resultType="user">
+		SELECT * FROM
+		"USER" WHERE USER_ID= #{userId}
+		AND STATUS = 'Y'
+	</select>
+
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO
+		"C##WINEPICKER"."USER"
+		VALUES(
+		USER_SEQ.NEXTVAL,
+		DEFAULT,
+		#{userId},
+		#{userPwd},
+		#{userName},
+		#{userEmail},
+		#{userSsn},
+		#{phone},
+		#{address},
+		DEFAULT,
+		DEFAULT,
+		DEFAULT
+		)
+	</insert>
+
+	<select id="idCheck" parameterType="String" resultType="int">
+		SELECT
+		COUNT(*) FROM "USER" WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="checkEmail" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM USER WHERE EMAIL = #{userEmail}
+	</select>
+
+
+	<select id="loginUser" parameterType="User" resultType="User">
+		SELECT * FROM USER WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
+
+	</select>
+	
+	 <select id="findId" parameterType="map" resultType="string">
+        SELECT USER_ID
+        FROM "USER"
+        WHERE USER_NAME = #{userName}
+        AND USER_EMAIL = #{userEmail}
+    </select>
 
 	<select id="selectFaqList" resultType="faq">
 		SELECT *

@@ -9,7 +9,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,9 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.winepicker.common.Utils;
-import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.Wine;
-import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
 import com.kh.winepicker.product.model.service.ProductService;
 
@@ -50,13 +47,11 @@ public class ProductController {
 	@PostMapping("/enrollWine")
 	public String insertWine(
 			Wine wine,
-			Characteristic taste,
 			RedirectAttributes ra,
 			@RequestParam(value="upfile") MultipartFile upfile
 			) {
 			
 		WineImage wi = null;
-		
 		
 		if(upfile != null && !upfile.isEmpty()) {
 			String webpath = "/resources/images/product/";
@@ -78,7 +73,7 @@ public class ProductController {
 		int result = 0;
 	
 		try {
-			result = productService.insertWine(wine, wi, taste);
+			result = productService.insertWine(wine, wi);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -86,8 +81,8 @@ public class ProductController {
 			
 		String url = "";
 		if(result > 0) {
-			ra.addFlashAttribute("alertMsg", wine.getWineName()+"등록 성공 ");
-			url = "redirect:/admin/enrollWine";
+			ra.addFlashAttribute("alertMsg", wine.getWineName());
+			url = "redirect:/admin";
 		}else {
 			
 			url = "/product/productEnrollForm";
@@ -98,43 +93,8 @@ public class ProductController {
 		return url;
 	}
 	
-	@GetMapping("/updatewine/{wineNo}")
-	public String updateWine(
-			@PathVariable("wineNo") int wineNo,
-			Model model
-			) {
-		
-		WineExt wine = (WineExt)productService.selectWine(wineNo);
-		wine.setContent(Utils.newLineclear(wine.getContent()));
-		
-		model.addAttribute("wine", wine);
-		return "product/productUpdateForm";
-		
-	}
 	
 	
-	
-	
-	
-	
-	
-	@PostMapping("/deletewine/{wineNo}")
-	public String deleteWine(
-			@PathVariable("wineNo") int wineNo
-			) {
-		
-				try {
-
-					productService.deleteWine(wineNo);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-		return "redirect:/admin/adminPage";
-		
-	}
-
 	
 	
 	

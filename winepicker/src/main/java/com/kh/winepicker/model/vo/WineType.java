@@ -11,4 +11,5 @@ public class WineType {
 
 	private int wineTypeNo;
 	private String wineTypeName;
+	private String wineTypeEngName;
 }

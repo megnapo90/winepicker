@@ -4,17 +4,32 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin">
 
-	<select id="selectCountry">
-		SELECT COUNTRY_NAME
+	<select id="selectCountry" resultType="country">
+		SELECT *
 		FROM COUNTRY
 	</select>
 	
-	<select id="selectGrape">
-		SELECT GRAPE_NAME
+	<select id="selectGrape" resultType="grape">
+		SELECT *
 		FROM GRAPE
 	</select>
 	
-	<insert id="insertNotice" parameterType="notice">
+	
+	
+	<!-- 공지 게시판 -->
+	
+	<select id="noticeList" resultType="notice">
+		SELECT * FROM NOTICE
+		WHERE STATUS = 'Y'
+		ORDER BY NOTICE_NO DESC
+	</select>
+	
+	<select id="noticeDetail" resultType="notice" parameterType="int">
+		SELECT * FROM NOTICE
+		WHERE NOTICE_NO = #{noticeNo} AND STATUS = 'Y'
+	</select>
+
+	<insert id="noticeEnroll" parameterType="notice">
 		INSERT INTO NOTICE
 		VALUES(
 			SEQ_NOTICE.NEXTVAL,
@@ -22,9 +37,201 @@
 			#{noticeContent},
 			DEFAULT,
 			#{originName},
-			#{changeName}
+			#{changeName},
+			DEFAULT
 		)
 	</insert>
+	
+	<update id="deleteNotice" parameterType="notice">
+		UPDATE NOTICE
+		SET STATUS = 'N'
+		WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	
+	
+	
+	
+	
+	<insert id="insertInfo">
+		INSERT INTO INFO2(
+			INFO_NAME
+			CONTENT
+			SUBTITLE
+			ORIGIN_NAME
+			CHANGE_NAME
+			COUNTRY_NO
+			WINE_TYPE_NO
+			GRAPE_NO
+			DEPTH
+			)
+		VALUES(
+			#{infoName},
+			#{content},
+			#{subtitle},
+			#{originName},
+			#{changeName},
+			#{countryNo},
+			#{wineTypeNo},
+			#{grapeNo},
+			#{depth}
+		)
+	</insert>
+	
+	<!-- <select id="selectInfoList" resultType="info2">
+		SELECT * FROM INFO2
+		WHERE DEPTH = #{depth}
+	</select> -->
+	
+	<select id="selectInfoList" resultType="info2">
+		SELECT * FROM INFO2
+	</select>
+	
+	<select id="selectInfo" resultType="info2">
+		SELECT * FROM INFO2
+		WHERE INFO_NAME = #{infoName}
+	</select>
+	
+	
+	
+	<select id="selectTypeList" resultType="wineType">
+		SELECT * FROM WINE_TYPE
+	</select>
+	
+	<update id="updateInfo" parameterType="info2">
+		UPDATE INFO2
+		SET SUBTITLE = #{subtitle},
+			CONTENT = #{content}
+		WHERE INFO_NAME = #{infoName}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="selectWineList" resultMap="wineExtMap">
+		SELECT 
+			WINE_NO,
+			WINE_NAME,
+			WINE_TYPE_NAME,
+			GRAPE_NAME,
+			COUNTRY_NAME,
+			VINTAGE,
+			VOLUME,
+			QUANTITY,
+			PRICE,
+			STATUS 
+		FROM WINE W
+		LEFT JOIN COUNTRY C USING(COUNTRY_NO)
+		LEFT JOIN GRAPE G USING(GRAPE_NO)
+		LEFT JOIN WINE_TYPE WT USING(WINE_TYPE_NO)
+	</select>
+	
+	<resultMap type="wineExt" id="wineExtMap">
+		<id column="WINE_NO" property="wineNo"/>
+		<result column="WINE_NAME" property="wineName"/>
+		<result column="GRAPE_NO" property="grapeNo"/>
+		<result column="COUNTRY_NO" property="countryNo"/>
+		<result column="VINTAGE" property="vintage"/>
+		<result column="PRICE" property="price"/>
+		<result column="VOLUME" property="volume"/>
+		<result column="QUANTITY" property="quantity"/>
+		<result column="CONTENT" property="content"/>
+		<result column="STATUS" property="status"/>
+		
+		<association property="wineImage">
+			<id column="WINE_NO" property="wineNo"/>
+			<result column="ORIGIN_NAME" property="originName"/>
+			<result column="CHANGE_NAME" property="changeName"/>
+		</association>
+		
+		<association property="country">
+			<id column="COUNTRY_NO" property="countryNo"/>
+			<result column="COUNTRY_NAME" property="countryName"/>
+			<result column="COUNTRY_ENG_NAME" property="countryEngName"/>
+		</association>
+		
+		<association property="characteristic">
+			<id column="WINE_NO" property="wineNo"/>
+			<result column="BODY" property="body"/>
+			<result column="SWEET" property="sweet"/>
+			<result column="BITTER" property="bitter"/>
+			<result column="SOUR" property="sour"/>
+		</association>
+		
+		<association property="grape">
+			<id column="GRAPE_NO" property="grapeNo"/>
+			<result column="GRAPE_NAME" property="grapeName"/>
+			<result column="WINE_TYPE_NO" property="wineTypeNo"/>
+		</association>
+		
+		<association property="wineType">
+			<id column="WINE_TYPE_NO" property="wineTypeNo"/>
+			<result column="WINE_TYPE_NAME" property="wineTypeName"/>
+			<result column="WINE_TYPE_ENG_NAME" property="wineTypeEngName"/>
+		</association>
+		
+	</resultMap>
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- <resultMap type="grapeExt" id="grapeExtMap">
+	
+		<id column="GRAPE_NO" property="grapeNo"/>
+		<result column="GRAPE_NAME" property="grapeName"/>
+		<result column="WINE_TYPE_NO" property="wineTypeNo"/>
+		
+		<association property="wineType">
+			<id column="WINE_TYPE_NO" property="wineTypeNo"/>
+			<result column="WINE_TYPE_NAME" property="wineTypeName"/>
+			<result column="WINE_TYPE_ENG_NAME" property="wineTypeEngName"/>
+		</association>
+		
+	</resultMap> -->
+	
+	
+	
+	<update id="updateWine" parameterType="wineExt">
+		UPDATE WINE
+		SET WINE_NAME = #{wineName}
+			GRAPE_NO = #{grapeName},
+			COUNTRY_NO = #{countryNo},
+			VINTAGE = #{vintage},
+			PRICE = #{price},
+			VOLUME = #{volume},
+			QUANTITY = #{quantity},
+			CONTENT = #{content},
+			STATUS = #{status}
+		WHERE WINE_NO = #{wineNo}
+	</update>
+	
+	<select id="selectWine" resultMap="wineExtMap">
+		SELECT * 
+		FROM WINE W
+		LEFT JOIN WINE_IMAGE USING(WINE_NO)
+		LEFT JOIN COUNTRY C USING(COUNTRY_NO)
+		LEFT JOIN CHARACTERISTIC CH USING(WINE_NO)
+		LEFT JOIN GRAPE G USING(GRAPE_NO)
+		LEFT JOIN WINE_TYPE WT USING(WINE_TYPE_NO)
+		WHERE WINE_NO = #{wineNo}
+	</select>
+	
+	
 
 
 </mapper>

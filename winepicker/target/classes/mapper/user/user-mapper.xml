@@ -4,65 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="user">
 
-	<select id="selectUserList" >
+	<select id="selectUserList">
 		SELECT *
 		FROM USER
 	</select>
 
-	<select id="selectFaqList" resultType="faq">
-		SELECT *
-		FROM FAQ	
-	
-	</select>
-	
-	<select id="selectFaq" resultType="faq" parameterType="int">
-		SELECT *
-		FROM FAQ
-			WHERE FAQ_NO = #{faqNo} 
-	</select>
-	
-	<select id="selectMyWishList" resultMap="wineExtMap" parameterType="int" >
-		SELECT 
-			WINE_NO,
-			WINE_NAME,
-			GRAPE_NO,
-			COUNTRY_NO,
-			VINTAGE,
-			PRICE,
-			VOLUME,
-			QUANTITY,
-			CONTENT,
-			STATUS,
-			
-			ORIGIN_NAME,
-			CHANGE_NAME
-		
-		FROM 
-			WISH
-			LEFT JOIN WINE USING (WINE_NO)
-			LEFT JOIN WINE_IMAGE USING (WINE_NO)
-		WHERE USER_NO = #{userNo}
-	</select>
-	
-	<resultMap type="wineExt" id="wineExtMap">
-	
-		<id column="WINE_NO" property="wineNo"/>
-		<result column="WINE_NAME" property="wineName"/>
-		<result column="GRAPE_NO" property="grapeNo"/>
-		<result column="COUNTRY_NO" property="countryNo"/>
-		<result column="VINTAGE" property="vintage"/>
-		<result column="PRICE" property="price"/>
-		<result column="VOLUME" property="volume"/>
-		<result column="QUANTITY" property="quantity"/>
-		<result column="CONTENT" property="content"/>
-		<result column="STATUS" property="status"/>
-
-		<association property="image">
-			<result column="ORIGIN_NAME" property="originName"/>
-			<result column="CHANGE_NAME" property="changeName"/>
-			
-		</association>
-	
-	</resultMap>
-	
 </mapper>

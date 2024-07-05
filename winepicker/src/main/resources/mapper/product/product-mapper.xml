@@ -5,34 +5,15 @@
 <mapper namespace="product">
 
 	<select id="selectList">
-
+		
 		FROM WINE W
 		WHERE W.STATUS = 'Y'
+	</select>
+	
+	<insert id="enrollWine">
 		
-	</select>
-
-	<!-- 와인번호 채번 -->
-	<select id="wineNo" resultType="int">
-		SELECT WINE_SEQ.NEXTVAL FROM DUAL
-	</select>
-
-	<!-- 와인등록 -->
-	<insert id="insertWine">
-		<selectKey keyProperty="wineNo" resultType="int"
-			order="BEFORE">
-			SELECT WINE_SEQ.NEXTVAL FROM DUAL
-		</selectKey>
-		INSERT INTO WINE
-		VALUES (#{wineNo}, #{wineName}, #{grapeNo}, #{countryNo}, #{vintage}, #{price}, #{volume}, #{quantity}, #{content}, #{status})
 	</insert>
-
-	<!-- 와인 이미지 등록 -->
-	<insert id="insertWineImg">
-		INSERT INTO WINE_IMAGE
-		VALUES (#{wineNo}, #{originName}, #{changeName})
-	</insert>
-
-
+	
 	<update id="deleteWine">
 		UPDATE WINE
 		SET STATUS = 'N'

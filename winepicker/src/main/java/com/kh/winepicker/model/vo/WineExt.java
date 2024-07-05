@@ -13,5 +13,5 @@ public class WineExt extends Wine {
 	
 	private WineImage image;
 	
-	
+
 }

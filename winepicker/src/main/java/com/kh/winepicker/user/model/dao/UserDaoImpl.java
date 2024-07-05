@@ -1,6 +1,8 @@
 package com.kh.winepicker.user.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,15 @@ public class UserDaoImpl implements UserDao {
 	public int idCheck(String userId) {
 		return sqlSession.selectOne("user.idCheck", userId);
 	}
+
+
+	@Override
+    public String findId(String userName, String userEmail) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("userName", userName);
+        paramMap.put("userEmail", userEmail);
+        
+        return sqlSession.selectOne("user.findId", paramMap);
+    }
 
 }

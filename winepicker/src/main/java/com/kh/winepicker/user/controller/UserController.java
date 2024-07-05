@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/user")
-@SessionAttributes({"loginUser"})
+@SessionAttributes({ "loginUser" })
 @RequiredArgsConstructor
 public class UserController {
 
@@ -129,7 +129,6 @@ public class UserController {
 		return viewName;
 	}
 
-
 	@GetMapping("/insertUser")
 	public String enrollForm() {
 		return "user/register";
@@ -157,12 +156,7 @@ public class UserController {
 	}
 
 	@GetMapping("/idCheck")
-	public String IdCheck() {
-		return "user/register";
-	}
-
-	@PostMapping("/idCheck")
-	@ResponseBody
+	@ResponseBody // 비동기요청시 필요한 어노테이션
 	public int idCheck(String userId) {
 		// 아이디 중복 체크 로직
 		int result = userService.idCheck(userId);
@@ -170,8 +164,8 @@ public class UserController {
 	}
 
 	@PostMapping("/selectOne")
-	public ResponseEntity<Map<String,Object>> selectOne(User user) {
-		if(true) {
+	public ResponseEntity<Map<String, Object>> selectOne(User user) {
+		if (true) {
 			throw new RuntimeException();
 		}
 
@@ -195,10 +189,28 @@ public class UserController {
 	}
 
 	@GetMapping("/logout")
-	public String logout(HttpSession session , SessionStatus status ) {
-		
+	public String logout(HttpSession session, SessionStatus status) {
+
 		status.setComplete();
 		return "redirect:/";
+	}
+
+	@PostMapping("/findId")
+	public ResponseEntity<Map<String, String>> findId(@RequestParam("userName") String userName,
+													 @RequestParam("userEmail") String userEmail) {
+		Map<String, String> response = new HashMap<>();
+		try {
+			String foundUserId = userService.findId(userName, userEmail);
+
+			if (foundUserId != null) {
+				response.put("user", foundUserId);
+			} else {
+				response.put("msg", "등록된 이메일이 없습니다. 이메일을 확인해주세요.");
+			}
+		} catch (Exception e) {
+			response.put("errorMsg", "아이디 찾기 과정에서 오류가 발생했습니다.");
+		}
+		return ResponseEntity.ok(response);
 	}
 
 }

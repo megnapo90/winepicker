@@ -37,4 +37,10 @@ public class UserServiceImpl implements UserService {
 		return userDao.idCheck(userId);
 	}
 
+	@Override
+	public String findId(String userName, String userEmail) {
+		return userDao.findId(userName,userEmail);
+	}
+
+
 }

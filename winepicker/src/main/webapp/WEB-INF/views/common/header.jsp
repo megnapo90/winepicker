@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document</title>
-
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet"
@@ -44,24 +44,20 @@ li, ul, a {
 	align-items: center;
 	color: white;
 	font-size: 24px;
-	position: sticky;
+	position: fixed;
 	top: 0;
 }
 
 .header a {
 	text-decoration: none;
 	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 100%;
 }
 
 .text-container {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex: 1;
 }
 
 .left-text, .right-text {
@@ -96,7 +92,9 @@ li, ul, a {
 	width: 100%;
 	height: 58px;
 	opacity: 1;
+	margin-top: 200px;
 	background-color: #84515F;
+	position: fixed;
 }
 
 #navi {
@@ -136,7 +134,6 @@ li, ul, a {
 	width: 1px;
 	height: 100%;
 	background-color: white;
-	/
 }
 
 #navi>li:last-child::after {
@@ -170,19 +167,31 @@ li, ul, a {
 #navi>li>a:hover+ul, #navi>li>ul:hover {
 	display: flex;
 }
+
+.user-actions {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	font-size: 15px;
+}
+
+.user-actions a {
+	color: white;
+	margin: 5px 0;
+}
+.user-actions a:hover {
+	color: rgb(192, 79, 79);
+	margin: 5px 0;
+}
 </style>
 </head>
 
 <body>
-	<c:if test="${ not empty alertMsg }">
-		<script>
-			alertify.alert("서비스 요청 성공", '${alertMsg}');
-		</script>
-		<c:remove var="alertMsg" />
-	</c:if>
-
 	<div class="header" id="header">
-		<a href="" class="header-link">
+		<a href="${contextPath}/" class="header-link">
 			<div class="text-container">
 				<div class="left-text">WINE</div>
 				<div class="logo-container">
@@ -191,41 +200,33 @@ li, ul, a {
 				<div class="right-text">PICKER</div>
 			</div>
 		</a>
-	</div>
-	<div class="nav">
-		<ul id="navi">
-			<li><a href="${contextPath}/product/listView">전체 와인</a></li>
-			<li><a href="${contextPath}/info/main">정보글</a></li>
-		</ul>
-	</div>
-	<div id="header">
-
-		<div id="header_1">
-			<div id="header_1_left"></div>
-			<div id="header_1_center"></div>
-			<div id="header_1_right">
-				<c:set var="contextPath" value="<%=request.getContextPath()%>"
-					scope="session" />
-				<c:choose>
-					<c:when test="${empty loginUser}">
-						<!-- 로그인전이라면 -->
-						<a href="${contextPath}/user/loginPage" class="beforeLogin">마이페이지</a>
-					</c:when>
-					<c:otherwise>
-						<label>${loginUser.userName}님</label> &nbsp;&nbsp; 
-							<a href="${contextPath}/user/myPage">마이페이지</a>
-						<a href="${contextPath}/user/logout">로그아웃</a>
-					</c:otherwise>
-				</c:choose>
-			</div>
-		</div>
-		<div id="header_2">
-			<ul>
-				<c:forEach items='${boardTypeList}' var='boardType'>
-					<li><a href="${contextPath}/board/list/${boardType.boardCode}">${boardType.boardName}</a>
-					</li>
-				</c:forEach>
+		<div class="nav">
+			<ul id="navi">
+				<li><a href="${contextPath}/product/listView">전체 와인</a></li>
+				<li><a href="${contextPath}/info/main">정보글</a></li>
 			</ul>
+		</div>
+		<div class="user-actions">
+			<c:set var="contextPath" value="<%=request.getContextPath()%>"
+				scope="session" />
+			<c:choose>
+				<c:when test="${empty loginUser}">
+					<!-- 로그인 전이라면 -->
+					<a href="${contextPath}/user/loginPage" class="beforeLogin">로그인</a>
+				</c:when>
+				<c:otherwise>
+					<label>${loginUser.userName}님</label> &nbsp;&nbsp;
+				<c:choose>
+						<c:when test="${loginUser.gradeNo == 0}">
+							<a href="${contextPath}/admin/adminPage">관리자 페이지</a>
+						</c:when>
+						<c:otherwise>
+							<a href="${contextPath}/user/myPage">마이페이지</a>
+						</c:otherwise>
+					</c:choose>
+					<a href="${contextPath}/user/logout">로그아웃</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 

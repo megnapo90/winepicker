@@ -19,7 +19,7 @@
 		"C##WINEPICKER"."USER"
 		VALUES(
 		USER_SEQ.NEXTVAL,
-		#{gradeNo},
+		DEFAULT,
 		#{userId},
 		#{userPwd},
 		#{userName},
@@ -39,12 +39,19 @@
 	</select>
 
 	<select id="checkEmail" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM USER WHERE EMAIL = #{email}
+		SELECT COUNT(*) FROM USER WHERE EMAIL = #{userEmail}
 	</select>
 
 
 	<select id="loginUser" parameterType="User" resultType="User">
 		SELECT * FROM USER WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
 	</select>
+	
+	 <select id="findId" parameterType="map" resultType="string">
+        SELECT USER_ID
+        FROM "USER"
+        WHERE USER_NAME = #{userName}
+        AND USER_EMAIL = #{userEmail}
+    </select>
 
 </mapper>

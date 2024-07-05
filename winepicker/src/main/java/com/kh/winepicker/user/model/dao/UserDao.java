@@ -14,4 +14,6 @@ public interface UserDao {
 
 	int idCheck(String userId);
 
+	String findId(String userName, String userEmail);
+
 }

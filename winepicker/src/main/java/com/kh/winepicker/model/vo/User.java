@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import oracle.net.jdbc.TNSAddress.Address;
 
 @Data
 @NoArgsConstructor
@@ -25,5 +26,6 @@ public class User {
 	private Date enrollDate;
 	private Date modifyDate;
 	private char status;
+	private Address userAddress;
 
 }

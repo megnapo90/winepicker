@@ -1,184 +1,129 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>newPwd</title>
 </head>
+
 <style>
-    .newpwd {
-        width: 1440px;
-        height: 1024px;
-        border-radius: 6px;
-        background: #FFFFFF;
-        border: 1px solid rgba(0, 0, 0, 0.12);
+body {
+	font-family: Arial, sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-        .newpwd-1 {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 1440px;
-            height: 1024px;
-            overflow: hidden;
-            background: #282934;
+.background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background:
+		url('https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png')
+		no-repeat center center;
+	background-size: cover;
+	z-index: -1;
+}
 
-            .input {
-                position: absolute;
-                top: 214px;
-                left: -2px;
-                width: 1440px;
-                height: 810px;
-                object-fit: cover;
-            }
+.login-container {
+	background-color: rgba(0, 0, 0, 0.7);
+	padding: 20px;
+	border-radius: 8px;
+	text-align: center;
+	color: white;
+	width: 300px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
 
-            .frame-66 {
-                position: absolute;
-                top: 355px;
-                left: 513px;
-                width: 414px;
-                height: 455px;
-                overflow: hidden;
+.login-container img.logo {
+	width: 100px;
+	margin-bottom: 20px;
+}
 
-                .rectangle-33 {
-                    position: absolute;
-                    top: 0px;
-                    left: 0px;
-                    width: 414px;
-                    height: 455px;
-                    background: rgba(255, 255, 255, 0.1);
-                }
+.login-container input[type="text"], .login-container input[type="password"]
+	{
+	width: 90%;
+	padding: 10px;
+	margin: 10px 0;
+	border: none;
+	border-radius: 4px;
+}
 
-                .frame-74 {
-                    position: absolute;
-                    top: 291px;
-                    left: 60px;
-                    width: 295px;
-                    height: 44px;
-                    overflow: hidden;
-                    background: #FFFFFF;
+.login-container button {
+	width: 100%;
+	padding: 10px;
+	background-color: #444;
+	border: none;
+	border-radius: 4px;
+	color: white;
+	cursor: pointer;
+}
 
-                    .rectangle-36 {
-                        position: absolute;
-                        top: -1px;
-                        left: 0px;
-                        width: 295px;
-                        height: 45px;
-                        background: #B8B8B8;
-                    }
-                }
+.login-container a {
+	color: white;
+	text-decoration: none;
+	display: block;
+	margin: 10px 0;
+}
 
-                .text-- {
-                    position: absolute;
-                    top: 300px;
-                    left: 136px;
-                    width: 144px;
-                    height: 33px;
-                    color: #000000;
-                    font-family: "Water Brush";
-                    font-size: 20px;
-                    line-height: 29px;
-                    font-weight: 400;
-                    letter-spacing: 10px;
-                    text-align: center;
-                }
+.login-container a:hover {
+	text-decoration: underline;
+}
 
-                .text--- {
-                    position: absolute;
-                    top: 53px;
-                    left: 78px;
-                    width: 270px;
-                    height: 59px;
-                    color: #FFFFFF;
-                    font-family: "Water Brush";
-                    font-size: 30px;
-                    line-height: 30px;
-                    font-weight: 400;
-                    letter-spacing: 10px;
-                    text-align: center;
-                }
-
-                .frame-72 {
-                    position: absolute;
-                    top: 205px;
-                    left: 60px;
-                    width: 295px;
-                    height: 44px;
-                    overflow: hidden;
-                    background: #FFFFFF;
-
-                    .text----1 {
-                        position: absolute;
-                        top: 9px;
-                        left: 10px;
-                        width: 172px;
-                        height: 33px;
-                        color: rgba(61, 61, 61, 0.3);
-                        font-family: "Water Brush";
-                        font-size: 20px;
-                        line-height: 29px;
-                        font-weight: 400;
-                    }
-                }
-
-                .frame-73 {
-                    position: absolute;
-                    top: 120px;
-                    left: 60px;
-                    width: 295px;
-                    height: 44px;
-                    overflow: hidden;
-                    background: #FFFFFF;
-
-                    .text----2 {
-                        position: absolute;
-                        top: 11px;
-                        left: 10px;
-                        width: 172px;
-                        height: 33px;
-                        color: rgba(61, 61, 61, 0.3);
-                        font-family: "Water Brush";
-                        font-size: 20px;
-                        line-height: 29px;
-                        font-weight: 400;
-                    }
-                }
-            }
-        }
-    }
+.login-container button:hover {
+	background-color: white;
+	opacity: 0.7;
+	color: black;
+}
 </style>
 
 <body>
-    <div class="newpwd">
-        <div class="newpwd-1">
-            <img src="https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png"
-                class="input" />
-            <div class="frame-66">
-                <div class="rectangle-33">
-                </div>
-                <div class="frame-74">
-                    <div class="rectangle-36">
-                    </div>
-                </div>
-                <div class="text--">
-                    비밀번호 변경
-                </div>
-                <div class="text---">
-                    새 비밀번호 입력
-                </div>
-                <div class="frame-72">
-                    <div class="text----1">
-                        새 비밀번호 재입력
-                    </div>
-                </div>
-                <div class="frame-73">
-                    <div class="text----2">
-                        새 비밀번호 입력
-                    </div>
-                </div>
-            </div>
 
+	<main>
+		<div class="login-bar">
+			<form action="${pageContext.request.contextPath}/user/login"
+				method="post">
+
+				<img
+					src="https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png"
+					class="background" />
+				<div class="login-container">
+					<a href="${contextPath}/"> <img
+						src="https://image-resource.creatie.ai/131184926775412/131184970815644/b6328a368ee28caebfb3fbefb8a983dc.png"
+						alt="Logo" class="logo" />
+					</a><input type="password" id="originPwd" name="originPwd"
+						placeholder="새 비밀번호 입력" required /> <input type="password"
+						id="newPwd" name="newPwd" placeholder="새 비밀번호 확인" required />
+					<button type="submit">비밀번호 변경</button>
+
+				</div>
+			</form>
+
+
+		</div>
+	</main>
+
+	<footer> </footer>
+	<script>
+            import "./global.scss";
+            import {
+                ref,
+                computed,
+                reactive
+            } from 'vue';
+            const props = defineProps({
+            });
+
+        </script>
 </body>
 
 </html>

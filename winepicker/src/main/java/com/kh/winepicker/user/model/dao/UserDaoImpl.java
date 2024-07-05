@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 
 import lombok.RequiredArgsConstructor;
 

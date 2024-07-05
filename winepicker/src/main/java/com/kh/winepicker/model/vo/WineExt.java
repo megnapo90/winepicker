@@ -2,15 +2,16 @@ package com.kh.winepicker.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WineImage {
-
-	private int wineNo;
-	private String originName;
-	private String changeName;
+@EqualsAndHashCode(callSuper=false)
+public class WineExt extends Wine {
+	
+	private WineImage image;
+	
 	
 }

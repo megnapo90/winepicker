@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +12,7 @@
 .mypagepick {
   width: 1440px;
   height: 1668px;
-  overflow: hidden;
+  overflow: ;
   background: #FFFFFF;
 }
 .mypagepick .text- {
@@ -33,7 +35,7 @@
   left: 69px;
   width: 219px;
   height: 46px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .frame-22 .text-- {
   position: absolute;
@@ -96,7 +98,7 @@
   left: 295px;
   width: 1076px;
   height: 829px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .wish-list .frame-26 {
   position: absolute;
@@ -104,7 +106,7 @@
   left: 0px;
   width: 1076px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -115,7 +117,7 @@
   left: 691px;
   width: 120px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -155,7 +157,7 @@
   left: 91px;
   width: 292px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -194,7 +196,7 @@
   left: 0px;
   width: 91px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -213,7 +215,7 @@
   left: 383px;
   width: 308px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -290,7 +292,7 @@
   left: 0px;
   width: 1076px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
@@ -301,7 +303,7 @@
   left: 691px;
   width: 120px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -341,7 +343,7 @@
   left: 383px;
   width: 308px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -381,7 +383,7 @@
   left: 91px;
   width: 292px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -420,7 +422,7 @@
   left: 0px;
   width: 91px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
@@ -497,7 +499,7 @@
   left: 0px;
   width: 1440px;
   height: 183px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .footerbar .rectangle- {
   position: absolute;
@@ -597,7 +599,7 @@
   left: 69px;
   width: 164px;
   height: 825px;
-  overflow: hidden;
+  overflow: ;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(180deg, #eecccc 15%, rgba(255, 255, 255, 0) 100%);
 }
 .mypagepick .frame-20 .text--10 {
@@ -711,7 +713,7 @@
   left: 0px;
   width: 1440px;
   height: 210px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .mainloginbar .rectangle--2 {
   position: absolute;
@@ -753,7 +755,7 @@
   left: 0px;
   width: 720px;
   height: 58px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: #FFFFFF;
@@ -777,7 +779,7 @@
   left: 720px;
   width: 720px;
   height: 58px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .mainloginbar .frame-68 .text--12 {
   position: absolute;
@@ -873,6 +875,36 @@
             </div>
             
             <div class="wish-list">
+            
+            	<c:if test="${wishList eq null}">
+            		<div class="empty-wish-list">
+            			<p>관심 상품이 없습니다.</p>
+            		</div>
+            	</c:if>
+                
+                <table class="wish-list">
+            	
+            	<c:forEach items="${wishList }" var="wish">
+            	
+            		<tr>
+            			<th><img src="${contextPath}/${path }/${wish.image.changeName }" /></th>
+            			<td>${wish.wineName }</td>
+            			<td>${wish.content }</td>
+            			<td>${wish.price }</td>
+            			<td>장바구니</td>
+            			<td>구매하기</td>
+            		</tr>
+            	</c:forEach>
+            	
+            	</table>
+                
+                
+                
+                
+                
+                
+                
+                
                 
                 <div class="frame-26">
                     <div class="frame-35">

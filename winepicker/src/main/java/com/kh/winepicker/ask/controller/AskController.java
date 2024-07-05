@@ -33,8 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AskController {
 
 	private final AskService askService;
-	private final ResourceLoader resourceLoader;
-	private final ServletContext application;
+
 	
 	//1:1문의사항화면 -> 문의글 조회
 	@GetMapping("/askPage")

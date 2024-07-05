@@ -2,6 +2,8 @@ package com.kh.winepicker.user.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,12 +30,8 @@ public class UserController {
 	
 	private final UserService userService;
 	private final BCryptPasswordEncoder encoder;
-	
-//	public UserController(UserService userService, BCryptPasswordEncoder encoder) {
-//		this.userService = userService;
-//		this.encoder = encoder;
-//	}
-	
+	private final ServletContext application;
+
 
 	
 	@GetMapping("/userList")
@@ -85,11 +84,18 @@ public class UserController {
 			@ModelAttribute("loginUser") User loginUser
 			) {
 		int userNo = loginUser.getUserNo();
+		userNo = 1;	//이후 지워야 함.
 		
 		List<Wine> wishList = userService.selectMyWishList(userNo);
+		String path = "resource/images/wine";
+		
+		model.addAttribute("wishList", wishList);
+		model.addAttribute("path", path);
 		
 		return "user/myWishList";
 	}
+	
+	
 		
 	//mypage 메뉴 중 고객센터로 이동
 	@GetMapping("/callCenter")

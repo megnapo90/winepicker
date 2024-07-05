@@ -5,6 +5,7 @@ import java.util.List;
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 
 public interface UserDao {
 

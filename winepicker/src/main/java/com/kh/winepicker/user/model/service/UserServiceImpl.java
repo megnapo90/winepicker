@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.user.model.dao.UserDao;
 
 import lombok.RequiredArgsConstructor;

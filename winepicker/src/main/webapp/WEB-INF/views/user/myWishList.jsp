@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +12,7 @@
 .mypagepick {
   width: 1440px;
   height: 1668px;
-  overflow: hidden;
+  overflow: ;
   background: #FFFFFF;
 }
 .mypagepick .text- {
@@ -33,7 +35,7 @@
   left: 69px;
   width: 219px;
   height: 46px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .frame-22 .text-- {
   position: absolute;
@@ -90,37 +92,37 @@
   width: 1083px;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
-.mypagepick .frame-24 {
+.mypagepick .wish-list {
   position: absolute;
   top: 656px;
   left: 295px;
   width: 1076px;
   height: 829px;
-  overflow: hidden;
+  overflow: ;
 }
-.mypagepick .frame-24 .frame-26 {
+.mypagepick .wish-list .frame-26 {
   position: absolute;
   top: 171px;
   left: 0px;
   width: 1076px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
 }
-.mypagepick .frame-24 .frame-26 .frame-35 {
+.mypagepick .wish-list .frame-26 .frame-35 {
   position: absolute;
   top: 0px;
   left: 691px;
   width: 120px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-35 .text-30-000 {
+.mypagepick .wish-list .frame-26 .frame-35 .text-30-000 {
   position: absolute;
   top: 66px;
   left: 11px;
@@ -134,7 +136,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-35 .text--1 {
+.mypagepick .wish-list .frame-26 .frame-35 .text--1 {
   position: absolute;
   top: 40px;
   left: 40.5px;
@@ -149,18 +151,18 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-32 {
+.mypagepick .wish-list .frame-26 .frame-32 {
   position: absolute;
   top: 0px;
   left: 91px;
   width: 292px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-32 .text-----1 {
+.mypagepick .wish-list .frame-26 .frame-32 .text-----1 {
   position: absolute;
   top: 66px;
   left: 0px;
@@ -174,7 +176,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-32 .text--2 {
+.mypagepick .wish-list .frame-26 .frame-32 .text--2 {
   position: absolute;
   top: 40px;
   left: 57px;
@@ -188,18 +190,18 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-29 {
+.mypagepick .wish-list .frame-26 .frame-29 {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 91px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-29 .rectangle-2 {
+.mypagepick .wish-list .frame-26 .frame-29 .rectangle-2 {
   position: absolute;
   top: 15px;
   left: 0px;
@@ -207,18 +209,18 @@
   height: 141px;
   object-fit: cover;
 }
-.mypagepick .frame-24 .frame-26 .frame-37 {
+.mypagepick .wish-list .frame-26 .frame-37 {
   position: absolute;
   top: 0px;
   left: 383px;
   width: 308px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-26 .frame-37 .text--- {
+.mypagepick .wish-list .frame-26 .frame-37 .text--- {
   position: absolute;
   top: 56px;
   left: 0px;
@@ -232,7 +234,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .frame-37 .text---3 {
+.mypagepick .wish-list .frame-26 .frame-37 .text---3 {
   position: absolute;
   top: 43px;
   left: 115.5px;
@@ -247,7 +249,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .text--3 {
+.mypagepick .wish-list .frame-26 .text--3 {
   position: absolute;
   top: 111px;
   left: 831px;
@@ -262,7 +264,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .text--4 {
+.mypagepick .wish-list .frame-26 .text--4 {
   position: absolute;
   top: 111px;
   left: 952px;
@@ -277,36 +279,36 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-26 .close-fill {
+.mypagepick .wish-list .frame-26 .close-fill {
   position: absolute;
   top: 31px;
   left: 1002px;
   width: 20px;
   height: 20px;
 }
-.mypagepick .frame-24 .frame-25 {
+.mypagepick .wish-list .frame-25 {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 1076px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.5);
 }
-.mypagepick .frame-24 .frame-25 .frame-36 {
+.mypagepick .wish-list .frame-25 .frame-36 {
   position: absolute;
   top: 0px;
   left: 691px;
   width: 120px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-36 .text-300-000 {
+.mypagepick .wish-list .frame-25 .frame-36 .text-300-000 {
   position: absolute;
   top: 66px;
   left: 11px;
@@ -320,7 +322,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-36 .text--5 {
+.mypagepick .wish-list .frame-25 .frame-36 .text--5 {
   position: absolute;
   top: 40px;
   left: 40.5px;
@@ -335,18 +337,18 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-38 {
+.mypagepick .wish-list .frame-25 .frame-38 {
   position: absolute;
   top: 0px;
   left: 383px;
   width: 308px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-38 .text---- {
+.mypagepick .wish-list .frame-25 .frame-38 .text---- {
   position: absolute;
   top: 66px;
   left: 0px;
@@ -360,7 +362,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-38 .text---4 {
+.mypagepick .wish-list .frame-25 .frame-38 .text---4 {
   position: absolute;
   top: 43px;
   left: 115.5px;
@@ -375,18 +377,18 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-33 {
+.mypagepick .wish-list .frame-25 .frame-33 {
   position: absolute;
   top: 0px;
   left: 91px;
   width: 292px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-33 .text---5 {
+.mypagepick .wish-list .frame-25 .frame-33 .text---5 {
   position: absolute;
   top: 66px;
   left: 0px;
@@ -400,7 +402,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-33 .text--6 {
+.mypagepick .wish-list .frame-25 .frame-33 .text--6 {
   position: absolute;
   top: 40px;
   left: 57px;
@@ -414,18 +416,18 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .frame-30 {
+.mypagepick .wish-list .frame-25 .frame-30 {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 91px;
   height: 171px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.7);
 }
-.mypagepick .frame-24 .frame-25 .frame-30 .rectangle-1 {
+.mypagepick .wish-list .frame-25 .frame-30 .rectangle-1 {
   position: absolute;
   top: 18px;
   left: 17px;
@@ -433,7 +435,7 @@
   height: 136px;
   object-fit: cover;
 }
-.mypagepick .frame-24 .frame-25 .text--7 {
+.mypagepick .wish-list .frame-25 .text--7 {
   position: absolute;
   top: 111px;
   left: 831px;
@@ -448,7 +450,7 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .text--8 {
+.mypagepick .wish-list .frame-25 .text--8 {
   position: absolute;
   top: 111px;
   left: 952px;
@@ -463,14 +465,14 @@
   letter-spacing: 10px;
   text-align: center;
 }
-.mypagepick .frame-24 .frame-25 .close-fill-1 {
+.mypagepick .wish-list .frame-25 .close-fill-1 {
   position: absolute;
   top: 30px;
   left: 1003px;
   width: 20px;
   height: 20px;
 }
-.mypagepick .frame-24 .rectangle-41 {
+.mypagepick .wish-list .rectangle-41 {
   position: absolute;
   top: 368px;
   left: 882px;
@@ -478,7 +480,7 @@
   height: 26px;
   background: #5E5E5E;
 }
-.mypagepick .frame-24 .text--9 {
+.mypagepick .wish-list .text--9 {
   position: absolute;
   top: 372px;
   left: 910px;
@@ -497,7 +499,7 @@
   left: 0px;
   width: 1440px;
   height: 183px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .footerbar .rectangle- {
   position: absolute;
@@ -597,7 +599,7 @@
   left: 69px;
   width: 164px;
   height: 825px;
-  overflow: hidden;
+  overflow: ;
   background: linear-gradient(0deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 100%), linear-gradient(180deg, #eecccc 15%, rgba(255, 255, 255, 0) 100%);
 }
 .mypagepick .frame-20 .text--10 {
@@ -711,7 +713,7 @@
   left: 0px;
   width: 1440px;
   height: 210px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .mainloginbar .rectangle--2 {
   position: absolute;
@@ -753,7 +755,7 @@
   left: 0px;
   width: 720px;
   height: 58px;
-  overflow: hidden;
+  overflow: ;
   border-width: 0px 1px 0px 0px;
   border-style: solid;
   border-color: #FFFFFF;
@@ -777,7 +779,7 @@
   left: 720px;
   width: 720px;
   height: 58px;
-  overflow: hidden;
+  overflow: ;
 }
 .mypagepick .mainloginbar .frame-68 .text--12 {
   position: absolute;
@@ -871,7 +873,39 @@
             </div>
             <div class="line-6">
             </div>
-            <div class="frame-24">
+            
+            <div class="wish-list">
+            
+            	<c:if test="${wishList eq null}">
+            		<div class="empty-wish-list">
+            			<p>관심 상품이 없습니다.</p>
+            		</div>
+            	</c:if>
+                
+                <table class="wish-list">
+            	
+            	<c:forEach items="${wishList }" var="wish">
+            	
+            		<tr>
+            			<th><img src="${contextPath}/${path }/${wish.image.changeName }" /></th>
+            			<td>${wish.wineName }</td>
+            			<td>${wish.content }</td>
+            			<td>${wish.price }</td>
+            			<td>장바구니</td>
+            			<td>구매하기</td>
+            		</tr>
+            	</c:forEach>
+            	
+            	</table>
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 <div class="frame-26">
                     <div class="frame-35">
                         <div class="text-30-000">
@@ -994,29 +1028,6 @@
                     주문 배송 조회
                 </div>
                 
-               <%-- 
-               		다른 화면들에 적용된 순서
-               		 <div class="text---" onclick="location.href='${contextPath}/user/myPage'">
-	                    주문 배송 조회
-	                </div>
-	                <div class="text----1" onclick="location.href='${contextPath}/user/myReview'">
-	                    리뷰 관리
-	                </div>
-	                <div class="text----2" onclick="location.href='${contextPath}/user/myRecentProduct'" >
-	                    최근 본 상품
-	                </div>
-	                <div class="text----3" onclick="location.href='${contextPath}/user/myWishList'">
-	                    관심 상품
-	                </div>
-	                <div class="text----4"> <!--onclick="location.href='${contextPath}/user/'"  -->
-	                    내 정보 변경
-	                </div>
-	                <div class="text----5" onclick="location.href='${contextPath}/user/callCenter'">
-	                    고객 센터
-	                </div>
-	                <div class="text----6"> 
-	                    회원 탈퇴
-	                </div> --%>
                
             </div>
             

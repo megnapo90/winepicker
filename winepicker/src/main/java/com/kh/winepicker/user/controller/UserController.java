@@ -4,28 +4,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.User;
+import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 
 @Controller
 @RequestMapping("/user")
@@ -34,12 +29,16 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final BCryptPasswordEncoder encoder;
+
 	private final UserService userService;
 
 //	public UserController(UserService userService, BCryptPasswordEncoder encoder) {
 //		this.userService = userService;
 //		this.encoder = encoder;
 //	}
+
+	private final ServletContext application;
+
 
 	@GetMapping("/userList")
 	public String selectUserList(Model model) {
@@ -94,18 +93,62 @@ public class UserController {
 
 	// 관심상품으로 이동
 	@GetMapping("/myWishList")
-	public String showMyWishList() {
+	public String selectMyWishList(
+			Model model,
+			@ModelAttribute("loginUser") User loginUser
+			) {
+		int userNo = loginUser.getUserNo();
+		userNo = 1;	//이후 지워야 함.
+		
+		List<Wine> wishList = userService.selectMyWishList(userNo);
+		String path = "resource/images/wine";
+		
+		model.addAttribute("wishList", wishList);
+		model.addAttribute("path", path);
+		
 		return "user/myWishList";
 	}
 
+
 	// mypage 메뉴 중 고객센터로 이동
+
 	@GetMapping("/callCenter")
-	public String userCallCenter() {
+	public String selectFaqList(
+			Model model
+			) {
+		
+		List<Faq> faqList = userService.selectFaqList();
+		
+		model.addAttribute("faqList", faqList);
+		
+		log.info("faqList ? {}", faqList);
+		
 		return "user/callCenter";
 	}
 
+
 	// mypage 메뉴 중 공지사항으로 이동
+
+	
+	@ResponseBody
+	@GetMapping("/faqDetail/{faqNo}")
+	public Faq showFaqContent(
+			@PathVariable("faqNo") int faqNo,
+			Model model
+			) {
+		
+		Faq faq = userService.selectFaq(faqNo);
+		
+		model.addAttribute("faq", faq);
+		
+		log.info("faq ? {}", faq);
+		
+		return faq;
+	}
+	
+
 	@GetMapping("/userNotice")
+	@ResponseBody
 	public String userNotice() {
 		return "user/userNotice";
 	}

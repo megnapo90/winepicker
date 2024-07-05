@@ -5,13 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Document</title>
+<link rel="stylesheet" href="${contextPath}/resources/css/common.css">
 <style>
 #footer {
+	top: 1080px;
+
     position: relative;
     width: 100%;
     height: 185px;
     opacity: 1;
     background: #282934;
+    bottom: 0;
 }
 
 #logo {
@@ -208,7 +212,7 @@
 		<p class="customer-service-title">고객센터</p>
 		<ul class="customer-service-list">
 			<li><a href="link_to_FAQ">FAQ</a></li>
-			<li><a href="link_to_notice">공지사항</a></li>
+			<li><a href="${contextPath}/admin/notice">공지사항</a></li>
 			<li><a href="link_to_QNA">1:1 문의</a></li>
 		</ul>
 

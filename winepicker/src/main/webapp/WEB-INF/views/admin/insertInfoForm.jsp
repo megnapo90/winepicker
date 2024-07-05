@@ -10,23 +10,35 @@
 	img {
 		width: 100px;
 	}
+	#enrollForm{
+		border: 1px solid black;
+	}
 </style>
 </head>
 <body>
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+
+<div class="section">
 
 	<div class="content">
 		<br>
 		<br>
 		<div class="innerOuter">
-			<h2>게시글 작성하기</h2>
+			<h2>정보글 작성</h2>
 			<br>
 			<form action="${contextPath}/admin/insertInfo" id="enrollForm" method="post" enctype="multipart/form-data">
+				
+				<input type="button" value="메인 정보글" name="main" onclick="updateInfo(this,0,0,0,0)">
+				<input type="button" value="와인 정보글" name="wine" onclick="updateInfo(this,0,0,0,1)">
+				<input type="button" value="레드와인 정보글" name="red" onclick="updateInfo(this,0,1,0,2)">
+				<input type="button" value="화이트와인 정보글" name="white" onclick="updateInfo(this,0,2,0,2)">
+				<input type="button" value="스파클링와인 정보글" name="sparkling" onclick="updateInfo(this,0,3,0,2)">
 				<table align="center">
 					<tr>
 						<th>부제목</th>
-						<td><input type="text" id="title" class="form-control" name="subtitle" required></td>
+						<td><input type="text" id="subtitle" class="form-control" name="subtitle" required></td>
 					</tr>
 					<tr>
 						<th>작성자</th>
@@ -53,9 +65,53 @@
 			</form>
 		</div>
 	</div>
-
+	
+	
+</div>
 
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+	<script>
+		function updateInfo(elem, countryNo, wineTypeNo, grapeNo, depth){
+
+			console.log(elem.name);
+
+			var name = elem.name;
+
+			if(wineTypeNo == 1){
+				
+			}
+
+			$.ajax({
+				url : "${contextPath}/admin/insertInfo/selectInfoList",
+				type : "GET",
+				data : {
+					infoName : name,
+					countryNo,
+					wineTypeNo,
+					grapeNo,
+					depth
+				},
+				success : (result)=>{
+					console.log(result);
+					console.log(typeof result);
+					console.log(result.infoName);
+
+					$("#subtitle").val(result.subtitle);
+					$("#content").val(result.content);
+
+					if(result.wineTypeNo == 1) {
+
+					}
+
+					
+				},error : (xhr)=>{
+					console.log(xhr);
+				}
+
+			});
+		}
+	</script>
 
 </body>
 </html>

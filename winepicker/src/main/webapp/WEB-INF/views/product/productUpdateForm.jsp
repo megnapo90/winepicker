@@ -72,27 +72,27 @@
             
               
         <label for="body">바디:</label>
-        <input type="number" id="body" name="body" min="1" max="5" value="${wine.taste.body }" required>
+        <input type="number" id="body" name="body" min="1" max="5" value="${wine.characteristic.body }" required>
 
         <label for="sweet">단맛:</label>
-        <input type="number" id="sweet" name="sweet" min="1" max="5" value="${wine.taste.sweet }" required>
+        <input type="number" id="sweet" name="sweet" min="1" max="5" value="${wine.characteristic.sweet }" required>
 
         <label for="bitter">쓴맛:</label>
-        <input type="number" id="bitter" name="bitter" min="1" max="5" value="${wine.taste.bitter }" required>
+        <input type="number" id="bitter" name="bitter" min="1" max="5" value="${wine.characteristic.bitter }" required>
 
         <label for="sour">신맛:</label>
-        <input type="number" id="sour" name="sour" min="1" max="5" value="${wine.taste.sour }" required>
+        <input type="number" id="sour" name="sour" min="1" max="5" value="${wine.characteristic.sour }" required>
 
 
 		<label>이미지 파일:</label><br> 
 		<input type="file" id="upfile" name="upfile"><br> 
-		<span id="originName">${wine.attachment.originName}</span><br><br>
+		<span id="originName">${wine.wineImage.originName}</span><br><br>
 		<input type="submit" value="이미지 수정">
 		
 		<label>현재 이미지:</label><br> 
 		
 		
-		<img id="currentImage1" src="${contextPath }/resources/images/product/${wine.attachment.changeName}"/>
+		<img id="currentImage1" src="${contextPath }/resources/images/product/${wine.wineImage.changeName}"/>
 
 		<!-- 수정, 취소, 삭제 버튼 -->
     <button type="submit" formaction="${contextPath}/admin/update/${wineNo}" name="action" value="update">수정</button>

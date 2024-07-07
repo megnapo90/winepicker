@@ -641,18 +641,9 @@
 <body>
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/userCommon.jsp"/>
 
-	<div>
-    <div class="mypageonebyoneinput">
-        <div class="mypageonebyoneinput-1">
-            <div class="text-">
-                마이페이지
-            </div>
-            <div class="frame-22">
-                <div class="text--">
-                    ${loginUser.userName } 님, 환영합니다.
-                </div>
-            </div>
+
             <div class="text---1">
                 고객 센터
             </div>
@@ -713,36 +704,7 @@
 	                </div>
                     </form>
             	</div>
-            
-            <div class="frame-20">
-                <div class="text--5">
-                    회원 탈퇴
-                </div>
-                <div class="text---4">
-                    고객 센터
-                </div>
-                <div class="text----1">
-                    내 정보 변경
-                </div>
-                <div class="text---5">
-                    관심 상품
-                </div>
-                <div class="text----2">
-                    최근 본 상품
-                </div>
-                <div class="text---6">
-                    리뷰 관리
-                </div>
-                <div class="text----3">
-                    주문 배송 조회
-                </div>
-            </div>
-            
-        </div>
-    </div>
-	</div>
-	</div>
-
+           
 
 
 <c:if test="${not empty errorMsg }">

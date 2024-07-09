@@ -1,14 +1,16 @@
 package com.kh.winepicker.user.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.History;
+import com.kh.winepicker.model.vo.Review;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.Wish;
 import com.kh.winepicker.user.model.dao.UserDao;
 
 import lombok.RequiredArgsConstructor;
@@ -61,9 +63,48 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<History> selectMyPurchaseList(int userNo) {
-		return userDao.selectMyPurchaseList(userNo);
+	public List<History> selectMyReviewList(int userNo) {
+		return userDao.selectMyReviewList(userNo);
 	}
+
+	@Override
+	public int deleteWishItem(Wish wishItem) {
+		return userDao.deleteWishItem(wishItem);
+	}
+
+	@Override
+	public List<History> searchMyReview(HashMap<String, String> paramMap) {
+		return userDao.searchMyReview(paramMap);
+	}
+
+	@Override
+	public int insertMyReview(HashMap<String, Object> paramMap) {
+		return userDao.insertMyReview(paramMap);
+	}
+
+	@Override
+	public History selectReviewItem(int orderNo) {
+		return userDao.selectReviewItem(orderNo);
+	}
+
+	@Override
+	public Review selectReviewOne(int orderNo) {
+		return userDao.selectReviewOne(orderNo);
+	}
+
+	@Override
+	public int updateMyReview(HashMap<String, Object> paramMap) {
+		return userDao.updateMyReview(paramMap);
+	}
+
+	@Override
+	public int deleteMyReview(int orderNo) {
+		return userDao.deleteMyReview(orderNo);
+	}
+
+	
+
+	
 
 
 }

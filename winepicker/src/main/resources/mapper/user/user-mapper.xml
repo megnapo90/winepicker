@@ -1,12 +1,297 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="user">
 
-	<select id="selectUserList">
-		SELECT *
-		FROM USER
+	<select id="selectUserList"> SELECT * FROM USER
 	</select>
+
+	<select id="login" parameterType="user" resultType="user">
+		SELECT * FROM
+		"USER" WHERE USER_ID= #{userId}
+		AND STATUS = 'Y'
+	</select>
+
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO
+		"C##WINEPICKER"."USER"
+		VALUES(
+		USER_SEQ.NEXTVAL,
+		DEFAULT,
+		#{userId},
+		#{userPwd},
+		#{userName},
+		#{userEmail},
+		#{userSsn},
+		#{phone},
+		#{address},
+		DEFAULT,
+		DEFAULT,
+		DEFAULT
+		)
+	</insert>
+
+	<select id="idCheck" parameterType="String" resultType="int">
+		SELECT
+		COUNT(*) FROM "USER" WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="checkEmail" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM USER WHERE EMAIL = #{userEmail}
+	</select>
+
+
+	<select id="loginUser" parameterType="User" resultType="User">
+		SELECT * FROM USER WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
+	</select>
+	
+	 <select id="findId" parameterType="map" resultType="String">
+        SELECT USER_ID
+        FROM "USER"
+        WHERE USER_NAME = #{userName}
+        AND USER_EMAIL = #{userEmail}
+    </select>
+    
+    <select id="findPwd" parameterType="map" resultType="string">
+        SELECT USER_PWD
+        FROM "USER"
+        WHERE USER_Id = #{userId}
+        AND USER_EMAIL = #{userEmail}
+    </select>
+
+	<select id="selectFaqList" resultType="faq">
+		SELECT *
+		FROM FAQ	
+	
+	</select>
+	
+	<select id="selectFaq" resultType="faq" parameterType="int">
+		SELECT *
+		FROM FAQ
+			WHERE FAQ_NO = #{faqNo} 
+	</select>
+	
+	<select id="selectMyWishList" resultMap="wineExtMap" parameterType="int" >
+		SELECT 
+			WINE_NO,
+			WINE_NAME,
+			GRAPE_NO,
+			COUNTRY_NO,
+			VINTAGE,
+			PRICE,
+			VOLUME,
+			QUANTITY,
+			CONTENT,
+			STATUS,
+			
+			ORIGIN_NAME,
+			CHANGE_NAME
+		
+		FROM 
+			WISH
+			LEFT JOIN WINE USING (WINE_NO)
+			LEFT JOIN WINE_IMAGE USING (WINE_NO)
+		WHERE USER_NO = #{userNo}
+	</select>
+	
+	<delete id="deleteWishItem">
+		DELETE FROM WISH
+		WHERE USER_NO = #{userNo}
+			AND WINE_NO = #{wineNo}
+	</delete>
+	
+	
+	<resultMap type="wineExt" id="wineExtMap">
+	
+		<id column="WINE_NO" property="wineNo"/>
+		<result column="WINE_NAME" property="wineName"/>
+		<result column="GRAPE_NO" property="grapeNo"/>
+		<result column="COUNTRY_NO" property="countryNo"/>
+		<result column="VINTAGE" property="vintage"/>
+		<result column="PRICE" property="price"/>
+		<result column="VOLUME" property="volume"/>
+		<result column="QUANTITY" property="quantity"/>
+		<result column="CONTENT" property="content"/>
+		<result column="STATUS" property="status"/>
+
+		<association property="wineImage">
+			<result column="ORIGIN_NAME" property="originName"/>
+			<result column="CHANGE_NAME" property="changeName"/>
+			
+		</association>
+	
+	</resultMap>
+	
+	<select id="selectMyPurchaseList" resultMap="historyExtMap">
+		SELECT
+			H.ORDER_NO,
+		    H.USER_NO,
+		    H.WINE_NO,
+		    H.ORDER_DATE,
+		    H.D_STATUS,
+		    H.C_STATUS,
+		    H.QTY,
+		    H.DELIVERY_ADDRESS,
+		    I.ORIGIN_NAME,
+		    I.CHANGE_NAME,
+		    W.WINE_NO AS wine_WINE_NO,
+		    W.WINE_NAME AS wine_WINE_NAME,
+		    W.PRICE AS wine_PRICE,
+		    W.QUANTITY AS wine_QUANTITY,
+		    W.CONTENT AS wine_CONTENT,
+		    W.STATUS AS wine_STATUS,
+		    R.REVIEW_NO AS review_REVIEW_NO,
+		    R.ORDER_NO AS review_ORDER_NO,
+		    R.CONTENT AS review_CONTENT,
+		    R.STATUS AS review_STATUS
+		FROM HISTORY H
+			LEFT JOIN WINE W ON (H.WINE_NO = W.WINE_NO)
+			LEFT JOIN WINE_IMAGE I ON (H.WINE_NO = I.WINE_NO)
+			LEFT JOIN REVIEW R ON (H.ORDER_NO = R.ORDER_NO)
+		WHERE ORDER_DATE LIKE SYSDATE
+			AND H.USER_NO = #{userNo}
+	</select>
+	
+	<resultMap type="historyExt" id="historyExtMap">
+		
+		<id column="ORDER_NO" property="orderNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="WINE_NO" property="wineNo"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="D_STATUS" property="dStatus"/>
+		<result column="C_STATUS" property="cStatus"/>
+		<result column="QTY" property="qty"/>
+		<result column="DELIVERY_ADDRESS" property="deliveryAddress"/>
+
+		<association property="wineImage">
+			<result column="ORIGIN_NAME" property="originName"/>
+			<result column="CHANGE_NAME" property="changeName"/>
+		</association>
+		
+		<association property="wine" columnPrefix="wine_">
+			<id column="WINE_NO" property="wineNo" />
+			<result column="WINE_NAME" property="wineName"/>
+			<result column="PRICE" property="price"/>
+			<result column="QUANTITY" property="quantity"/>
+			<result column="CONTENT" property="content"/>
+			<result column="STATUS" property="status"/>
+			
+		</association>
+		
+		<association property="review" columnPrefix="review_">
+			<id column="REVIEW_NO" property="reviewNo"/>
+			<result column="ORDER_NO" property="orderNo"/>
+			<result column="CONTENT" property="content"/>
+			<result column="STATUS" property="status"/>
+		</association>
+		
+	</resultMap>
+	
+	<select id="searchMyPurchaseList" resultMap="historyExtMap">
+		SELECT
+			H.ORDER_NO,
+		    H.USER_NO,
+		    H.WINE_NO,
+		    H.ORDER_DATE,
+		    H.D_STATUS,
+		    H.C_STATUS,
+		    H.QTY,
+		    H.DELIVERY_ADDRESS,
+		    I.ORIGIN_NAME,
+		    I.CHANGE_NAME,
+		    W.WINE_NO AS wine_WINE_NO,
+		    W.WINE_NAME AS wine_WINE_NAME,
+		    W.PRICE AS wine_PRICE,
+		    W.QUANTITY AS wine_QUANTITY,
+		    W.CONTENT AS wine_CONTENT,
+		    W.STATUS AS wine_STATUS,
+		    R.REVIEW_NO AS review_REVIEW_NO,
+		    R.ORDER_NO AS review_ORDER_NO,
+		    R.CONTENT AS review_CONTENT,
+		    R.STATUS AS review_STATUS
+		FROM HISTORY H
+			LEFT JOIN WINE W ON (H.WINE_NO = W.WINE_NO)
+			LEFT JOIN WINE_IMAGE I ON (H.WINE_NO = I.WINE_NO)
+			LEFT JOIN REVIEW R ON (H.ORDER_NO = R.ORDER_NO)
+		WHERE TO_CHAR(ORDER_DATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN #{startDate} AND #{endDate}
+			AND USER_NO = #{userNo}
+		ORDER BY ORDER_DATE DESC
+	</select>
+	
+	<select id="selectReviewItem" resultMap="historyExtMap" >
+		SELECT
+			H.ORDER_NO,
+		    H.USER_NO,
+		    H.WINE_NO,
+		    H.ORDER_DATE,
+		    H.D_STATUS,
+		    H.C_STATUS,
+		    H.QTY,
+		    H.DELIVERY_ADDRESS,
+		    I.ORIGIN_NAME,
+		    I.CHANGE_NAME,
+		    W.WINE_NO AS wine_WINE_NO,
+		    W.WINE_NAME AS wine_WINE_NAME,
+		    W.PRICE AS wine_PRICE,
+		    W.QUANTITY AS wine_QUANTITY,
+		    W.CONTENT AS wine_CONTENT,
+		    W.STATUS AS wine_STATUS,
+		    R.REVIEW_NO AS review_REVIEW_NO,
+		    R.ORDER_NO AS review_ORDER_NO,
+		    R.CONTENT AS review_CONTENT,
+		    R.STATUS AS review_STATUS
+		FROM HISTORY H
+			LEFT JOIN WINE W ON (H.WINE_NO = W.WINE_NO)
+			LEFT JOIN WINE_IMAGE I ON (H.WINE_NO = I.WINE_NO)
+			LEFT JOIN REVIEW R ON (H.ORDER_NO = R.ORDER_NO)
+		WHERE H.ORDER_NO = #{orderNo}
+			
+	</select>
+	
+	<insert id="insertMyReview" parameterType="review" useGeneratedKeys="true" >
+		<selectKey keyProperty="reviewNo" resultType="int" order="BEFORE">
+			SELECT SEQ_REVIEW_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO REVIEW 
+		VALUES (
+			#{reviewNo},
+			#{orderNo},
+			#{content},
+			DEFAULT,
+			#{point},
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	
+	<select id="selectReviewOne" resultType="review">
+		SELECT *
+		FROM REVIEW
+			WHERE ORDER_NO = #{orderNo}
+	
+	</select>
+	
+	<update id="updateMyReview">
+		UPDATE
+			REVIEW
+		SET 
+			CONTENT = #{content},
+			POINT = #{point},
+			MODIFY_DATE = SYSDATE
+		WHERE ORDER_NO = #{orderNo}
+	
+	</update>
+	
+	<delete id="deleteMyReview">
+		DELETE
+		FROM REVIEW
+		WHERE ORDER_NO = #{orderNo}
+	
+	</delete>
+	
+	
 
 </mapper>

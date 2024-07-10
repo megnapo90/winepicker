@@ -23,5 +23,6 @@ public class User {
 	private Date enrollDate;
 	private Date modifyDate;
 	private char status;
+	private boolean verified;
 
 }

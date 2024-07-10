@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,52 +62,63 @@ button {
 button:hover {
     background-color: #0056b3;
 }
-
+#fieldset{
+	margin-top: 10px;
+}
 </style>
 
 
 
 <body>
 
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+
    <div class="container">
         <h1>와인 등록</h1>
-        <form action="${contextPath }/admin/enrollWine" id="enrollWine" method="post" enctype="multipart/form-data">
+        <form action="${contextPath}/admin/enrollWine" id="enrollWine" method="post" enctype="multipart/form-data">
             
             <label for="wineName">와인 이름:</label>
             <input type="text" id="wineName" name="wineName" required>
 
+			<label for="wineTypeNo">와인타입:</label>
+			<select name="wineTypeNo" id="wineTypeNo">
+				<option>와인타입 선택(필수)</option>
+				<c:forEach var="wineType" items="${wtList}">
+					<option value="${wineType.wineTypeNo}" class="wineType">${wineType.wineTypeName} ${wineType.wineTypeNo}</option>
+				</c:forEach>
+			</select>
+			<input type="button" value="선택" onclick="selectWineType()">
+
 			<label for="grapeNo">품종:</label>
             <select id="grapeNo" name="grapeNo" required>
-                <option value="1">카베르네 소비뇽</option>
-                <option value="2">메를로</option>
-                <option value="3">피노 누아</option>
-                <option value="4">쉬라</option>
-                <option value="5">그 외 (레드 와인)</option>
-                <option value="6">샤르도네</option>
-                <option value="7">소비뇽 블랑</option>
-                <option value="8">리슬링</option>
-                <option value="9">그 외 (화이트 와인)</option>
-                <option value="10">샤르도네 (스파클링)</option>
-                <option value="11">소비뇽 블랑 (스파클링)</option>
-                <option value="12">뮈스카</option>
-                <option value="13">그 외 (스파클링)</option>
             </select>
 
             <label for="countryNo">나라:</label>
             <select id="countryNo" name="countryNo" required>
-                <option value="1">프랑스</option>
-                <option value="2">이탈리아</option>
-                <option value="3">미국</option>
-                <option value="4">칠레</option>
-                <option value="5">호주</option>
-                <option value="6">그 외</option>
+                <c:forEach var="country" items="${cList}">
+            		<option value="${country.countryNo}">${country.countryName}</option>
+            	</c:forEach>
             </select>
+			
+			<br>
+			
+			<fieldset name="characteristic" id="fieldset">
+			<legend>특성</legend>
+	            <label for="body">바디:</label>
+	            <input type="number" id="body" name="body" max="5" min="0" required>
+	            <label for="body">당도:</label>
+	            <input type="number" id="sweet" name="sweet" max="5" min="0" required>
+	            <label for="body">탄닌:</label>
+	            <input type="number" id="bitter" name="bitter" max="5" min="0" required>
+	            <label for="body">산도:</label>
+	            <input type="number" id="sour" name="sour" max="5" min="0" required>
+            </fieldset>
 
             <label for="vintage">빈티지:</label>
-            <input type="number" id="vintage" name="vintage">
+            <input type="number" id="vintage" name="vintage" min="2000">
 
             <label for="price">가격(원):</label>
-            <input type="number" id="price" name="price" required>
+            <input type="number" id="price" name="price" min="10000" step="1000" required>
 				
 			 <label for="volume">용량 (ml):</label>
             <select id="volume" name="volume" required>
@@ -116,8 +128,10 @@ button:hover {
 
 
             <label for="quantity">수량:</label>
-            <input type="number" id="quantity" name="quantity" value="0" required>
+            <input type="number" id="quantity" name="quantity" min="0" required>
 
+            
+            
             <label for="content">내용:</label>
             <textarea id="content" name="content"></textarea>
 
@@ -134,6 +148,32 @@ button:hover {
             <button type="submit">등록</button>
         </form>
     </div>
+    
+    <script>
+		function selectWineType() {
+			
+			var $num = $("select[name=wineTypeNo] option:selected").val();
+			
+			$.ajax({
+	    		url: "${contextPath}/admin/wineTypeList",
+	    		data:{
+	    			wineTypeNo : $num
+	    		},
+	    		success : (gList)=>{
+                	$("#grapeNo").empty();
+	                $.each(gList, function(index, value){
+	                	var num = value.grapeNo;
+	                    $("#grapeNo").append(`<option value=\${num}>\${value.grapeName}</option>`)
+	                })
+	    		},
+	    		error : (xhr)=>{
+	    			$("#grapeNo").empty();
+	    			console.log(xhr);
+	    		}
+	    	});
+		};
+	    
+    </script>
     
 	
 </body>

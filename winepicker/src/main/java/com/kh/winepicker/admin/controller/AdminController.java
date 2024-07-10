@@ -75,6 +75,7 @@ public class AdminController {
 		List<Grape> gList = adminService.grapeList();
 		model.addAttribute("grape", gList);
 		
+		
 		return "info/info-grape.jsp";
 	}
 	
@@ -144,48 +145,6 @@ public class AdminController {
 	
 //	============================== 정보글 페이지로 이동 ==============================
 	
-//	@GetMapping("/info/{infoName}")
-//	public String infoDept1(
-//			@PathVariable("infoName") String infoName,
-//			Model model,
-//			Info2 info
-//			) {
-//		
-//		if(infoName.toLowerCase().equals("country")) {
-//			
-//			List<Country> cList = adminService.countryList();
-//
-//			model.addAttribute("cList", cList);
-//			
-//			return "admin/info/countryPage";
-//			
-//		}else {
-//			
-//			infoName = infoName.toUpperCase();
-//			
-//			info = adminService.selectInfo(infoName); // FRANCE
-//			
-//			log.info("info : {}", info);
-//			
-//			int depth = info.getDepth() + 1 ; 
-//			
-//			info.setDepth(depth); // FRANCE 4
-//			
-//			
-//			if(depth <= 3) {
-//				List<Info2> iList = adminService.selectInfoList(info);
-//				model.addAttribute("iList", iList); // d1 list
-//			}
-//			
-//			model.addAttribute("info", info); // main 1, 
-//			
-//			log.info("info : {}", info);
-//			
-//			return "admin/info/infoPage";
-//		}
-//		
-//	}
-	
 	
 	@GetMapping("info/{infoName}")
 	public String infoList(
@@ -198,21 +157,31 @@ public class AdminController {
 		
 		model.addAttribute("iList", iList);
 		
-		
 		infoName = infoName.toUpperCase();
 		
-		info = adminService.selectInfo(infoName);
+		if(infoName.equals("COUNTRY")) {
+			
+			List<Country> cList = adminService.countryList();
+
+			model.addAttribute("cList", cList);
+			
+			return "admin/info/countryPage";
+			
+		}else {
+			info = adminService.selectInfo(infoName);
+			
+			model.addAttribute("info", info);
+			
+			return "admin/info/infoPage";
+		}
 		
-		model.addAttribute("info", info);
-		
-		return "admin/info/infoPage";
 	}
 	
 	
 	
 	
 //	=============================== 정보글 수정 ============================================
-	@PostMapping("/updateInfo")
+	@PostMapping("/infoEnroll")
 	public String updateInfo(
 			Info2 i,
 			RedirectAttributes ra
@@ -282,12 +251,12 @@ public class AdminController {
 	
 	
 //	===================================== 정보글 등록 ==========================================
-	@GetMapping("/insertInfo")
+	@GetMapping("/infoEnroll")
 	public String insertInfoForm() {
 		return "admin/insertInfoForm";
 	}
 	
-	@PostMapping("/insertInfo")
+	@PostMapping("/enfoEnroll")
 	public String insertInfo(
 			Info i,
 			RedirectAttributes ra
@@ -332,6 +301,20 @@ public class AdminController {
 		
 		
 		return map;
+	}
+	
+	@GetMapping("wineTypeList")
+	@ResponseBody
+	public List<Grape> wineTypeList(
+			WineType wineType
+			){
+		log.info("wineTypeNo : {}", wineType.getWineTypeNo());
+		
+		List<Grape> gList = adminService.grapeList2(wineType.getWineTypeNo());
+		
+		log.info("gList : {}", gList);
+		
+		return gList;
 	}
 	
 	

@@ -47,6 +47,12 @@
     <jsp:include page="/WEB-INF/views/common/header.jsp" />
     <jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
     
+    <c:set var="depth" value="${info.depth}" scope="session"/>
+    <c:set var="wineTypeNo" value="${info.wineTypeNo}" scope="session"/>
+    <c:set var="countryNo" value="${info.countryNo}" scope="session"/>
+    <c:set var="infoName" value="${info.infoName}" scope="session"/>
+    
+    
     <div class="section">
 
 
@@ -60,14 +66,15 @@
         </div>
     </div>
     
-	<c:if test="${loginUser.gradeNo eq 0}">
+    
+    
 		<script>
             (()=>{
                 $("#info-main").css("display", "none");
             })();
 		</script>
 		
-		<form action="${contextPath}/admin/updateInfo" method="post" enctype="multipart/form-data">
+		<form action="${contextPath}/admin/infoEnroll" method="post" enctype="multipart/form-data">
         <table align="center">
         	<tr>
         		<th>INFO_NAME</th>
@@ -96,14 +103,14 @@
         	<tr>
         		<th>DEPTH</th>
         		<td>
-                    <textarea  name="depth"  id="depth" style="resize: none;" rows="1" class="form-control" required="required" readonly>${info.depth - 1}</textarea>                
+                    <textarea  name="depth"  id="depth" style="resize: none;" rows="1" class="form-control" required="required" readonly>${info.depth}</textarea>                
                 </td>
         	</tr>
         	
             <tr>
                 <th>부제목</th>
                 <td>
-                    <textarea  name="subtitle"  id="subtitle" style="resize: none;" rows="1" class="form-control" required="required">${info.subtitle}</textarea>                
+                    <textarea  name="subtitle"  id="" style="resize: none;" rows="1" class="form-control" required="required">${info.subtitle}</textarea>                
                 </td>
             </tr>
 
@@ -125,6 +132,7 @@
             <button type="reset" class="btn btn-danger">취소</button>
         </div>
     </form>
+	<c:if test="${loginUser.gradeNo eq 0}">
 		
 	</c:if>
 
@@ -132,64 +140,136 @@
     </div>
     
     
+    
     <div id="list">
-    	<c:forEach var="info2" items="${iList}">
-			<c:if test="${info2.countryNo eq 1}">
-    			<ul class="ul">
-    				<li class="depth${info2.depth}">
-    					<a href="${contextPath}/admin/info/${info2.infoName}">${info2.infoName} 정보글</a>
-    				</li>
+    
+    <ul class="ul">
+    	<li class="depth1">
+    		<a href="${contextPath}/admin/info/wine">와인 정보글</a>
+    		<ul>
+    			<c:forEach var="i" items="${iList}">
+    			<c:if test="${i.wineTypeNo gt 0 and i.depth eq 2}">
+	    			<li class="depth${i.depth} wineTypeNo${i.wineTypeNo}">
+	    				<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName} 정보글</a>
+	    				<ul>
+	    					<c:forEach var="j" items="${iList}">
+	    					<c:if test="${j.wineTypeNo eq i.wineTypeNo and j.depth eq 3}">
+	    						<li class="depth${j.depth} wineTypeNo${j.wineTypeNo}">
+	    							<a href="${contextPath}/admin/info/${j.infoName}">${j.infoName} 정보글</a>
+	    						</li>
+	    					</c:if>
+	    					</c:forEach>
+	    				</ul>
+	    			</li>
+    			</c:if>
+    			</c:forEach>
+    		</ul>
+    	</li>
+    </ul>
+    
+    <ul class="ul">
+    	<li class="depth1">
+    		<a href="${contextPath}/admin/info/country">나라 정보글</a>
+    			<ul>
+    				<c:forEach var="i" items="${iList}">
+    				<c:if test="${i.countryNo gt 0}">
+    					<li class="depth${i.depth} country">
+    						<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName} 정보글</a>
+    					</li>
+    				</c:if>
+    				</c:forEach>
     			</ul>
-    		</c:if>
-    	</c:forEach>
-    </div>
+    	</li>
+    </ul>
     
-    	<%-- <c:if test="${info.depth lt 1}">
-    		<script>
-    			$(".depth2").css("display", "none");
-    			$(".depth3").css("display", "none");
-    		</script>
-    	</c:if> --%>
-    
-    
-    
-    
-   <%--  <div id="list">
-    
-    <c:choose>
-    	<c:when test="${info.depth lt 4}">
-		    <c:forEach var="info2" items="${iList}">
-		    	<c:choose>
-				    <c:when test="${info.wineTypeNo eq info2.wineTypeNo}">
-				    	<ul class="ul">
-				   			<li>
-					    		<a href="${contextPath}/admin/info/${info2.infoName}">${info2.infoName} 정보글</a>
-				   			</li>
-				   		</ul>
-				    </c:when>
-				    
-				    <c:when test="${info.wineTypeNo eq 0}">
-				    <ul class="ul">
-				    	<li>
-				    		<a href="${contextPath}/admin/info/${info2.infoName}">${info2.infoName} 정보글</a>
-			   			</li>
-				    </ul>
-				    </c:when>
-	    		</c:choose>
-		    </c:forEach>
-    	</c:when>
-    </c:choose>
-    
-    <c:if test="${info.depth gt 2}">
-	    <ul class="ul">
-	    	<li>
-	   			<a href="상품보러가기">${info.infoName} 상품 보러가기</a>
-			</li>
-	    </ul>
-    </c:if> --%>
-    
-    </div>
 
+    </div>
+    
+    
+    <script>
+		(()=>{
+			if(${depth} == 0){
+				console.log(`${infoName}`);
+				$(".depth2").css("display", "none");
+				$(".depth3").css("display", "none");
+			}
+		})();
+
+		(()=>{
+			if(${depth} == 1 && `${infoName}.toLowerCase().equals("wine")`){
+				console.log(`${infoName}`);
+				$(".depth3").css("display", "none");
+			}
+		})();
+
+		(()=>{
+			if(${depth} == 2 && ${wineTypeNo} == 1){
+				console.log(`${infoName}`);
+				$(".country").css("display", "none");
+				$(".depth3.wineTypeNo2").css("display", "none");
+				$(".depth3.wineTypeNo3").css("display", "none");
+			}
+		})();
+		
+		(()=>{
+			if(${depth} == 2 && ${wineTypeNo} == 2){
+				console.log(`${infoName}`);
+				$(".country").css("display", "none");
+				$(".depth3.wineTypeNo1").css("display", "none");
+				$(".depth3.wineTypeNo3").css("display", "none");
+			}
+		})();
+		
+		(()=>{
+			if(${depth} == 2 && ${wineTypeNo} == 3){
+				console.log(`${infoName}`);
+				$(".country").css("display", "none");
+				$(".depth3.wineTypeNo1").css("display", "none");
+				$(".depth3.wineTypeNo2").css("display", "none");
+			}
+		})();
+		
+		
+		
+		(()=>{
+			if(${depth} == 3 && ${wineTypeNo} == 1){
+				$(".country").css("display", "none");
+				$(".depth3.wineTypeNo2").css("display", "none");
+				$(".depth3.wineTypeNo3").css("display", "none");
+			}
+		})();
+		
+		(()=>{
+			if(${depth} == 3 && ${wineTypeNo} == 2){
+				$(".country").css("display", "none");
+				$(".depth3.wineTypeNo1").css("display", "none");
+				$(".depth3.wineTypeNo3").css("display", "none");
+			}
+		})();
+		
+		(()=>{
+			if(${depth} == 3 && ${wineTypeNo} == 3){
+				$(".depth3.wineTypeNo1").css("display", "none");
+				$(".depth3.wineTypeNo2").css("display", "none");
+			}
+		})();
+		
+		(()=>{
+			if(${depth} == 3 && ${countryNo} > 0){
+				$(".wineTypeNo1").css("display", "none");
+				$(".wineTypeNo2").css("display", "none");
+				$(".wineTypeNo3").css("display", "none");
+			}
+		})();
+		
+		
+		
+    </script>
+    
+    
+    
+    
+ 
     
 
 

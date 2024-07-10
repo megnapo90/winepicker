@@ -16,6 +16,9 @@
 	<ul class="ul">
 		<li><a href="${contextPath}/admin/adminPage">관리자페이지</a></li>
 		<li><a href="${contextPath}/admin/info/main">정보글 메인페이지</a></li>
+		
+		<!-- 사용자 마이페이지 이동 -->
+		<li><a href="${contextPath}/user/myPage">마이페이지</a></li>
 	</ul>
 	
 	</div>

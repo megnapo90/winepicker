@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.winepicker.admin.model.dao.AdminDao;
 import com.kh.winepicker.model.vo.Country;
@@ -80,6 +81,23 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public WineExt selectWine(int wineNo) {
 		return adminDao.selectWine(wineNo);
+	}
+	@Override
+	public List<Grape> grapeList2(int wineTypeNo) {
+		return adminDao.grapeList2(wineTypeNo);
+	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public int insertWine2(WineExt wineExt) {
+		int result = 1; 
+		result *= adminDao.insertWine2(wineExt);
+		result *= adminDao.insertCharacteristic(wineExt);
+		result *= adminDao.insertWineImage(wineExt);
+		
+		if(result == 0) {
+			throw new RuntimeException();
+		}
+		return result;
 	}
 	
 	

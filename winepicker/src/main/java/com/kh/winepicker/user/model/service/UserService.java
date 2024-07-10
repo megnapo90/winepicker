@@ -5,7 +5,7 @@ import com.kh.winepicker.model.vo.User;
 import java.util.List;
 
 public interface UserService {
-	
+
 	User login(User user);
 
 	int insertUser(User user);
@@ -16,6 +16,12 @@ public interface UserService {
 
 	String findId(String userName, String userEmail);
 
+	String findPwd(String userId, String userEmail);
 
-	
+	void sendSimpleMessage(String userEmail, String subject, String text);
+
+	User findUserByEmail(String userEmail);
+
+
+
 }

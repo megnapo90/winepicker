@@ -16,4 +16,11 @@ public interface UserDao {
 
 	String findId(String userName, String userEmail);
 
+	String findPwd(String userId, String userEmail);
+
+	User findUserByEmail(String userEmail);
+
+	int updateUserVerificationStatus(String userEmail, boolean status);
+
+
 }

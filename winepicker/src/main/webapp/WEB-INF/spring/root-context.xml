@@ -49,6 +49,22 @@
 		<!-- <property name="maxUploadSizePerFile"/> 개별 파일 크기 설정 -->
 		<property name="maxUploadSize" value="10000000"/>
 		<property name="maxInMemorySize" value="10000000"/>
-	</bean>
-		
+	</bean>   <!-- email 인증 관련   -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="username" value="winepickerservice@gmail.com"/>
+        <property name="password" value="l w x w v g n r k u q r q n e q" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+
 </beans>
+

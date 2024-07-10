@@ -19,5 +19,7 @@ public class History {
 	private char cStatus;
 	private int qty;
 	private String deliveryAddress;
+	private int price;
+	private int wineCount;
 	
 }

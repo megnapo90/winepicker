@@ -218,6 +218,7 @@
 				<div class="right-text">PICKER</div>
 			</div>
 		</a>
+
 		<div class="nav">
 			<ul id="navi">
 				<li><a href="${contextPath}/product/listView">전체 와인</a></li>
@@ -246,6 +247,7 @@
 				</c:otherwise>
 			</c:choose>
 		</div>
+
 	</div>
 </body>
 

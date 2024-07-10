@@ -1,13 +1,20 @@
 package com.kh.winepicker.product.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.Characteristic;
+import com.kh.winepicker.model.vo.History;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,6 +57,56 @@ public class ProductDaoImpl implements ProductDao{
 
 	
 
+
+	@Override
+	public int selectListCount(Map<String, Object> paramMap) {
+		return sqlSession.selectOne("product.selectListCount", paramMap);
+	}
+
+	@Override
+	public List<WineExt> getWineList(PageInfo pi, Map<String, Object> paramMap) {
+
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowbounds = new RowBounds(offset,limit);
+		return sqlSession.selectList("product.getwineList", paramMap, rowbounds);
+	}
+
+	@Override
+	public int getMaxPrice() {
+		return sqlSession.selectOne("product.getMaxPrice");
+	}
+
+	@Override
+	public int getMinPrice() {
+		return sqlSession.selectOne("product.getMinPrice");
+	}
+
+	@Override
+	public List<WineExt> getwineList(List<Integer> volumes) {
+		return sqlSession.selectList("product.getwineList", volumes);
+	}
+
+	@Override
+	public List<WineExt> searchByVolume(Map<String, Object> params) {
+		return sqlSession.selectList("product.searchByVolume", params);
+	}
+
+	@Override
+	public WineExt selectProduct(int wineNo) {
+		return sqlSession.selectOne("product.selectProduct", wineNo);
+	}
+
+	@Override
+	public List<WineExt> orderWineList(int wineNo) {
+		return sqlSession.selectList("product.orderWineList", wineNo);
+	}
+
+	
+	
+
+
+	
 
 
 	

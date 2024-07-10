@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.filter {
+    width: 100%;
+    max-width: 250px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.filter h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 제목과 버튼 사이의 공간을 조절 */
+}
+
+.filter label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 1em;
+}
+
+.filter input[type="range"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.filter select {
+    width: 100%;
+    padding: 5px;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.filter-section {
+    margin-top: 20px;
+}
+
+.price-range {
+    display: flex;
+    align-items: center;
+}
+
+.price-range span {
+    margin: 0 10px;
+}
+
+.options {
+    margin-top: 10px;
+}
+
+.sub-options {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.expand-button,
+.reset-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}

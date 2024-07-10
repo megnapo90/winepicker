@@ -5,13 +5,15 @@ import java.util.List;
 
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.History;
+
 import com.kh.winepicker.model.vo.Review;
+
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.Wish;
 
 public interface UserService {
-	
+
 	User login(User user);
 
 	int insertUser(User user);
@@ -21,6 +23,7 @@ public interface UserService {
 	int idCheck(String userId);
 
 	String findId(String userName, String userEmail);
+
 
 	List<Faq> selectFaqList();
 	
@@ -44,8 +47,11 @@ public interface UserService {
 
 	int deleteMyReview(int orderNo);
 
+	String findPwd(String userId, String userEmail);
+
+	void sendSimpleMessage(String userEmail, String subject, String text);
+
+	User findUserByEmail(String userEmail);
 
 
-	
 }
-

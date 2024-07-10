@@ -3,24 +3,36 @@ package com.kh.winepicker.user.model.service;
 import java.util.HashMap;
 import java.util.List;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.History;
+
 import com.kh.winepicker.model.vo.Review;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.Wish;
+
 import com.kh.winepicker.user.model.dao.UserDao;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
-
 	private final UserDao userDao;
+
+	@Autowired
+	private JavaMailSender mailSender;
+
 
 	@Override
 	public User login(User user) {
@@ -59,7 +71,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String findId(String userName, String userEmail) {
-		return userDao.findId(userName,userEmail);
+		return userDao.findId(userName, userEmail);
+	}
+
+	@Override
+	public String findPwd(String userId, String userEmail) {
+
+		return userDao.findPwd(userId, userEmail);
 	}
 
 	@Override
@@ -104,6 +122,20 @@ public class UserServiceImpl implements UserService {
 
 
 	
+	public void sendSimpleMessage(String to, String subject, String text) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("winepickerservice@gmail.com");
+		message.setTo(to);
+		message.setSubject(subject);
+		message.setText(text);
+		mailSender.send(message);
+	}
+
+	@Override
+	public User findUserByEmail(String userEmail) {
+		return userDao.findUserByEmail(userEmail);
+	}
+
 
 
 }

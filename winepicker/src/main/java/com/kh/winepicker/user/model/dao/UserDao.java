@@ -23,6 +23,12 @@ public interface UserDao {
 
 	String findId(String userName, String userEmail);
 
+	String findPwd(String userId, String userEmail);
+
+	User findUserByEmail(String userEmail);
+
+	int updateUserVerificationStatus(String userEmail, boolean status);
+  
 	List<Faq> selectFaqList();
 
 	Faq selectFaq(int faqNo);
@@ -30,6 +36,7 @@ public interface UserDao {
 	List<Wine> selectMyWishList(int userNo);
 
 	List<History> selectMyPurchaseList(int userNo);
+
 
 	int deleteWishItem(Wish wishItem);
 
@@ -44,6 +51,7 @@ public interface UserDao {
 	int updateMyReview(HashMap<String, Object> paramMap);
 
 	int deleteMyReview(int orderNo);
+
 
 
 

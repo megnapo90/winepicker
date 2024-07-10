@@ -88,7 +88,7 @@
 
     <main>
         <div class="login-bar">
-            <form action="${pageContext.request.contextPath}/user/login" method="post">
+            <form id="findIdForm">
 
                 <img src="https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png"
                     class="background" />

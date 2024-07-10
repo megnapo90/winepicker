@@ -167,10 +167,10 @@
 	}
 
 	function showFaqDetail(fno){
-		
+	
 		if($("#faq-detail") != null){
 			$.ajax({
-				
+		
 				url : "${contextPath}/user/faqDetail/"+fno,
 				data : {
 					faqNo : "${faqNo}"

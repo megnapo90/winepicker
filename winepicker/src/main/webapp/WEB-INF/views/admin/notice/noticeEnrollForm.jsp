@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="${contextPath}/resources/css/common.css">
 <style>
 	img {
 		width: 100px;
@@ -15,22 +16,20 @@
 <body>
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 
+<div class="section">
 	<div class="content">
 		<br>
 		<br>
 		<div class="innerOuter">
-			<h2>게시글 작성하기</h2>
+			<h2>공지 작성</h2>
 			<br>
-			<form action="${contextPath}/admin/insertInfo" id="enrollForm" method="post" enctype="multipart/form-data">
+			<form action="${contextPath}/admin/noticeEnroll" id="enrollForm" method="post" enctype="multipart/form-data">
 				<table align="center">
 					<tr>
-						<th>부제목</th>
-						<td><input type="text" id="title" class="form-control" name="subtitle" required></td>
-					</tr>
-					<tr>
-						<th>작성자</th>
-						<td>${loginUser.userId}</td>
+						<th>제목</th>
+						<td><input type="text" id="title" class="form-control" name="noticeTitle" required></td>
 					</tr>
 
 					<tr>
@@ -48,11 +47,18 @@
 				</table>
 				<div align="center">
 					<button type="submit" class="btn btn-primary">등록</button>
-					<button type="reset" class="btn btn-danger">취소</button>
+					<button type="reset" class="btn btn-danger" onclick="adminPage()">취소</button>
 				</div>
 			</form>
 		</div>
 	</div>
+</div>
+	
+	<script>
+		function adminPage(){
+			location.href = "${contextPath}/admin/adminPage";
+		}
+	</script>
 
 
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

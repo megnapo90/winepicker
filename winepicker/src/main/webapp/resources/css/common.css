@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+} /* body 태그가 가지고 있는 기본 margin 제거 */
+
+:root{
+	position: relative;
+}
+.section{
+	
+	
+	box-sizing: content-box;
+	
+	width: 1200px;
+	height: 650px;
+	
+
+	position: absolute;
+	left: 450px;
+	top: 300px;
+	
+}
+#list{
+	position: absolute;
+	left: 80px;
+	top: 260px;
+	
+	box-sizing: content-box;
+	width: 300px;
+	
+	list-style-type: none;
+	z-index: 1;
+	
+	text-align: left;
+}
+
+#sidebar{
+	position: absolute;
+	left: 80px;
+	top: 238px;
+	width: 300px;
+	height: 762px;
+	opacity: 1;
+	
+	margin-top : 0;
+	box-sizing: content-box;
+		
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), linear-gradient(180deg, #EECCCC 15%, rgba(255, 255, 255, 0) 100%);
+}
+
+.ul{
+	list-style-type: none;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding: 10px;
+	
+	
+	font-size: x-large;
+	font-weight: 400;
+	font-style: italic;
+	
+}
+.ul a{
+	color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

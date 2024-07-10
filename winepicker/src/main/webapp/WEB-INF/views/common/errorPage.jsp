@@ -10,7 +10,8 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	<br>
 	<div align="center">
-		<p>오류입니다. 다시실행해주세요.<p>
+		<img src="https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-64.png">
+		
 		<br><br>
 		
 		<h1 style="font-weight: bold;">${errorMsg }</h1>

@@ -9,7 +9,7 @@
 <style>
 .insertuser {
 	margin-left: 30px;
-	padding-top: 300px;
+	padding-top: 100px;
 }
 
 .insertuser .input label {
@@ -155,6 +155,27 @@
 
 	}
 </script>
+<script>function emailCheck() {
+    const $userEmail = $("#userEmail").val();
+
+    $.ajax({
+        url: "${contextPath}/user/sendVerificationEmail",
+        type: "POST",
+        data: { userEmail: $userEmail },
+        success: function(response) {
+            if (response.success) {
+                alert("이메일 인증 링크를 전송했습니다. 이메일을 확인하세요.");
+            } else {
+                alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
+            }
+        },
+        error: function() {
+            alert("서버와의 통신 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
+    });
+}
+
+</script>
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 		// 비밀번호 일치 검사
@@ -178,41 +199,6 @@
 		}
 	});
 </script>
-
-<script>
-	function checkEmail() {
-		const userEmail = document.getElementById("userEmail").value;
-
-		if (userEmail.trim() === "") {
-			alert("이메일을 입력하세요.");
-			return;
-		}
-
-		$.ajax({
-			url : '${pageContext.request.contextPath}/userEmailCheck.do',
-			type : 'POST',
-			data : {
-				userEmail : userEmail
-			},
-			success : function(response) {
-				if (response === 'available') {
-					$('#userEmailCheckMsg').text('사용 가능한 이메일입니다.').addClass(
-							'valid').removeClass('invalid');
-				} else {
-					$('#userEmailCheckMsg').text('이미 사용 중인 이메일입니다.').addClass(
-							'invalid').removeClass('valid');
-				}
-
-				alert("이메일 인증이 완료되었습니다: " + userEmail);
-			},
-			error : function(xhr, status, error) {
-				console.error("AJAX 요청 중 오류 발생:", error);
-				alert("이메일 인증 중 오류가 발생했습니다.");
-			}
-		});
-	}
-</script>
-
 </head>
 
 <body>
@@ -250,16 +236,16 @@
 						name="userName" required>
 				</div>
 				<br> <label for="userEmail">이메일:</label><br> <input
-					type="email" id="userEmail" name="userEmail" required><br>
-				<br> <label for="userSsn">주민등록번호:</label><br> <input
-					type="text" id="userSsn" name="userSsn" required><br>
-				<br> <label for="phone">전화번호:</label><br> <input
-					type="tel" id="phone" name="phone" required><br> <br>
+					type="email" id="userEmail" name="userEmail" required>
+				<button type="button" onclick="emailCheck()">이메일 확인</button>
+				 <br> <br> <label
+					for="userSsn">주민등록번호:</label><br> <input type="text"
+					id="userSsn" name="userSsn" required><br> <br> <label
+					for="phone">전화번호:</label><br> <input type="tel" id="phone"
+					name="phone" required><br> <br>
 
 				<div class="input">
-					<label for="address">* 주소</label>
-					<input type="text" id = "address" placeHolder = "주소">					
-					 <input type="text"
+					<label for="address">* 주소</label> <input type="text"
 						id="sample6_postcode" placeholder="우편번호"> <input
 						type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
 					<input type="text" id="sample6_address" placeholder="주소"><br>
@@ -274,6 +260,7 @@
 					</div>
 				</div>
 			</div>
+			<input type="hidden" id="fullAddress" name="address">
 		</form>
 
 	</main>
@@ -339,6 +326,24 @@
 						}
 					}).open();
 		}
+		document
+				.querySelector('form')
+				.addEventListener(
+						'submit',
+						function(event) {
+							var postcode = document
+									.getElementById('sample6_postcode').value;
+							var address = document
+									.getElementById('sample6_address').value;
+							var detailAddress = document
+									.getElementById('sample6_detailAddress').value;
+							var extraAddress = document
+									.getElementById('sample6_extraAddress').value;
+
+							var fullAddress = postcode + '' + address + ''
+									+ detailAddress + '' + extraAddress;
+							document.getElementById('fullAddress').value = fullAddress;
+						});
 	</script>
 
 </body>

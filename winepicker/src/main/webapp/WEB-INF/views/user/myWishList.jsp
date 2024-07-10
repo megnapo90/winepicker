@@ -129,7 +129,9 @@
            			<td onclick=addShoppingBag(${wish.wineNo})>장바구니</td>
            			<c:choose>
 						<c:when test="${wish.quantity eq 0}">
+
 							<td><spans color="red">sold out</spans></td>	
+
 						</c:when>
 						<c:otherwise>
 		            		<td onclick=purchaseItem(${wish.wineNo})>구매하기</td>
@@ -161,6 +163,7 @@
 		//구매하기 화면으로 넘김
 	}
 	function removeItem(no){
+
 		$.ajax({
 			url : "${contextPath}/user/delete/myWishItem",
 			data : {
@@ -169,6 +172,7 @@
 			type : "get",
 			success : $(".wish-item-"+no+"").remove()
 		})
+
 		
 	}
 

@@ -49,7 +49,6 @@
 	text-align: center;
 	padding: 20px;
 	color: #888;
-
 }
 .empty-history-list>p{
 	padding-top : 15%;
@@ -98,6 +97,10 @@
 	cursor: pointer;
 }
 
+.purchase-list img {
+	width: 50px;
+	height: auto;
+}
 
 </style>
 
@@ -119,15 +122,19 @@
         <div class="purchase-history">
           
          	<div class="date-filter">
+
 				<form action="myPage" method="post" >
 					<input type="date" name="startDate" value=${startDate }>&nbsp;~&nbsp;
 					<input type="date" name="endDate" value=${endDate }>&nbsp;
+
 					<input type="submit" value="조회">
 				</form>
            	</div>
           	
           	<c:choose>
+
           	<c:when test="${empty purchaseList }">
+
           		<div class="empty-history-list">
           			<p>주문하신 상품이 없습니다.</p>
           		</div>
@@ -168,6 +175,7 @@
                     			<p>작성가능</p></td>
 						</c:if>											
 	                </tr>
+
           		</c:forEach>
           	
           		</table>

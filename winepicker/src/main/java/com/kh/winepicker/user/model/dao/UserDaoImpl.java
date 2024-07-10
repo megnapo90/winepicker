@@ -37,29 +37,46 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectOne("user.login", user);
 	}
 
-
-
 	@Override
 	public List<User> selectUserList() {
 		return sqlSession.selectList("user.selectUserList");
 	}
-
-
-
+  
 	@Override
 	public int idCheck(String userId) {
 		return sqlSession.selectOne("user.idCheck", userId);
 	}
 
+	@Override
+	public String findId(String userName, String userEmail) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userName", userName);
+		paramMap.put("userEmail", userEmail);
+
+		return sqlSession.selectOne("user.findId", paramMap);
+	}
 
 	@Override
-    public String findId(String userName, String userEmail) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("userName", userName);
-        paramMap.put("userEmail", userEmail);
-        
-        return sqlSession.selectOne("user.findId", paramMap);
-    }
+	public String findPwd(String userId, String userEmail) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userId", userId);
+		paramMap.put("userEmail", userEmail);
+
+		return sqlSession.selectOne("user.findPwd", paramMap);
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		return sqlSession.selectOne("userMapper.findUserByEmail", email);
+	}
+
+	@Override
+	public int updateUserVerificationStatus(String userEmail, boolean status) {
+		User user = new User();
+		user.setUserEmail(userEmail);
+		user.setVerified(status);
+		return sqlSession.update("UserMapper.updateUserVerificationStatus", user);
+	}
 
 	@Override
 	public List<Faq> selectFaqList() {
@@ -80,6 +97,7 @@ public class UserDaoImpl implements UserDao {
 	public List<History> selectMyPurchaseList(int userNo) {
 		return sqlSession.selectList("user.selectMyPurchaseList", userNo);
 	}
+
 
 	@Override
 	public int deleteWishItem(Wish wishItem) {
@@ -117,7 +135,5 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	
-	
-
 
 }

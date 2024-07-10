@@ -128,6 +128,7 @@
 	<jsp:include page="/WEB-INF/views/common/userCommon.jsp"/>
 
 
+
 	<div class="page-name" onclick=showFaq()>	
 		고객센터
 	</div>
@@ -149,6 +150,7 @@
             <div class="ask-insert-box">
                 <div class="ask-menu-title" onclick="location.href='${contextPath}/ask/askPage'">
                 	1:1 문의작성
+
                 </div>
             <div class="ask-insert-container"> 
                 
@@ -174,10 +176,12 @@
 	                </div>
                     </form>
             	</div>
+
           </div>
 	</div>
 	</div>
 </div> 
+
 
 
 <c:if test="${not empty errorMsg }">

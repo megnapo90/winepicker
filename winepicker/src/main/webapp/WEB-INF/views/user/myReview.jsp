@@ -14,6 +14,7 @@
 	height : 100%;
 	margin: 0;
 	padding: 20px;
+
 }
 
 .review-list-search .date-filter {
@@ -105,6 +106,10 @@
 	cursor: pointer;
 }
 
+.review-notice{
+	margin-top : 20px;
+	margint-left : 10px;
+}
 
 </style>
 </head>
@@ -123,7 +128,9 @@
  	<div class="review-list-search">
         
         <div class="date-filter">
+
 			<form action="searchMyReview" method="post" >
+
 				<input type="date" name="startDate">&nbsp;~&nbsp;
 				<input type="date" name="endDate">&nbsp;
 				<input type="submit" value="조회">
@@ -132,6 +139,7 @@
         
         <c:choose>
           	<c:when test="${empty reviewList}">
+
           		<div class="empty-review-list">
           			<p>리뷰하실 상품이 없습니다.</p>
           		</div>
@@ -174,6 +182,7 @@
                     			<p>작성가능</p></td>
 						</c:if>											
 	                </tr>
+
           		</c:forEach>
             	</table>
             </div>
@@ -187,6 +196,7 @@
             </c:choose>
             
             </div>
+
     </div> 
     
     <c:if test="${not empty errorMsg}">
@@ -199,6 +209,7 @@
 	
 	</script>
 	
+
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 

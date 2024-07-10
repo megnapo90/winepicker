@@ -49,10 +49,17 @@
 
 	</select>
 	
-	 <select id="findId" parameterType="map" resultType="string">
+	 <select id="findId" parameterType="map" resultType="String">
         SELECT USER_ID
         FROM "USER"
         WHERE USER_NAME = #{userName}
+        AND USER_EMAIL = #{userEmail}
+    </select>
+    
+    <select id="findPwd" parameterType="map" resultType="string">
+        SELECT USER_PWD
+        FROM "USER"
+        WHERE USER_Id = #{userId}
         AND USER_EMAIL = #{userEmail}
     </select>
 

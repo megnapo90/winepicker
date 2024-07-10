@@ -12,6 +12,7 @@
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+
 <!-- 부트스트랩에서 제공하고있는 스타일 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <!-- 부트스트랩에서 제공하고있는 스크립트 -->
@@ -47,11 +48,16 @@
 		background: linear-gradient(to right, rgb(29, 29, 59), black,
 			rgb(29, 29, 59));
 		display: flex;
+
+		flex-direction: column;
+
 		justify-content: center;
 		align-items: center;
 		color: white;
 		font-size: 24px;
-		position: sticky;
+
+		position: relative;
+
 		top: 0;
 	}
 	
@@ -177,6 +183,26 @@
 	#navi>li>a:hover+ul, #navi>li>ul:hover {
 		display: flex;
 	}
+
+	.user-actions {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	font-size: 15px;
+}
+
+.user-actions a {
+	color: white;
+	margin: 5px 0;
+}
+.user-actions a:hover {
+	color: rgb(192, 79, 79);
+	margin: 5px 0;
+}
+
 </style>
 
 </head>
@@ -207,6 +233,7 @@
 			<li><a href="${contextPath}/admin/info/main">정보글</a></li>
 		</ul>
 	</div>
+
 </body>
 
 </html>

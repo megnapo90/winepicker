@@ -11,7 +11,7 @@ import com.kh.winepicker.model.vo.WineExt;
 import java.util.List;
 
 public interface UserService {
-	
+
 	User login(User user);
 
 	int insertUser(User user);
@@ -22,6 +22,12 @@ public interface UserService {
 
 	String findId(String userName, String userEmail);
 
+	String findPwd(String userId, String userEmail);
+
+	void sendSimpleMessage(String userEmail, String subject, String text);
+
+	User findUserByEmail(String userEmail);
+
 	List<Faq> selectFaqList();
 	
 	Faq selectFaq(int faqNo);
@@ -29,8 +35,4 @@ public interface UserService {
 	List<Wine> selectMyWishList(int userNo);
 
 	List<History> selectMyPurchaseList(int userNo);
-
-
-	
-}
 

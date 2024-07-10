@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,6 +41,7 @@ public class UserController {
 	private final BCryptPasswordEncoder encoder;
 
 	private final UserService userService;
+	
 
 
 	@GetMapping("/userList")
@@ -166,21 +166,9 @@ public class UserController {
 		return "user/userNotice";
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@PostMapping("/login") // @RequestMapping과 method를 합쳐놓은 어노테이션
+	@PostMapping("/login")
 	public String login(User user, Model model, RedirectAttributes ra, HttpSession session) {
-
 		User loginUser = userService.login(user);
-
 		String viewName = "";
 
 		if (loginUser != null && encoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
@@ -201,30 +189,57 @@ public class UserController {
 	}
 
 	@PostMapping("/insertUser")
-	public String insertUser(User user, RedirectAttributes ra, Model model) {
-		System.out.println(user);
-
+	public String insertUser(User user, String address, RedirectAttributes ra, Model model) {
 		// 비밀번호 암호화
 		String encodedPwd = encoder.encode(user.getUserPwd());
 		user.setUserPwd(encodedPwd);
+		user.setAddress(address);
 
 		// 사용자 정보 DB에 저장
 		int result = userService.insertUser(user);
 
-		// 처리 결과에 따라 메시지 설정
 		if (result > 0) {
-			model.addAttribute("msg", "회원가입 성공. 로그인해주세요.");
-			return "user/login";
+			// 이메일 인증 링크 전송
+			model.addAttribute("msg", "이메일로 전송된 링크를 통해 인증을 완료해주세요.");
+			return "user/register";
 		} else {
 			model.addAttribute("msg", "회원가입 실패. 다시 시도해주세요.");
 			return "user/register";
 		}
 	}
 
+	@PostMapping("/sendVerificationEmail")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> sendVerificationEmail(String userEmail) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			// 이메일 전송 로직 호출
+			userService.sendSimpleMessage(userEmail, "Email Verification",
+					"링크를 눌러 이메일 인증을 완료해주세요.: http://winepicker.com/verify?email=" + userEmail);
+
+			response.put("success", true);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", "이메일 전송에 실패했습니다.");
+		}
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/verify")
+	public String verifyEmail(String userEmail, Model model) {
+		boolean verified = userService.verifyUser(userEmail);
+
+		if (verified) {
+			model.addAttribute("msg", "이메일 인증이 완료되었습니다. 회원가입을 완료하세요.");
+		} else {
+			model.addAttribute("msg", "이메일 인증에 실패했습니다. 이미 인증된 이메일이거나 잘못된 이메일입니다.");
+		}
+		return "user/register";
+	}
+
 	@GetMapping("/idCheck")
-	@ResponseBody // 비동기요청시 필요한 어노테이션
+	@ResponseBody
 	public int idCheck(String userId) {
-		// 아이디 중복 체크 로직
 		int result = userService.idCheck(userId);
 		return result;
 	}
@@ -242,13 +257,12 @@ public class UserController {
 		ResponseEntity<Map<String, Object>> res = null;
 
 		if (loginUser == null) {
-			res = ResponseEntity.notFound().build(); // 에러발생
+			res = ResponseEntity.notFound().build();
 		} else {
 			userInfo.put("userId", loginUser.getUserId());
 			userInfo.put("userName", loginUser.getUserName());
 
-			res = ResponseEntity.ok() // 응답상태 200 (정상)
-					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(userInfo);
+			res = ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(userInfo);
 		}
 
 		return res;
@@ -256,20 +270,35 @@ public class UserController {
 
 	@GetMapping("/logout")
 	public String logout(HttpSession session, SessionStatus status) {
-
 		status.setComplete();
 		return "redirect:/";
 	}
 
 	@PostMapping("/findId")
-	public ResponseEntity<Map<String, String>> findId(@RequestParam("userName") String userName,
-													 @RequestParam("userEmail") String userEmail) {
+	public ResponseEntity<Map<String, String>> findId(String userName, String userEmail) {
 		Map<String, String> response = new HashMap<>();
 		try {
 			String foundUserId = userService.findId(userName, userEmail);
 
 			if (foundUserId != null) {
 				response.put("user", foundUserId);
+			} else {
+				response.put("msg", "등록된 이메일이 없습니다. 이메일을 확인해주세요.");
+			}
+		} catch (Exception e) {
+			response.put("errorMsg", "아이디 찾기 과정에서 오류가 발생했습니다.");
+		}
+		return ResponseEntity.ok(response);
+	}
+
+	@PostMapping("/findPwd")
+	public ResponseEntity<Map<String, String>> findPwd(String userId, String userEmail) {
+		Map<String, String> response = new HashMap<>();
+		try {
+			String foundUserPwd = userService.findPwd(userId, userEmail);
+
+			if (foundUserPwd != null) {
+				response.put("user", foundUserPwd);
 			} else {
 				response.put("msg", "등록된 이메일이 없습니다. 이메일을 확인해주세요.");
 			}

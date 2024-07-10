@@ -127,6 +127,7 @@
 		LEFT JOIN COUNTRY C USING(COUNTRY_NO)
 		LEFT JOIN GRAPE G USING(GRAPE_NO)
 		LEFT JOIN WINE_TYPE WT USING(WINE_TYPE_NO)
+		ORDER BY WINE_NO DESC
 	</select>
 	
 	<resultMap type="wineExt" id="wineExtMap">
@@ -199,8 +200,8 @@
 	
 	<update id="updateWine" parameterType="wineExt">
 		UPDATE WINE
-		SET WINE_NAME = #{wineName}
-			GRAPE_NO = #{grapeName},
+		SET WINE_NAME = #{wineName},
+			GRAPE_NO = #{grapeNo},
 			COUNTRY_NO = #{countryNo},
 			VINTAGE = #{vintage},
 			PRICE = #{price},
@@ -210,6 +211,26 @@
 			STATUS = #{status}
 		WHERE WINE_NO = #{wineNo}
 	</update>
+	
+	<update id="updateCharacteristic" parameterType="wineExt">
+		UPDATE CHARACTERISTIC
+		SET BODY = #{characteristic.body},
+			SWEET = #{characteristic.sweet},
+			BITTER = #{characteristic.bitter},
+			SOUR = #{characteristic.sour}
+		WHERE WINE_NO = #{wineNo}
+	</update>
+	
+	<update id="updateWineImage" parameterType="wineExt">
+		UPDATE WINE_IMAGE
+		SET ORIGIN_NAME = #{wineImage.originName},
+			CHANGE_NAME = #{wineImage.changeName}
+		WHERE WINE_NO = #{wineNo}
+	</update>
+	
+	
+	
+	
 	
 	<select id="selectWine" resultMap="wineExtMap">
 		SELECT * 

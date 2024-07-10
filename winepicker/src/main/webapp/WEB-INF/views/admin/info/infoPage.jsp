@@ -68,6 +68,7 @@
     
     
     
+	<c:if test="${loginUser.gradeNo eq 0}">
 		<script>
             (()=>{
                 $("#info-main").css("display", "none");
@@ -132,7 +133,6 @@
             <button type="reset" class="btn btn-danger">취소</button>
         </div>
     </form>
-	<c:if test="${loginUser.gradeNo eq 0}">
 		
 	</c:if>
 

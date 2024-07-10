@@ -69,8 +69,8 @@ table th,td{
 			<td rowspan="2" colspan="12">${wine.content}</td>
 		</tr>
 
-		<fieldset>
 			<form action="${contextPath}/admin/updateWine/${wine.wineNo}" method="post">
+			<fieldset>
 				와인 번호 : <input type="number" name="wineNo" id="wineNo" readonly style="background-color: lightgray;"> <br>
 				와인 이름 : <input type="text" name="wineName" id="wineName"> <br>
 				와인 종류 : <select name="wineTypeName" id="wineTypeName"> <br>
@@ -95,8 +95,8 @@ table th,td{
 
 				<input type="submit" value="수정">
 				<input type="reset" value="취소">
+			</fieldset>
 			</form>
-		</fieldset>
 	
 			
 			

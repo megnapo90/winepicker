@@ -82,10 +82,7 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectList("admin.selectWineList");
 	}
 
-	@Override
-	public int updateWine(WineExt wine) {
-		return sqlSession.update("admin.updateWine", wine);
-	}
+	
 
 	@Override
 	public WineExt selectWine(int wineNo) {
@@ -97,6 +94,8 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectList("admin.grapeList2", wineTypeNo);
 	}
 
+	
+	
 	@Override
 	public int insertWine2(WineExt wineExt) {
 		return sqlSession.insert("admin.insertWine2", wineExt);
@@ -110,6 +109,24 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int insertWineImage(WineExt wineExt) {
 		return sqlSession.insert("admin.insertWineIamge", wineExt);
+	}
+
+	
+	
+	
+	@Override
+	public int updateWine(WineExt wine) {
+		return sqlSession.update("admin.updateWine", wine);
+	}
+	
+	@Override
+	public int updateCharacteristic(WineExt wine) {
+		return sqlSession.update("admin.updateCharacteristic", wine);
+	}
+
+	@Override
+	public int updateWineImage(WineExt wine) {
+		return sqlSession.update("updateWineImage", wine);
 	}
 
 

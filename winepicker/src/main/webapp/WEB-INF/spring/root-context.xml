@@ -49,7 +49,10 @@
 		<!-- <property name="maxUploadSizePerFile"/> 개별 파일 크기 설정 -->
 		<property name="maxUploadSize" value="10000000"/>
 		<property name="maxInMemorySize" value="10000000"/>
-	</bean>   <!-- email 인증 관련   -->
+	</bean>
+	
+	
+	<!-- email 인증 관련   -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="smtp.gmail.com" />
         <property name="port" value="587" />

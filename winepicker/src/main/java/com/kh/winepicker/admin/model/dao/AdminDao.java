@@ -45,6 +45,14 @@ public interface AdminDao {
 
 	WineExt selectWine(int wineNo);
 
+	List<Grape> grapeList2(int wineTypeNo);
+
+	int insertWine2(WineExt wineExt);
+
+	int insertCharacteristic(WineExt wineExt);
+
+	int insertWineImage(WineExt wineExt);
+
 
 
 }

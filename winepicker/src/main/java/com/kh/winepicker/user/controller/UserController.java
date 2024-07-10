@@ -3,46 +3,44 @@ package com.kh.winepicker.user.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.winepicker.model.vo.Faq;
-import com.kh.winepicker.model.vo.History;
 import com.kh.winepicker.model.vo.User;
-import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-
-@Slf4j
 @Controller
 @RequestMapping("/user")
-//@SessionAttributes({"loginUser"})
+@SessionAttributes({ "loginUser" })
 @RequiredArgsConstructor
 public class UserController {
 
 	private final BCryptPasswordEncoder encoder;
-
 	private final UserService userService;
-	
-
+	private final JavaMailSender mailSender;
 
 	@GetMapping("/userList")
 	public String selectUserList(Model model) {
@@ -77,12 +75,6 @@ public class UserController {
 		return "user/newPwd";
 	}
 
-	
-	
-	
-	
-	
-	
 	// 마이페이지로 이동
 	@GetMapping("/myPage")
 	public String showMyPage() {
@@ -91,16 +83,7 @@ public class UserController {
 
 	// 리뷰관리로 이동
 	@GetMapping("/myReview")
-	public String showMyReview(
-			Model model,
-			@ModelAttribute("loginUser") User loginUser
-			) {
-		
-		int userNo = loginUser.getUserNo();
-		List<History> pList = userService.selectMyPurchaseList(userNo);
-		
-		model.addAttribute("purchaseList", pList);
-		
+	public String showMyReview() {
 		return "user/myReview";
 	}
 
@@ -112,54 +95,16 @@ public class UserController {
 
 	// 관심상품으로 이동
 	@GetMapping("/myWishList")
-	public String selectMyWishList(
-			Model model,
-			@ModelAttribute("loginUser") User loginUser
-			) {
-		int userNo = loginUser.getUserNo();
-		userNo = 1;	//이후 지워야 함.
-		
-		List<Wine> wishList = userService.selectMyWishList(userNo);
-		String path = "resource/images/wine";
-		
-		model.addAttribute("wishList", wishList);
-		model.addAttribute("path", path);
-		
+	public String showMyWishList() {
 		return "user/myWishList";
 	}
 
-
 	// mypage 메뉴 중 고객센터로 이동
 	@GetMapping("/callCenter")
-	public String selectFaqList(
-			Model model
-			) {
-		
-		List<Faq> faqList = userService.selectFaqList();
-		
-		model.addAttribute("faqList", faqList);
-		
-		log.info("faqList ? {}", faqList);
-		
+	public String userCallCenter() {
 		return "user/callCenter";
 	}
 
-	@ResponseBody
-	@GetMapping("/faqDetail/{faqNo}")
-	public Faq showFaqContent(
-			@PathVariable("faqNo") int faqNo,
-			Model model
-			) {
-		
-		Faq faq = userService.selectFaq(faqNo);
-		
-		model.addAttribute("faq", faq);
-		
-		log.info("faq ? {}", faq);
-		
-		return faq;
-	}
-	
 	// mypage 메뉴 중 공지사항으로 이동
 	@GetMapping("/userNotice")
 	public String userNotice() {
@@ -189,7 +134,15 @@ public class UserController {
 	}
 
 	@PostMapping("/insertUser")
-	public String insertUser(User user, String address, RedirectAttributes ra, Model model) {
+	public String insertUser(User user, String address, String verificationCode, RedirectAttributes ra, Model model,
+			HttpSession session) {
+		// 이메일 인증 여부 확인
+		String sessionVerificationCode = (String) session.getAttribute("verificationCode");
+		if (sessionVerificationCode == null || !sessionVerificationCode.equals(verificationCode)) {
+			model.addAttribute("errorMsg", "이메일 인증을 먼저 진행해주세요.");
+			return "user/register";
+		}
+
 		// 비밀번호 암호화
 		String encodedPwd = encoder.encode(user.getUserPwd());
 		user.setUserPwd(encodedPwd);
@@ -199,42 +152,81 @@ public class UserController {
 		int result = userService.insertUser(user);
 
 		if (result > 0) {
-			// 이메일 인증 링크 전송
-			model.addAttribute("msg", "이메일로 전송된 링크를 통해 인증을 완료해주세요.");
-			return "user/register";
+			// 회원가입 성공 페이지로 리다이렉트 혹은 이동할 경로로 수정
+			model.addAttribute("msg", "회원가입이 완료되었습니다.");
+			return "user/registerSuccess";
 		} else {
 			model.addAttribute("msg", "회원가입 실패. 다시 시도해주세요.");
 			return "user/register";
 		}
 	}
 
-	@PostMapping("/sendVerificationEmail")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> sendVerificationEmail(String userEmail) {
-		Map<String, Object> response = new HashMap<>();
-		try {
-			// 이메일 전송 로직 호출
-			userService.sendSimpleMessage(userEmail, "Email Verification",
-					"링크를 눌러 이메일 인증을 완료해주세요.: http://winepicker.com/verify?email=" + userEmail);
-
-			response.put("success", true);
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", "이메일 전송에 실패했습니다.");
-		}
-		return ResponseEntity.ok(response);
+	public String generateVerificationCode() {
+		Random random = new Random();
+		int code = 100000 + random.nextInt(900000); // 6자리 인증 코드 생성
+		return String.valueOf(code);
 	}
 
-	@GetMapping("/verify")
-	public String verifyEmail(String userEmail, Model model) {
-		boolean verified = userService.verifyUser(userEmail);
-
-		if (verified) {
-			model.addAttribute("msg", "이메일 인증이 완료되었습니다. 회원가입을 완료하세요.");
-		} else {
-			model.addAttribute("msg", "이메일 인증에 실패했습니다. 이미 인증된 이메일이거나 잘못된 이메일입니다.");
+	public void sendVerificationEmail(String userEmail, String code) throws MessagingException {
+		if (userEmail == null || userEmail.isEmpty()) {
+			throw new IllegalArgumentException("To address must not be null or empty");
 		}
-		return "user/register";
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+		helper.setTo(userEmail);
+		helper.setSubject("회원가입 이메일 인증 코드");
+		helper.setText("인증 코드는 " + code + " 입니다.", true);
+		mailSender.send(message);
+	}
+
+	@PostMapping("/sendVerificationEmail")
+	public String sendVerificationEmail(@RequestParam("userEmail") String userEmail, HttpSession session) {
+		String code = generateVerificationCode();
+
+		try {
+			sendVerificationEmail(userEmail, code);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return "errorPage";
+		}
+		session.setAttribute("verificationCode", code);
+		return "redirect:/user/verifyEmail";
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String register(User user, HttpSession session) {
+		String code = generateVerificationCode();
+		try {
+			sendVerificationEmail(user.getUserEmail(), code);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return "errorPage";
+		}
+		session.setAttribute("verificationCode", code);
+		session.setAttribute("user", user); // 사용자 정보를 세션에 저장
+		return "redirect:/user/verifyEmail"; // 이메일 인증 페이지로 리디렉션
+	}
+
+	@GetMapping("/verifyEmail")
+	public String verifyEmailPage() {
+		return "user/verifyEmail"; // verifyEmail.jsp 혹은 verifyEmail.html 등 페이지의 실제 경로로 수정해야 함
+	}
+
+	@PostMapping("/verifyEmail")
+	public String verifyEmail(@RequestParam("verificationCode") String code, HttpSession session, Model model) {
+		String sessionCode = (String) session.getAttribute("verificationCode");
+
+		if (sessionCode != null && sessionCode.equals(code)) {
+			// Code matches, continue with registration
+			User user = (User) session.getAttribute("user");
+			userService.save(user); // Save user to database
+			session.removeAttribute("verificationCode"); // Remove verification code from session
+			session.removeAttribute("user"); // Remove user from session
+			return "redirect:/"; // Redirect to main page or success page
+		} else {
+			model.addAttribute("errorMsg", "Verification code is incorrect. Please try again.");
+			return "user/register"; // Redirect to registration page
+		}
 	}
 
 	@GetMapping("/idCheck")

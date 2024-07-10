@@ -45,6 +45,11 @@ public interface AdminService {
 
 	WineExt selectWine(int wineNo);
 
+	List<Grape> grapeList2(int wineTypeNo);
+
+	int insertWine2(WineExt wineExt);
+
+
 
 
 }

@@ -181,15 +181,6 @@
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<!-- <resultMap type="grapeExt" id="grapeExtMap">
 	
 		<id column="GRAPE_NO" property="grapeNo"/>
@@ -230,6 +221,59 @@
 		LEFT JOIN WINE_TYPE WT USING(WINE_TYPE_NO)
 		WHERE WINE_NO = #{wineNo}
 	</select>
+	
+	
+	<select id="grapeList2" resultType="grape">
+		SELECT * FROM GRAPE
+		WHERE WINE_TYPE_NO = #{wineTypeNo}
+	</select>
+	
+	
+	<insert id="insertWine2" parameterType="wineExt" useGeneratedKeys="true">
+		INSERT INTO WINE
+		VALUES(
+			WINE_SEQ.NEXTVAL,
+			#{wineName},
+			#{grapeNo},
+			#{countryNo},
+			#{vintage},
+			#{price},
+			#{volume},
+			#{quantity},
+			#{content},
+			#{status}
+		)
+	</insert>
+	
+	
+	<insert id="insertCharacteristic">
+	
+		<selectKey order="BEFORE" keyProperty="wineNo" resultType="int">
+			SELECT WINE_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+		
+			INSERT INTO CHARACTERISTIC
+			VALUES(
+				#{wineNo},
+				#{characteristic.body},
+				#{characteristic.sweet},
+				#{characteristic.bitter},
+				#{characteristic.sour}
+			)
+	</insert>
+	
+	<insert id="insertWineIamge">
+		<selectKey order="BEFORE" keyProperty="wineNo" resultType="int">
+			SELECT WINE_SEQ.CURRVAL FROM DUAL 
+		</selectKey>
+		INSERT INTO WINE_IMAGE
+		VALUES(
+			#{wineNo},
+			#{wineImage.originName},
+			#{wineImage.changeName}
+		)
+	</insert>
+	
 	
 	
 

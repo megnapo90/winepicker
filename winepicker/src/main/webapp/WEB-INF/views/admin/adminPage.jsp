@@ -83,7 +83,7 @@ td{
 		
 		
 		
-		<li><a href="${contextPath}/admin/insertInfo">정보글 등록 XXX</a>
+		<li><a href="${contextPath}/admin/info/main">정보글 등록/수정</a>
 	
 	</ul>
 	

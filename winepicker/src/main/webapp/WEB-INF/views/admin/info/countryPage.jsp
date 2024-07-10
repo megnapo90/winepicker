@@ -392,14 +392,35 @@
 		</div>
 	</div>
 	
+	
+	
 	<div id="list">
-		<ul class="ul">
-			<c:forEach var="country" items="${cList}">
-				<li><a href="${contextPath}/admin/info/${country.countryEngName}">${country.countryName}</a></li>
-			</c:forEach>
-		</ul>
-	</div>
+    
+    <ul class="ul">
+    	<li class="depth1">
+    		<a href="${contextPath}/admin/info/wine">와인 정보글</a>
+    	</li>
+    </ul>
+    
+    <ul class="ul">
+    	<li class="depth1">
+    		<a href="${contextPath}/admin/info/country">나라 정보글</a>
+    			<ul>
+    				<c:forEach var="i" items="${iList}">
+    				<c:if test="${i.countryNo gt 0}">
+    					<li class="depth${i.depth}">
+    						<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName} 정보글</a>
+    					</li>
+    				</c:if>
+    				</c:forEach>
+    			</ul>
+    	</li>
+    </ul>
+    
 
+    </div>
+	
+	
 	<c:forEach var="country" items="${cList}">
 		<c:if test="${not empty country.countryEngName}">
 			<script>
@@ -411,6 +432,14 @@
 	</c:forEach>
 
 	<script>
+		(()=>{
+			if(${depth} == 1 && `${infoName}.toLowerCase().equals("country")`){
+				$(".wineTypeNo1").css("display", "none");
+				$(".wineTypeNo2").css("display", "none");
+				$(".wineTypeNo3").css("display", "none");
+			}
+		})();
+	
 		$(".flag").click((e)=>{
 			console.log(e.target);
 			console.log($(e.target));

@@ -92,6 +92,26 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectOne("admin.selectWine", wineNo);
 	}
 
+	@Override
+	public List<Grape> grapeList2(int wineTypeNo) {
+		return sqlSession.selectList("admin.grapeList2", wineTypeNo);
+	}
+
+	@Override
+	public int insertWine2(WineExt wineExt) {
+		return sqlSession.insert("admin.insertWine2", wineExt);
+	}
+
+	@Override
+	public int insertCharacteristic(WineExt wineExt) {
+		return sqlSession.insert("admin.insertCharacteristic", wineExt);
+	}
+
+	@Override
+	public int insertWineImage(WineExt wineExt) {
+		return sqlSession.insert("admin.insertWineIamge", wineExt);
+	}
+
 
 
 }

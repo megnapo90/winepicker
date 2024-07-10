@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Info2 {
 	private String infoName;
-	private String content;
 	private String subtitle;
+	private String content;
 	private String originName;
 	private String changeName;
 	

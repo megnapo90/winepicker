@@ -1,17 +1,24 @@
 package com.kh.winepicker.user.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.History;
+
+import com.kh.winepicker.model.vo.Review;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.Wish;
+
 import com.kh.winepicker.user.model.dao.UserDao;
 
 import lombok.RequiredArgsConstructor;
@@ -23,9 +30,9 @@ public class UserServiceImpl implements UserService {
 
 	private final UserDao userDao;
 
-
 	@Autowired
 	private JavaMailSender mailSender;
+
 
 	@Override
 	public User login(User user) {
@@ -74,6 +81,47 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public List<History> selectMyPurchaseList(int userNo) {
+		return userDao.selectMyPurchaseList(userNo);
+	}
+
+	@Override
+	public int deleteWishItem(Wish wishItem) {
+		return userDao.deleteWishItem(wishItem);
+	}
+
+	@Override
+	public List<History> searchMyPurchaseList(HashMap<String, String> paramMap) {
+		return userDao.searchMyPurchaseList(paramMap);
+	}
+
+	@Override
+	public int insertMyReview(HashMap<String, Object> paramMap) {
+		return userDao.insertMyReview(paramMap);
+	}
+
+	@Override
+	public History selectReviewItem(int orderNo) {
+		return userDao.selectReviewItem(orderNo);
+	}
+
+	@Override
+	public Review selectReviewOne(int orderNo) {
+		return userDao.selectReviewOne(orderNo);
+	}
+
+	@Override
+	public int updateMyReview(HashMap<String, Object> paramMap) {
+		return userDao.updateMyReview(paramMap);
+	}
+
+	@Override
+	public int deleteMyReview(int orderNo) {
+		return userDao.deleteMyReview(orderNo);
+	}
+
+
+	
 	public void sendSimpleMessage(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("winepickerservice@gmail.com");
@@ -86,12 +134,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findUserByEmail(String userEmail) {
 		return userDao.findUserByEmail(userEmail);
-	}
-
-
-  @Override
-	public List<History> selectMyPurchaseList(int userNo) {
-		return userDao.selectMyPurchaseList(userNo);
 	}
 
 

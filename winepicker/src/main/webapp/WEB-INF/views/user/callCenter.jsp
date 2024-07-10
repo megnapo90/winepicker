@@ -167,27 +167,32 @@
 	}
 
 	function showFaqDetail(fno){
-		$.ajax({
+	
+		if($("#faq-detail") != null){
+			$.ajax({
+		
+				url : "${contextPath}/user/faqDetail/"+fno,
+				data : {
+					faqNo : "${faqNo}"
+				},
+				type : "get",
+				success : function showFaqContent(faq){
+					console.log(faq);
+					
+					var content = "";
+						content += '<tr id="faq-detail" onclick=removeFaqDetail(this);>';
+						content += `<th>A\${faq.faqNo}</th>`; 
+						content += `<td>\${faq.faqContent}</td>`;
+						content += '</tr>';
+					var faqNo = faq.faqNo;
+					
+					$(".faq-list #"+faqNo+"").after(content);
+				}
+			})
+		}
 			
-			url : "${contextPath}/user/faqDetail/"+fno,
-			data : {
-				faqNo : "${faqNo}"
-			},
-			type : "get",
-			success : function showFaqContent(faq){
-				console.log(faq);
-				
-				var content = "";
-					content += '<tr id="faq-detail" onclick=removeFaqDetail(this);>';
-					content += `<th>A\${faq.faqNo}</th>`; 
-					content += `<td>\${faq.faqContent}</td>`;
-					content += '</tr>';
-				var faqNo = faq.faqNo;
-				
-				$(".faq-list #"+faqNo+"").after(content);
-			}
-		})
 	}
+	
 	
 	function removeFaqDetail(faq){
 		$(faq).remove();

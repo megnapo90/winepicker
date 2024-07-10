@@ -49,7 +49,6 @@
 	text-align: center;
 	padding: 20px;
 	color: #888;
-
 }
 .empty-history-list>p{
 	padding-top : 15%;
@@ -93,6 +92,15 @@
 	width: 50px;
 	height: auto;
 }
+#available-review{
+	font-weight : 300px;
+	cursor: pointer;
+}
+
+.purchase-list img {
+	width: 50px;
+	height: auto;
+}
 
 </style>
 
@@ -114,15 +122,19 @@
         <div class="purchase-history">
           
          	<div class="date-filter">
-				<form action="purchaseList" method="post" >
-					<input type="date" name="startDate">&nbsp;~&nbsp;
-					<input type="date" name="endDate">&nbsp;
+
+				<form action="myPage" method="post" >
+					<input type="date" name="startDate" value=${startDate }>&nbsp;~&nbsp;
+					<input type="date" name="endDate" value=${endDate }>&nbsp;
+
 					<input type="submit" value="조회">
 				</form>
            	</div>
           	
           	<c:choose>
-          	<c:when test="${purchaseList eq null}">
+
+          	<c:when test="${empty purchaseList }">
+
           		<div class="empty-history-list">
           			<p>주문하신 상품이 없습니다.</p>
           		</div>
@@ -141,18 +153,29 @@
           			<td><p>리뷰관리</p></td>
           		</tr>
           	
-          		<c:forEach items="${purchaseList }" var="p">
-          		<tr>
-                	<td><img src="<%-- ${p.imageURL} --%>" alt="상품 이미지"></td>
-                	<td><p><%-- ${p.orderNo} --%></p></td>
-                    <td><p><%-- ${p.orderDate} --%></p></td>
-                    <td><p><span class="product-id"><%-- ${p.productID} --%></span> 
-                    		<%-- ${p.productName} --%></p></td>
-                    <td><p><%-- ${p.quantity} --%></p></td>
-                    <td><p><%-- ${p.amount} --%></p></td>
-                    <td><p class="<%-- ${p.dStatus == '배송중' ? 'status-shipping' : 'status-complete'} --%>"><%-- ${p.dStatus} --%></p></td>
-                    <td><p class="<%-- ${p.reviewStatus == '작성가능' ? 'review-available' : 'review-completed'} --%>"><%-- ${p.reviewStatus} --%></p></td>
-                </tr>
+          		<c:forEach items="${purchaseList }" var="item">
+					<tr>
+	                	<td><img src="${contextPath}/${path }/${item.wineImage.changeName }" alt="상품 이미지"></td>
+	                	<td><p>${item.orderNo}</p></td>
+	                    <td><p>${item.orderDate}</p></td>
+	                    <td><p>${item.wine.wineName}</p></td>
+	                    <td><p>${item.qty}</p></td>
+	                    <td><p>${item.wine.price}</p></td>
+	                    <td><p>${item.DStatus == 3 ? '배송완료' : item.DStatus == 2 ? '배송중' : '배송전'}</p></td>
+						<c:if test="${item.DStatus ne 3}">
+							<td><p>작성불가</p></td>	
+						</c:if>
+						<c:if test="${item.DStatus eq 3 and item.review.content ne null }">
+							<td onclick="location.href='${contextPath}/user/review/detail/${item.orderNo}'">
+								<p>작성완료</p>
+							</td>	
+						</c:if>
+						<c:if test="${item.DStatus eq 3 and item.review.content eq null }">
+                    		<td id="available-review" onclick="location.href='${contextPath}/user/review/searchMyReview'">
+                    			<p>작성가능</p></td>
+						</c:if>											
+	                </tr>
+
           		</c:forEach>
           	
           		</table>

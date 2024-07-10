@@ -2,6 +2,7 @@ package com.kh.winepicker.product.model.service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.winepicker.common.Utils;
+import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.Characteristic;
+import com.kh.winepicker.model.vo.History;
+import com.kh.winepicker.model.vo.ProductFilters;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
@@ -128,5 +132,57 @@ public class ProductServiceImpl implements ProductService {
 	public WineImage getWineNum(int wineNo) {
 		return productDao.getWineNum(wineNo);
 	}
+
+	
+
+	@Override
+	public List<WineExt> getWineList(PageInfo pi, Map<String, Object> paramMap) {
+		return productDao.getWineList(pi, paramMap);
+	}
+
+	@Override
+	public int selectListCount(Map<String, Object> paramMap) {
+		return productDao.selectListCount(paramMap);
+	}
+
+	@Override
+	public int getMaxPrice() {
+		return productDao.getMaxPrice();
+	}
+
+	@Override
+	public int getMinPrice() {
+		
+		return productDao.getMinPrice();
+	}
+
+
+
+	@Override
+	public List<WineExt> getwineList(List<Integer> volumes) {
+		return productDao.getwineList(volumes);
+	}
+
+
+	@Override
+	public List<WineExt> searchByVolume(Map<String, Object> params) {
+		return productDao.searchByVolume(params);
+	}
+
+	@Override
+	public WineExt selectProduct(int wineNo) {
+		return productDao.selectProduct(wineNo);
+	}
+
+	@Override
+	public List<WineExt> orderWineList(int wineNo) {
+		return productDao.orderWineList(wineNo);
+	}
+
+
+	
+
+
+
 
 }

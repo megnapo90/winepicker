@@ -203,7 +203,7 @@
 	</div>
 	<div class="nav">
 		<ul id="navi">
-			<li><a href="">전체 와인</a></li>
+			<li><a href="${contextPath}/product/list">전체 와인</a></li>
 			<li><a href="${contextPath}/admin/info/main">정보글</a></li>
 		</ul>
 	</div>

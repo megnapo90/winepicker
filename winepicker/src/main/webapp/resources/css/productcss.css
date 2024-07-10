@@ -1,0 +1,250 @@
+@charset "UTF-8";
+
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f5f5f5;
+}
+
+.header {
+	background-color: #333;
+	color: white;
+	padding: 20px;
+	text-align: center;
+}
+
+.title {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-size: 40px;
+	font-weight: normal;
+	color: #3D3D3D;
+}
+
+hr {
+	width: 80%;
+	margin: 20px auto;
+	border-top: 2px solid #D8D8D8;
+}
+
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 20px;
+}
+
+.products-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+}
+
+.sort-options {
+	display: flex;
+	justify-content: flex-end;
+	padding-bottom: 20px;
+}
+
+.sort-options a {
+	margin-left: 20px;
+	color: #333;
+	text-decoration: none;
+}
+
+.sort-options a.active {
+	color: red !important; /* 선택된 소팅 옵션의 텍스트 색상 */
+	font-weight: bold; /* 선택된 소팅 옵션의 텍스트 굵게 */
+}
+
+.sort-options a:hover {
+	text-decoration: underline; /* 마우스를 올렸을 때 텍스트에 밑줄 */
+}
+
+.products {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+}
+
+.product {
+	background-color: white;
+	padding: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
+}
+
+.product img {
+	width: 100%;
+	height: auto;
+	background-color: #ddd;
+}
+
+.product p {
+	margin: 10px 0;
+}
+
+.filter {
+	width: 100%;
+	max-width: 250px;
+	padding: 20px;
+	background-color: white;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+	box-sizing: border-box;
+}
+
+.filter h2 {
+	margin-top: 0;
+	font-size: 1.5em;
+}
+
+.filter label {
+	display: block;
+	margin: 10px 0 5px;
+	font-size: 1em;
+}
+
+.filter input[type="range"] {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.filter select {
+	width: 100%;
+	padding: 5px;
+	font-size: 1em;
+	margin-bottom: 10px;
+}
+
+/* 체크박스 스타일링 */
+.custom-checkbox {
+	display: none;
+}
+
+.custom-checkbox+label {
+	display: inline-block;
+	position: relative;
+	padding-left: 30px;
+	cursor: pointer;
+	user-select: none;
+}
+
+.custom-checkbox+label::before {
+	content: '';
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #ccc;
+	border-radius: 3px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background:
+		url('${contextPath}/resources/css/images/product/checkbox.png')
+		no-repeat center center; /* 체크 전 이미지 */
+	background-size: contain;
+	transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-checkbox:checked+label::before {
+	background: #84515F;
+}
+
+.custom-checkbox+label::after {
+	content: '';
+	position: absolute;
+	left: 4px;
+	top: 4px;
+	width: 12px;
+	height: 12px;
+	background:
+		url('${contextPath}/resources/css/images/product/checkbox.png'')
+		no-repeat center center;
+	background-size: contain;
+	opacity: 0;
+}
+
+.custom-checkbox:checked+label::after {
+	opacity: 1;
+}
+
+/* 페이징 처리 */
+#pagingArea {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+   
+}
+
+#pagingArea.pagination {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+   
+}
+
+.page-item {
+    margin: 0 5px; /* 페이지 아이템 사이에 간격 추가 */
+}
+
+.page-link {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.page-link.on {
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+.page-link:hover {
+    background-color: #0056b3;
+    color: #fff;
+    border-radius: 5px;
+}
+
+/* noUiSlider 스타일 오버라이드 */
+.noUi-connect {
+    background: red !important;  /* 슬라이더 바의 색상 */
+}
+
+.noUi-base {
+    height: 8px !important;  /* 바의 두께 */
+    border-radius: 5px !important;  /* 바의 모서리 둥글게 만들기 */
+}
+
+.noUi-handle {
+    width: 20px !important;  /* 핸들의 너비 */
+    height: 20px !important;  /* 핸들의 높이 */
+    border-radius: 50% !important;  /* 핸들 원형 모양 */
+    background: #007bff !important;  /* 핸들의 색상 */
+    border: 3px solid #0056b3 !important;  /* 핸들의 테두리 색상 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;  /* 핸들의 그림자 */
+    cursor: pointer !important;  /* 핸들 커서 모양 */
+}
+
+.noUi-handle:active {
+    background: #0056b3 !important;  /* 활성화된 핸들 색상 */
+    border: 3px solid #00409a !important;  /* 활성화된 핸들의 테두리 색상 */
+}
+
+.noUi-handle:hover {
+    background: #0056b3 !important;  /* 핸들 위 색상 */
+    border: 3px solid #003d7a !important;  /* 핸들 위 테두리 색상 */
+}
+
+.noUi-tooltip {
+    background: #007bff !important;
+    color: #fff !important;
+    padding: 5px !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+}

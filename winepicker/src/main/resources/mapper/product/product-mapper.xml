@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="product">
 
-<!-- 와인번호 채번 -->
+	<!-- 와인번호 채번 -->
 	<select id="wineNo" resultType="int">
 		SELECT WINE_SEQ.NEXTVAL FROM DUAL
 	</select>
@@ -16,68 +16,100 @@
 			SELECT WINE_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
 		INSERT INTO WINE
-		VALUES (#{wineNo}, #{wineName}, #{grapeNo}, #{countryNo}, #{vintage}, #{price}, #{volume}, #{quantity}, #{content}, #{status})
+		VALUES (#{wineNo}, #{wineName}, #{grapeNo},
+		#{countryNo}, #{vintage}, #{price}, #{volume}, #{quantity},
+		#{content}, #{status})
 	</insert>
 
 	<!-- 와인 이미지 등록 -->
 	<insert id="insertWineImg">
 		INSERT INTO WINE_IMAGE
-		VALUES (#{wineNo}, #{originName}, #{changeName})
+		VALUES (#{wineNo},
+		#{originName}, #{changeName})
 	</insert>
 
 	<!-- 와인 맛 등록 -->
 	<insert id="insertTaste">
 		INSERT INTO CHARACTERISTIC
-		VALUES (#{wineNo},#{body},#{sweet},#{bitter},#{sour})
-	
-	
+		VALUES
+		(#{wineNo},#{body},#{sweet},#{bitter},#{sour})
+
+
 	</insert>
-	
+
 	<resultMap type="wineExt" id="wineExtMap">
-		<id column="WINE_NO" property="wineNo"/>
-		<result column="WINE_NAME" property="wineName"/>
-		<result column="GRAPE_NO" property="grapeNo"/>
-		<result column="COUNTRY_NO" property="countryNo"/>
-		<result column="VINTAGE" property="vintage"/>
-		<result column="PRICE" property="price"/>
-		<result column="VOLUME" property="volume"/>
-		<result column="QUANTITY" property="quantity"/>
-		<result column="CONTENT" property="content"/>
-		<result column="STATUS" property="status"/>
-		
+		<id column="WINE_NO" property="wineNo" />
+		<result column="WINE_NAME" property="wineName" />
+		<result column="GRAPE_NO" property="grapeNo" />
+		<result column="COUNTRY_NO" property="countryNo" />
+		<result column="VINTAGE" property="vintage" />
+		<result column="PRICE" property="price" />
+		<result column="VOLUME" property="volume" />
+		<result column="QUANTITY" property="quantity" />
+		<result column="CONTENT" property="content" />
+		<result column="STATUS" property="status" />
+
 		<association property="wineImage">
-			<id column="WINE_NO" property="wineNo"/>
-			<result column="ORIGIN_NAME" property="originName"/>
-			<result column="CHANGE_NAME" property="changeName"/>
-			
+			<id column="WINE_NO" property="wineNo" />
+			<result column="ORIGIN_NAME" property="originName" />
+			<result column="CHANGE_NAME" property="changeName" />
+		</association>
+
+		<association property="country">
+			<id column="COUNTRY_NO" property="countryNo" />
+			<result column="COUNTRY_NAME" property="countryName" />
+			<result column="COUNTRY_ENG_NAME" property="countryEngName" />
 		</association>
 
 		<association property="characteristic">
-			<id column="WINE_NO" property="wineNo"/>
-			<id column="BODY" property="body"/>
-			<id column="SWEET" property="sweet"/>
-			<id column="BITTER" property="bitter"/>
-			<id column="SOUR" property="sour"/>	
+			<id column="WINE_NO" property="wineNo" />
+			<result column="BODY" property="body" />
+			<result column="SWEET" property="sweet" />
+			<result column="BITTER" property="bitter" />
+			<result column="SOUR" property="sour" />
 		</association>
 
-	</resultMap>	
-		<select id="selectWine" resultMap="wineExtMap">
-		
+		<association property="grape">
+			<id column="GRAPE_NO" property="grapeNo" />
+			<result column="GRAPE_NAME" property="grapeName" />
+			<result column="WINE_TYPE_NO" property="wineTypeNo" />
+		</association>
+
+		<association property="wineType">
+			<id column="WINE_TYPE_NO" property="wineTypeNo" />
+			<result column="WINE_TYPE_NAME" property="wineTypeName" />
+			<result column="WINE_TYPE_ENG_NAME" property="wineTypeEngName" />
+		</association>
+
+	</resultMap>
+
+	<select id="selectWine" resultMap="wineExtMap">
+
 		SELECT
-		W.WINE_NO AS WINE_NO, WINE_NAME, W.GRAPE_NO AS GRAPE_NO, G.GRAPE_NAME, W.COUNTRY_NO AS COUNTRY_NO, C.COUNTRY_NAME, VINTAGE, PRICE, VOLUME, QUANTITY, CONTENT, STATUS,
-		
+		W.WINE_NO AS WINE_NO,
+		WINE_NAME, W.GRAPE_NO AS GRAPE_NO, G.GRAPE_NAME,
+		W.COUNTRY_NO AS
+		COUNTRY_NO, C.COUNTRY_NAME, VINTAGE, PRICE, VOLUME,
+		QUANTITY, CONTENT,
+		STATUS,
+
 		ORIGIN_NAME, CHANGE_NAME,
-		
+
 		BODY, SWEET, BITTER, SOUR
-		
+
 		FROM WINE W
 		LEFT JOIN GRAPE G ON (G.GRAPE_NO=W.GRAPE_NO)
-		LEFT JOIN COUNTRY C ON (C.COUNTRY_NO = W.COUNTRY_NO)
-		LEFT JOIN WINE_IMAGE WI ON (WI.WINE_NO = W.WINE_NO)
+		LEFT JOIN COUNTRY C
+		ON
+		(C.COUNTRY_NO = W.COUNTRY_NO)
+		LEFT JOIN WINE_IMAGE WI ON (WI.WINE_NO
+		=
+		W.WINE_NO)
 		LEFT JOIN CHARACTERISTIC T ON (T.WINE_NO = W.WINE_NO)
-		WHERE W.WINE_NO = #{wineNo}
-		
-		</select>
+		WHERE
+		W.WINE_NO = #{wineNo}
+
+	</select>
 
 
 
@@ -86,16 +118,229 @@
 
 	<delete id="deleteWine" parameterType="int">
 		BEGIN
-        DELETE FROM CHARACTERISTIC WHERE WINE_NO = #{wineNo};
-        DELETE FROM WINE_IMAGE WHERE WINE_NO = #{wineNo};
-        DELETE FROM WINE WHERE WINE_NO = #{wineNo};
-        
-        COMMIT;
-    	
-    	END;
-		
-		
-		
-		
+		DELETE FROM
+		CHARACTERISTIC WHERE WINE_NO = #{wineNo};
+		DELETE FROM WINE_IMAGE WHERE
+		WINE_NO = #{wineNo};
+		DELETE FROM WINE WHERE WINE_NO = #{wineNo};
+
+		COMMIT;
+
+		END;
+
+
+
+
 	</delete>
+	
+	<!-- 유저가 보는 와인 리스트 -->
+	<select id="getwineList" resultMap="wineExtMap">
+		SELECT
+		W.WINE_NO,
+		W.WINE_NAME,
+		W.GRAPE_NO,
+		W.COUNTRY_NO,
+		W.VINTAGE,
+		W.PRICE,
+		W.VOLUME,
+		W.QUANTITY,
+		W.CONTENT,
+		W.STATUS,
+		WI.ORIGIN_NAME,
+		WI.CHANGE_NAME,
+		C.BODY,
+		C.SWEET,
+		C.BITTER,
+		C.SOUR,
+		G.GRAPE_NAME,
+		CT.COUNTRY_NAME
+		FROM WINE W
+		LEFT JOIN
+		WINE_IMAGE WI
+		ON
+		WI.WINE_NO = W.WINE_NO
+		LEFT JOIN
+		CHARACTERISTIC C
+		ON
+		C.WINE_NO = W.WINE_NO
+		LEFT JOIN
+		GRAPE G ON G.GRAPE_NO =W.GRAPE_NO
+		LEFT JOIN
+		COUNTRY CT ON CT.COUNTRY_NO=W.COUNTRY_NO
+		WHERE
+		W.STATUS = 'Y'
+		<if test="minPrice != null">
+            AND W.PRICE >= #{minPrice}
+        </if>
+        <if test="maxPrice != null">
+            AND #{maxPrice}>= W.PRICE 
+        </if>
+       
+		
+		
+		
+		<if test="keyword != null and keyword != ''">
+			AND
+			(W.WINE_NAME LIKE '%' || #{keyword} ||'%'
+			OR
+			W.CONTENT LIKE '%' || #{keyword} ||'%'
+			OR
+			TO_CHAR(W.VINTAGE) LIKE '%' || #{keyword} ||'%'
+			OR
+			G.GRAPE_NAME LIKE '%' || #{keyword} ||'%'
+			OR
+			CT.COUNTRY_NAME LIKE '%' || #{keyword} ||'%'
+			)
+		</if>
+		
+
+		<choose>
+			<when test="sortOption == 'pricehigh'">
+				ORDER BY W.PRICE DESC
+			</when>
+			<when test="sortOption == 'pricelow'">
+				ORDER BY W.PRICE ASC
+			</when>
+			<when test="sortOption == 'recent'">
+				ORDER BY W.WINE_NO DESC
+			</when>
+
+		</choose>
+	</select>
+
+	<!--페이징 -->
+	<select id="selectListCount" resultType='int'>
+		SELECT
+		COUNT(*)
+		FROM WINE W
+		WHERE W.STATUS
+		= 'Y'
+		<if test="keyword != null and keyword != ''">
+			AND
+			(WINE_NAME LIKE '%' || #{keyword} ||'%'
+			OR
+			CONTENT LIKE '%' || #{keyword} ||'%')
+		</if>
+		
+	<choose>
+			<when test="sortOption == 'pricehigh'">
+				ORDER BY W.PRICE DESC
+			</when>
+			<when test="sortOption == 'pricelow'">
+				ORDER BY W.PRICE ASC
+			</when>
+			<when test="sortOption == 'recent'">
+				ORDER BY W.WINE_NO DESC
+			</when>
+
+		</choose>
+		
+	</select>
+
+	<!--최대가격 최소가격  -->
+	
+	<select id="getMaxPrice" resultType='int'>
+		SELECT MAX(PRICE) FROM WINE
+		
+	</select>
+
+	<select id="getMinPrice" resultType='int'>
+		SELECT MIN(PRICE) FROM WINE
+	</select>
+	
+
+
+	<!-- 필터  --> 
+	    <select id="searchByVolume" resultMap="wineExtMap">
+        SELECT
+            W.WINE_NO,
+            W.WINE_NAME,
+            W.GRAPE_NO,
+            W.COUNTRY_NO,
+            W.VINTAGE,
+            W.PRICE,
+            W.VOLUME,
+            W.QUANTITY,
+            W.CONTENT,
+            W.STATUS,
+            WI.ORIGIN_NAME,
+            WI.CHANGE_NAME,
+            C.BODY,
+            C.SWEET,
+            C.BITTER,
+            C.SOUR,
+            G.GRAPE_NAME,
+            CT.COUNTRY_NAME
+        FROM WINE W
+        LEFT JOIN WINE_IMAGE WI ON WI.WINE_NO = W.WINE_NO
+        LEFT JOIN CHARACTERISTIC C ON C.WINE_NO = W.WINE_NO
+        LEFT JOIN GRAPE G ON G.GRAPE_NO = W.GRAPE_NO
+        LEFT JOIN COUNTRY CT ON CT.COUNTRY_NO = W.COUNTRY_NO
+        WHERE W.STATUS = 'Y'
+        <if test="volumes != null and volumes.size() > 0">
+            AND W.VOLUME IN
+            <foreach item="volume" collection="volumes" open="(" close=")" separator=",">
+                #{volume}
+            </foreach>
+        </if>
+        <if test="countries != null and countries.size() > 0">
+            AND W.COUNTRY_NO IN
+            <foreach item="country" collection="countries" open="(" close=")" separator=",">
+                #{country}
+            </foreach>
+        </if>
+
+    </select>
+    
+    <select id ="selectProduct" resultMap = "wineExtMap">
+    	SELECT
+		W.WINE_NO AS WINE_NO,
+		WINE_NAME, W.GRAPE_NO AS GRAPE_NO, G.GRAPE_NAME,
+		W.COUNTRY_NO AS
+		COUNTRY_NO, C.COUNTRY_NAME, VINTAGE, PRICE, VOLUME,
+		QUANTITY, CONTENT,
+		STATUS,
+
+		ORIGIN_NAME, CHANGE_NAME,
+
+		BODY, SWEET, BITTER, SOUR
+
+		FROM WINE W
+		LEFT JOIN GRAPE G ON (G.GRAPE_NO=W.GRAPE_NO)
+		LEFT JOIN COUNTRY C
+		ON
+		(C.COUNTRY_NO = W.COUNTRY_NO)
+		LEFT JOIN WINE_IMAGE WI ON (WI.WINE_NO
+		=
+		W.WINE_NO)
+		LEFT JOIN CHARACTERISTIC T ON (T.WINE_NO = W.WINE_NO)
+		
+		WHERE
+		W.WINE_NO = #{wineNo}
+    
+    
+    </select>
+    
+    <!-- 오더페이지 이동 -->
+	<select id="orderWineList" resultMap="wineExtMap">
+		SELECT W.WINE_NO, W.WINE_NAME, W.PRICE,
+		
+		WI.ORIGIN_NAME,WI.CHANGE_NAME
+		
+		
+		FROM WINE W
+		LEFT JOIN WINE_IMAGE WI ON(WI.WINE_NO=W.WINE_NO)
+		
+		
+		WHERE
+		W.WINE_NO =#{wineNo}
+	
+	
+	
+	</select>
+ 	
+ 	
+ 	
+ 	
+
 </mapper>

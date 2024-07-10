@@ -74,10 +74,7 @@ public class AdminServiceImpl implements AdminService{
 	public List<WineExt> selectWineList() {
 		return adminDao.selectWineList();
 	}
-	@Override
-	public int updateWine(WineExt wine) {
-		return adminDao.updateWine(wine);
-	}
+	
 	@Override
 	public WineExt selectWine(int wineNo) {
 		return adminDao.selectWine(wineNo);
@@ -99,7 +96,24 @@ public class AdminServiceImpl implements AdminService{
 		}
 		return result;
 	}
-	
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int updateWine(WineExt wine) {
+		
+		int result = 1;
+		result *= adminDao.updateWine(wine);
+		result *= adminDao.updateCharacteristic(wine);
+		
+		if(wine.getWineImage() != null) {
+			result *= adminDao.updateWineImage(wine);
+		}
+		
+		if(result != 1) {
+			throw new RuntimeException();
+		}
+		
+		return result; 
+	}
 	
 	
 }

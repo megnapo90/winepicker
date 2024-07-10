@@ -41,7 +41,6 @@ public interface AdminDao {
 
 	List<WineExt> selectWineList();
 
-	int updateWine(WineExt wine);
 
 	WineExt selectWine(int wineNo);
 
@@ -52,6 +51,14 @@ public interface AdminDao {
 	int insertCharacteristic(WineExt wineExt);
 
 	int insertWineImage(WineExt wineExt);
+
+	
+	
+	int updateWine(WineExt wine);
+	
+	int updateCharacteristic(WineExt wine);
+
+	int updateWineImage(WineExt wine);
 
 
 

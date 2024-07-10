@@ -128,14 +128,13 @@ public class ProductController {
 		
 		if(upfile != null && !upfile.isEmpty()) {
 			String webpath = "/resources/images/product/";
-			String serverFolderPath = application.getRealPath(webpath);			
-			
+			String serverFolderPath = application.getRealPath(webpath);
 			File dir = new File(serverFolderPath);
 			if(!dir.exists()) {
 				dir.mkdirs();
 			}
 			
-			String changeName = Utils.saveFile(upfile, serverFolderPath);
+			String changeName = serverFolderPath.replace("\\", "/") + Utils.saveFile(upfile, serverFolderPath);
 			
 			wineImage = new WineImage();
 			wineImage.setChangeName(changeName);

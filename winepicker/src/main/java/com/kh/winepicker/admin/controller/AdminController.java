@@ -1,5 +1,6 @@
 package com.kh.winepicker.admin.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.winepicker.admin.model.service.AdminService;
+import com.kh.winepicker.common.Utils;
+import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.Country;
 import com.kh.winepicker.model.vo.Grape;
 import com.kh.winepicker.model.vo.Info;
@@ -25,6 +29,7 @@ import com.kh.winepicker.model.vo.Info2;
 import com.kh.winepicker.model.vo.Notice;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
+import com.kh.winepicker.model.vo.WineImage;
 import com.kh.winepicker.model.vo.WineType;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-@Slf4j
 public class AdminController {
 
 	private final AdminService adminService;
@@ -186,7 +190,6 @@ public class AdminController {
 			Info2 i,
 			RedirectAttributes ra
 			) {
-		System.out.println(i);
 		
 		
 		int result = adminService.updateInfo(i);
@@ -201,6 +204,7 @@ public class AdminController {
 		
 	}
 	
+	
 //	=============================== 상품정보 수정 ========================================
 	
 	@GetMapping("/updateWine/{wineNo}")
@@ -208,7 +212,15 @@ public class AdminController {
 			WineExt wine,
 			Model model
 			) {
-		System.out.println(wine.getWineNo());
+		
+		List<Grape> gList = adminService.grapeList();
+		model.addAttribute("gList", gList);
+		
+		List<Country> cList = adminService.countryList();
+		model.addAttribute("cList", cList);
+		
+		List<WineType> wtList = adminService.selectTypeList();
+		model.addAttribute("wtList", wtList);
 		
 		int wineNo = wine.getWineNo();
 		
@@ -217,25 +229,119 @@ public class AdminController {
 		
 		model.addAttribute("wine", wine);
 		
-		log.info("wine : {}",wine);
 		
-		
-		return "admin/updateWineForm";
+		return "admin/updateWineForm2";
 	}
 	
 	
 	@PostMapping("/updateWine/{wineNo}")
 	public String updateWine(
+			Characteristic characteristic,
+			Country country,
+			Grape grape,
+			WineImage wineImage,
+			WineType wineType,
 			WineExt wine,
-			Model model,
-			RedirectAttributes ra
+			RedirectAttributes ra,
+			@RequestParam(value="upfile", required = false) MultipartFile upfile
 			) {
 		
-		int result = adminService.updateWine(wine);
+		System.err.println(upfile);
 		
-		return "";
+		if(upfile != null && !upfile.isEmpty()) {
+			String webpath = "/resources/images/product/";
+			String serverFolderPath = application.getRealPath(webpath);
+			File dir = new File(serverFolderPath);
+			
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			String changeName = serverFolderPath.replace("\\", "/") + Utils.saveFile(upfile, serverFolderPath);
+			
+			wineImage = new WineImage();
+			wineImage.setChangeName(changeName);
+			wineImage.setOriginName(upfile.getOriginalFilename());
+			
+			wine.setWineImage(wineImage);
+		}
+		
+		System.err.println(wineImage);
+		
+		wine.setCharacteristic(characteristic);
+		
+		int result = 0;
+		
+		try {
+			result = adminService.updateWine(wine);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		if(result > 0) {
+			ra.addFlashAttribute("alertMsg", wine.getWineName()+"수정 성공 !!");
+		}else {
+			ra.addFlashAttribute("alertMsg", "수정 실패...");
+		}
+		
+		return "redirect:/admin/adminPage";
 	}
 	
+//	@PostMapping("/enrollWine")
+//	public String insertWine(
+//			Characteristic characteristic,
+//			Country country,
+//			Grape grape,
+//			WineImage wineImage,
+//			WineType wineType,
+//			WineExt wineExt,
+//			RedirectAttributes ra,
+//			@RequestParam(value="upfile") MultipartFile upfile
+//			) {
+//		
+//		
+//		if(upfile != null && !upfile.isEmpty()) {
+//			String webpath = "/resources/images/product/";
+//			String serverFolderPath = application.getRealPath(webpath);
+//			File dir = new File(serverFolderPath);
+//			if(!dir.exists()) {
+//				dir.mkdirs();
+//			}
+//			
+//			String changeName = serverFolderPath.replace("\\", "/") + Utils.saveFile(upfile, serverFolderPath);
+//			
+//			wineImage = new WineImage();
+//			wineImage.setChangeName(changeName);
+//			wineImage.setOriginName(upfile.getOriginalFilename());
+//		}
+//		
+//		
+//		wineExt.setWineImage(wineImage);
+//		wineExt.setCharacteristic(characteristic);
+//		
+//		int result = 0;
+//		
+//		try {
+//			result = adminService.insertWine2(wineExt);
+//		} catch (Exception e) {
+//			
+//			e.printStackTrace();
+//		}
+//		
+//		String url = "";
+//		if(result > 0) {
+//			ra.addFlashAttribute("alertMsg", wineExt.getWineName()+"등록 성공 ");
+//			url = "redirect:/admin/enrollWine";
+//		}else {
+//			
+//			url = "/product/productEnrollForm";
+//		}
+//		
+//		
+//		
+//		return url;
+//	}
 	
 
 	
@@ -287,7 +393,6 @@ public class AdminController {
 		
 		info = adminService.selectInfo(infoName);
 		
-		log.info("info : {}", info);
 		
 		map.put("infoName", info.getInfoName());
 		map.put("content", info.getContent());
@@ -308,11 +413,9 @@ public class AdminController {
 	public List<Grape> wineTypeList(
 			WineType wineType
 			){
-		log.info("wineTypeNo : {}", wineType.getWineTypeNo());
 		
 		List<Grape> gList = adminService.grapeList2(wineType.getWineTypeNo());
 		
-		log.info("gList : {}", gList);
 		
 		return gList;
 	}

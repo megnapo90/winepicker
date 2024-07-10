@@ -8,6 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document</title>
 
+
+
 <!-- ===== 공통적으로사용할 라이브러리 추가 ===== -->
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -26,10 +28,8 @@
 <!-- Semantic UI theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
 
+<link rel="stylesheet" href="${contextPath}/resources/css/common.css">
 <style>
-#header{
-	position: relative;
-}
 	li, ul, a {
 		box-sizing: border-box;
 	}
@@ -52,7 +52,6 @@
 		align-items: center;
 		color: white;
 		font-size: 24px;
-		position: relative;
 		top: 0;
 	}
 	
@@ -120,7 +119,6 @@
 		width: 100%;
 		text-align: center;
 		height: 100%;
-		position: relative;
 	}
 	
 	.nav a {
@@ -132,11 +130,10 @@
 		width: 100%;
 		height: 100%;
 		line-height: 55px;
-		position: relative;
 	}
 	
 	#navi>li::after {
-		content: "";
+		/* content: ""; */
 		position: absolute;
 		top: 50%;
 		right: 0;
@@ -144,7 +141,7 @@
 		width: 1px;
 		height: 100%;
 		background-color: white;
-		/
+		
 	}
 	
 	#navi>li:last-child::after {
@@ -196,12 +193,13 @@
 	color: rgb(192, 79, 79);
 	margin: 5px 0;
 }
+
 </style>
 
 </head>
 
 <body>
-	<c:set var="contextPath" value="<%= request.getContextPath() %>" scope="session"/>
+
 	
 	<c:if test="${not empty alertMsg }">
 		<script>
@@ -223,7 +221,7 @@
 		<div class="nav">
 			<ul id="navi">
 				<li><a href="${contextPath}/product/listView">전체 와인</a></li>
-				<li><a href="${contextPath}/info/main">정보글</a></li>
+				<li><a href="${contextPath}/admin/info/main">정보글</a></li>
 			</ul>
 		</div>
 		

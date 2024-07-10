@@ -8,7 +8,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.winepicker.model.vo.Faq;
+import com.kh.winepicker.model.vo.History;
 import com.kh.winepicker.model.vo.User;
+import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.user.model.dao.UserDao;
 
 import lombok.RequiredArgsConstructor;
@@ -18,9 +21,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+	private final UserDao userDao;
 
-	@Autowired
-	private UserDao userDao;
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -43,6 +45,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int idCheck(String userId) {
 		return userDao.idCheck(userId);
+	}
+	
+	public List<Faq> selectFaqList() {
+		return userDao.selectFaqList();
+	}
+
+	@Override
+	public Faq selectFaq(int faqNo) {
+		return userDao.selectFaq(faqNo);
+	}
+
+	@Override
+	public List<Wine> selectMyWishList(int userNo) {
+		return userDao.selectMyWishList(userNo);
+
 	}
 
 	@Override
@@ -69,6 +86,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findUserByEmail(String userEmail) {
 		return userDao.findUserByEmail(userEmail);
+	}
+
+
+  @Override
+	public List<History> selectMyPurchaseList(int userNo) {
+		return userDao.selectMyPurchaseList(userNo);
 	}
 
 

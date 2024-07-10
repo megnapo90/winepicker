@@ -13,32 +13,36 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.winepicker.model.vo.Faq;
+import com.kh.winepicker.model.vo.History;
 import com.kh.winepicker.model.vo.User;
+import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Controller
 @RequestMapping("/user")
-@SessionAttributes({ "loginUser" })
+//@SessionAttributes({"loginUser"})
 @RequiredArgsConstructor
 public class UserController {
 
 	private final BCryptPasswordEncoder encoder;
+
 	private final UserService userService;
 	
 
-//	public UserController(UserService userService, BCryptPasswordEncoder encoder) {
-//		this.userService = userService;
-//		this.encoder = encoder;
-//	}
 
 	@GetMapping("/userList")
 	public String selectUserList(Model model) {
@@ -73,6 +77,12 @@ public class UserController {
 		return "user/newPwd";
 	}
 
+	
+	
+	
+	
+	
+	
 	// 마이페이지로 이동
 	@GetMapping("/myPage")
 	public String showMyPage() {
@@ -81,7 +91,16 @@ public class UserController {
 
 	// 리뷰관리로 이동
 	@GetMapping("/myReview")
-	public String showMyReview() {
+	public String showMyReview(
+			Model model,
+			@ModelAttribute("loginUser") User loginUser
+			) {
+		
+		int userNo = loginUser.getUserNo();
+		List<History> pList = userService.selectMyPurchaseList(userNo);
+		
+		model.addAttribute("purchaseList", pList);
+		
 		return "user/myReview";
 	}
 
@@ -93,16 +112,54 @@ public class UserController {
 
 	// 관심상품으로 이동
 	@GetMapping("/myWishList")
-	public String showMyWishList() {
+	public String selectMyWishList(
+			Model model,
+			@ModelAttribute("loginUser") User loginUser
+			) {
+		int userNo = loginUser.getUserNo();
+		userNo = 1;	//이후 지워야 함.
+		
+		List<Wine> wishList = userService.selectMyWishList(userNo);
+		String path = "resource/images/wine";
+		
+		model.addAttribute("wishList", wishList);
+		model.addAttribute("path", path);
+		
 		return "user/myWishList";
 	}
 
+
 	// mypage 메뉴 중 고객센터로 이동
 	@GetMapping("/callCenter")
-	public String userCallCenter() {
+	public String selectFaqList(
+			Model model
+			) {
+		
+		List<Faq> faqList = userService.selectFaqList();
+		
+		model.addAttribute("faqList", faqList);
+		
+		log.info("faqList ? {}", faqList);
+		
 		return "user/callCenter";
 	}
 
+	@ResponseBody
+	@GetMapping("/faqDetail/{faqNo}")
+	public Faq showFaqContent(
+			@PathVariable("faqNo") int faqNo,
+			Model model
+			) {
+		
+		Faq faq = userService.selectFaq(faqNo);
+		
+		model.addAttribute("faq", faq);
+		
+		log.info("faq ? {}", faq);
+		
+		return faq;
+	}
+	
 	// mypage 메뉴 중 공지사항으로 이동
 	@GetMapping("/userNotice")
 	public String userNotice() {

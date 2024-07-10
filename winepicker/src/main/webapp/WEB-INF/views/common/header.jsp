@@ -12,6 +12,7 @@
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+
 <!-- 부트스트랩에서 제공하고있는 스타일 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <!-- 부트스트랩에서 제공하고있는 스크립트 -->
@@ -47,12 +48,16 @@
 		background: linear-gradient(to right, rgb(29, 29, 59), black,
 			rgb(29, 29, 59));
 		display: flex;
+
 		flex-direction: column;
+
 		justify-content: center;
 		align-items: center;
 		color: white;
 		font-size: 24px;
+
 		position: relative;
+
 		top: 0;
 	}
 	
@@ -178,6 +183,7 @@
 	#navi>li>a:hover+ul, #navi>li>ul:hover {
 		display: flex;
 	}
+
 	.user-actions {
 	position: absolute;
 	top: 10px;
@@ -196,13 +202,22 @@
 	color: rgb(192, 79, 79);
 	margin: 5px 0;
 }
+
 </style>
 
 </head>
 
 <body>
+	<c:if test="${not empty alertMsg }">
+		<script>
+			alertify.alert("서비스 요청 성공", '${alertMsg}');
+		</script>
+		<c:remove var="alertMsg"/>
+	</c:if>
+
+	<c:set var="contextPath" value="<%= request.getContextPath() %>" scope="session"/>
 	<div class="header" id="header">
-		<a href="${contextPath}/" class="header-link">
+		<a href="${contextPath}" class="header-link">
 			<div class="text-container">
 				<div class="left-text">WINE</div>
 				<div class="logo-container">
@@ -211,35 +226,14 @@
 				<div class="right-text">PICKER</div>
 			</div>
 		</a>
-		<div class="nav">
-			<ul id="navi">
-				<li><a href="${contextPath}/product/listView">전체 와인</a></li>
-				<li><a href="${contextPath}/info/main">정보글</a></li>
-			</ul>
-		</div>
-		<div class="user-actions">
-			<c:set var="contextPath" value="<%=request.getContextPath()%>"
-				scope="session" />
-			<c:choose>
-				<c:when test="${empty loginUser}">
-					<!-- 로그인 전이라면 -->
-					<a href="${contextPath}/user/loginPage" class="beforeLogin">로그인</a>
-				</c:when>
-				<c:otherwise>
-					<label>${loginUser.userName}님</label> &nbsp;&nbsp;
-				<c:choose>
-						<c:when test="${loginUser.gradeNo == 0}">
-							<a href="${contextPath}/admin/adminPage">관리자 페이지</a>
-						</c:when>
-						<c:otherwise>
-							<a href="${contextPath}/user/myPage">마이페이지</a>
-						</c:otherwise>
-					</c:choose>
-					<a href="${contextPath}/user/logout">로그아웃</a>
-				</c:otherwise>
-			</c:choose>
-		</div>
 	</div>
+	<div class="nav">
+		<ul id="navi">
+			<li><a href="">전체 와인</a></li>
+			<li><a href="${contextPath}/admin/info/main">정보글</a></li>
+		</ul>
+	</div>
+
 </body>
 
 </html>

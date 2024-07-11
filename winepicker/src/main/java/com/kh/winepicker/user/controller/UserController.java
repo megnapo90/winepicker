@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -105,12 +106,7 @@ public class UserController {
 		return "user/findPwd";
 	}
 
-	@GetMapping("/newPwd")
-	public String newPwd() {
-		return "user/newPwd";
-	}
-
-	// 마이페이지 기본화면 - 주문내역 조회 이동
+	// 마이페이지로 이동
 	@GetMapping("/myPage")
 	public String showMyPage(
 			Model model,
@@ -128,7 +124,7 @@ public class UserController {
 
 		String path = "resource/images/wine";
 		model.addAttribute("path", path);
-		
+	public String showMyPage() {
 		return "user/myPage";
 	}
 	
@@ -192,7 +188,7 @@ public class UserController {
 		
 	
 	
-	// 리뷰관리 페이지 이동
+	// 리뷰관리로 이동
 	@GetMapping("/myReview")
 	public String selectMyPurchaseList(Model model, 
 			@ModelAttribute("loginUser") User loginUser) {
@@ -209,6 +205,7 @@ public class UserController {
 		String path = "resource/images/wine";
 		model.addAttribute("path", path);
 
+	public String showMyReview() {
 		return "user/myReview";
 	}
 
@@ -426,6 +423,7 @@ public class UserController {
 		model.addAttribute("wishList", wishList);
 		model.addAttribute("path", path);
 
+	public String showMyWishList() {
 		return "user/myWishList";
 	}
 
@@ -463,6 +461,7 @@ public class UserController {
 
 		log.info("faqList ? {}", faqList);
 
+	public String userCallCenter() {
 		return "user/callCenter";
 	}
 
@@ -511,6 +510,12 @@ public class UserController {
 		paramMap.put("endDate", formattedEndDate);
 
 			return paramMap;
+	public void sendEmail(String to, String subject, String text) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(to);
+		message.setSubject(subject);
+		message.setText(text);
+		mailSender.send(message);
 	}
 		
 	
@@ -525,11 +530,6 @@ public class UserController {
 	
 	
 	
-	
-	
-	
-	//---------------------------------------------------------------------------------------------------//
-	 
 
 	@PostMapping("/login")
 	public String login(User user, Model model, RedirectAttributes ra, HttpSession session) {
@@ -554,7 +554,8 @@ public class UserController {
 	}
 
 	@PostMapping("/insertUser")
-	public String insertUser(User user, String address, String verificationCode, RedirectAttributes ra, Model model,
+	public String insertUser(@RequestParam("birthDate") String birthDate, @RequestParam("ssnTail") String ssnTail,
+			User user, String address, String verificationCode, RedirectAttributes ra, Model model,
 			HttpSession session) {
 		// 이메일 인증 여부 확인
 		String sessionVerificationCode = (String) session.getAttribute("verificationCode");
@@ -562,11 +563,19 @@ public class UserController {
 			model.addAttribute("errorMsg", "이메일 인증을 먼저 진행해주세요.");
 			return "user/register";
 		}
+		String userSsn = birthDate + "-" + ssnTail;
+
+		// 주민등록번호 유효성 검사
+		if (!isValidSsn(userSsn)) {
+			model.addAttribute("errorMsg", "유효하지 않은 주민등록번호입니다.");
+			return "user/register";
+		}
 
 		// 비밀번호 암호화
 		String encodedPwd = encoder.encode(user.getUserPwd());
 		user.setUserPwd(encodedPwd);
 		user.setAddress(address);
+		user.setUserSsn(userSsn);
 
 		// 사용자 정보 DB에 저장
 		int result = userService.insertUser(user);
@@ -579,73 +588,77 @@ public class UserController {
 			model.addAttribute("msg", "회원가입 실패. 다시 시도해주세요.");
 			return "user/register";
 		}
+
 	}
 
-	public String generateVerificationCode() {
-		Random random = new Random();
-		int code = 100000 + random.nextInt(900000); // 6자리 인증 코드 생성
-		return String.valueOf(code);
-	}
-
-	public void sendVerificationEmail(String userEmail, String code) throws MessagingException {
-		if (userEmail == null || userEmail.isEmpty()) {
-			throw new IllegalArgumentException("To address must not be null or empty");
+	private boolean isValidSsn(String userSsn) {
+		if (userSsn == null || userSsn.length() != 14) {
+			return false;
 		}
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-		helper.setTo(userEmail);
-		helper.setSubject("회원가입 이메일 인증 코드");
-		helper.setText("인증 코드는 " + code + " 입니다.", true);
-		mailSender.send(message);
-	}
 
-	@PostMapping("/sendVerificationEmail")
-	public String sendVerificationEmail(@RequestParam("userEmail") String userEmail, HttpSession session) {
-		String code = generateVerificationCode();
+		// 생년월일 부분과 7자리 숫자 부분을 분리
+		String birthDate = userSsn.substring(0, 6); // YYMMDD
+		String ssnTail = userSsn.substring(7); // 뒷자리 7자리 숫자
 
 		try {
-			sendVerificationEmail(userEmail, code);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			return "errorPage";
-		}
-		session.setAttribute("verificationCode", code);
-		return "redirect:/user/verifyEmail";
-	}
+			int year = Integer.parseInt(birthDate.substring(0, 2));
+			int month = Integer.parseInt(birthDate.substring(2, 4));
+			int day = Integer.parseInt(birthDate.substring(4, 6));
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(User user, HttpSession session) {
-		String code = generateVerificationCode();
+			// 생년월일 범위 체크 (실제 범위에 따라 수정 필요)
+			if (year < 0 || year > 99 || month < 1 || month > 12 || day < 1 || day > 31) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
 		try {
-			sendVerificationEmail(user.getUserEmail(), code);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-			return "errorPage";
+			int ssn = Integer.parseInt(ssnTail.replaceAll("-", "")); // '-' 제거하고 숫자로 변환
+			if (ssn < 0) {
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			return false;
 		}
-		session.setAttribute("verificationCode", code);
-		session.setAttribute("user", user); // 사용자 정보를 세션에 저장
-		return "redirect:/user/verifyEmail"; // 이메일 인증 페이지로 리디렉션
+
+		return true;
 	}
 
-	@GetMapping("/verifyEmail")
-	public String verifyEmailPage() {
-		return "user/verifyEmail"; // verifyEmail.jsp 혹은 verifyEmail.html 등 페이지의 실제 경로로 수정해야 함
+	@PostMapping("/sendVerificationCode")
+	@ResponseBody
+	public ResponseEntity<String> sendVerificationCode(@RequestParam("userEmail") String userEmail,
+			HttpSession session) {
+		// 임의의 인증 코드 생성 (여기서는 6자리 숫자로 생성)
+		String verificationCode = String.valueOf((int) (Math.random() * 900000) + 100000);
+
+		// 이메일로 인증 코드 전송 (여기서는 콘솔에 출력)
+		System.out.println("이메일 주소: " + userEmail);
+		System.out.println("인증 코드: " + verificationCode);
+		sendEmail(userEmail, "WINEPICKER 회원가입 인증 코드", "인증 코드: " + verificationCode);
+
+		// 세션에 인증 코드 저장
+		session.setAttribute("verificationCode", verificationCode);
+
+		return ResponseEntity.ok("인증 코드가 이메일로 전송되었습니다.");
 	}
 
 	@PostMapping("/verifyEmail")
 	public String verifyEmail(@RequestParam("verificationCode") String code, HttpSession session, Model model) {
+		// 세션에서 인증 코드 가져오기
 		String sessionCode = (String) session.getAttribute("verificationCode");
 
 		if (sessionCode != null && sessionCode.equals(code)) {
-			// Code matches, continue with registration
+			// 코드가 일치하는 경우, 등록 처리 진행
 			User user = (User) session.getAttribute("user");
-			userService.save(user); // Save user to database
-			session.removeAttribute("verificationCode"); // Remove verification code from session
-			session.removeAttribute("user"); // Remove user from session
-			return "redirect:/"; // Redirect to main page or success page
+			userService.save(user); // 사용자 정보 저장
+			session.removeAttribute("verificationCode"); // 세션에서 인증 코드 제거
+			session.removeAttribute("user"); // 세션에서 사용자 정보 제거
+			return "redirect:/"; // 메인 페이지 또는 성공 페이지로 리다이렉트
 		} else {
-			model.addAttribute("errorMsg", "Verification code is incorrect. Please try again.");
-			return "user/register"; // Redirect to registration page
+			// 코드가 일치하지 않는 경우, 에러 메시지와 함께 등록 페이지로 리다이렉트
+			model.addAttribute("errorMsg", "인증 코드가 올바르지 않습니다. 다시 시도해주세요.");
+			return "user/register"; // 등록 페이지로 리다이렉트
 		}
 	}
 
@@ -687,16 +700,15 @@ public class UserController {
 	}
 
 	@PostMapping("/findId")
-	public ResponseEntity<Map<String, String>> findId(String userName, String userEmail) {
-
-		Map<String, String> response = new HashMap<>();
+	public ResponseEntity<Map<String, Object>> findId(String userName, String userEmail) {
+		Map<String, Object> response = new HashMap<>();
 		try {
-			String foundUserId = userService.findId(userName, userEmail);
+			List<String> foundUserIds = userService.findId(userName, userEmail);
 
-			if (foundUserId != null) {
-				response.put("user", foundUserId);
+			if (!foundUserIds.isEmpty()) {
+				response.put("user", foundUserIds);
 			} else {
-				response.put("msg", "등록된 이메일이 없습니다. 이메일을 확인해주세요.");
+				response.put("msg", "등록된 이메일이 없거나 사용자 이름과 이메일이 일치하는 계정이 없습니다.");
 			}
 		} catch (Exception e) {
 			response.put("errorMsg", "아이디 찾기 과정에서 오류가 발생했습니다.");
@@ -705,20 +717,53 @@ public class UserController {
 	}
 
 	@PostMapping("/findPwd")
-	public ResponseEntity<Map<String, String>> findPwd(String userId, String userEmail) {
-		Map<String, String> response = new HashMap<>();
-		try {
-			String foundUserPwd = userService.findPwd(userId, userEmail);
-
-			if (foundUserPwd != null) {
-				response.put("user", foundUserPwd);
-			} else {
-				response.put("msg", "등록된 이메일이 없습니다. 이메일을 확인해주세요.");
-			}
-		} catch (Exception e) {
-			response.put("errorMsg", "아이디 찾기 과정에서 오류가 발생했습니다.");
+	@ResponseBody
+	public Map<String, Object> findPassword(String userId, String userEmail) {
+		Map<String, Object> resultMap = new HashMap<>();
+		String foundUserId = userService.findPwd(userId, userEmail);
+		if (foundUserId != null) {
+			resultMap.put("success", true);
+			resultMap.put("userId", foundUserId);
+		} else {
+			resultMap.put("success", false);
+			resultMap.put("message", "입력하신 정보로 사용자를 찾을 수 없습니다.");
 		}
-		return ResponseEntity.ok(response);
+		return resultMap;
 	}
 
+	// 비밀번호 재설정 폼 페이지 이동
+	@GetMapping("/resetPwdForm")
+	public String resetPasswordForm(@RequestParam("userId") String userId, Model model) {
+		model.addAttribute("userId", userId);
+		return "user/resetPwd"; // resetPwd.jsp로 이동
+	}
+
+	// 비밀번호 변경 로직
+	@PostMapping("/resetPwd")
+	public String resetPassword(String userId, String newPwd, String confirmPwd,
+			RedirectAttributes redirectAttributes) {
+		if (!newPwd.equals(confirmPwd)) {
+			redirectAttributes.addFlashAttribute("errorMsg", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+			return "redirect:/user/resetPwdForm?userId=" + userId;
+		}
+
+		// 새로운 비밀번호를 암호화
+		String encodedPwd = encoder.encode(newPwd);
+
+		// 사용자의 비밀번호를 업데이트
+		boolean passwordUpdated = userService.updatePassword(userId, encodedPwd);
+
+		if (passwordUpdated) {
+			return "redirect:/user/newPwdSuccess";
+		} else {
+			redirectAttributes.addFlashAttribute("errorMsg", "비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+			return "redirect:/user/resetPwdForm?userId=" + userId;
+		}
+	}
+
+	// 비밀번호 변경 완료 페이지
+	@GetMapping("/newPwdSuccess")
+	public String newPasswordSuccess() {
+		return "user/newPwdSuccess"; // newPwdSuccess.jsp로 이동
+	}
 }

@@ -3,10 +3,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>findPwd</title>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>비밀번호 변경</title>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -47,8 +46,7 @@ body {
 	margin-bottom: 20px;
 }
 
-.login-container input[type="text"], .login-container input[type="password"]
-	{
+.login-container input[type="password"] {
 	width: 90%;
 	padding: 10px;
 	margin: 10px 0;
@@ -83,10 +81,12 @@ body {
 	color: black;
 }
 </style>
+</head>
 <body>
 	<main>
 		<div class="login-bar">
-			<form id="findPwdForm">
+			<form id="resetPwdForm" action="${contextPath}/user/resetPwd"
+				method="post">
 				<img
 					src="https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png"
 					class="background" />
@@ -94,11 +94,12 @@ body {
 					<a href="${contextPath}/"> <img
 						src="https://image-resource.creatie.ai/131184926775412/131184970815644/b6328a368ee28caebfb3fbefb8a983dc.png"
 						alt="Logo" class="logo" />
-					</a> <input type="text" id="userId" name="userId" placeholder="아이디"
-						required /> <input type="text" id="userEmail" name="userEmail"
-						placeholder="가입시 사용한 이메일" required />
-					<button type="button" onclick="findPwd()">비밀번호 찾기</button>
-					<a href="${contextPath}/user/register">회원가입</a>
+					</a> <input type="hidden" id="userId" name="userId"
+						value="${param.userId}" /> <input type="password" id="newPwd"
+						name="newPwd" placeholder="새 비밀번호 입력" required /> <input
+						type="password" id="confirmPwd" name="confirmPwd"
+						placeholder="새 비밀번호 확인" required />
+					<button type="button" onclick="submitForm()">비밀번호 변경</button>
 				</div>
 			</form>
 		</div>
@@ -106,32 +107,30 @@ body {
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 	<script>
-		function findPwd() {
-			const userId = document.getElementById("userId").value;
-			const userEmail = document.getElementById("userEmail").value;
-			$
-					.ajax({
-						url : "${contextPath}/user/findPwd",
-						type : 'POST',
-						data : {
-							userId : userId,
-							userEmail : userEmail
-						},
-						success : function(response) {
-							if (response.success) {
-								window.location.href = "${contextPath}/user/resetPwdForm?userId="
-										+ userId;
-							} else {
-								alert(response.message
-										|| "해당 정보로 등록된 계정이 없습니다.");
-							}
-						},
-						error : function(xhr, status, error) {
-							alert("비밀번호 찾기 과정에서 오류가 발생했습니다.");
-						}
-					});
+		function submitForm() {
+			var newPassword = document.getElementById("newPwd").value;
+			var confirmPwd = document.getElementById("confirmPwd").value;
+
+			// 비밀번호 확인
+			if (newPassword !== confirmPwd) {
+				alert("입력한 비밀번호가 일치하지 않습니다.");
+				return;
+			}
+
+			// 비밀번호 유효성 검사
+			if (!validateNewPassword(newPassword)) {
+				alert("새 비밀번호는 영문자와 숫자를 포함하여 8글자 이상이어야 합니다.");
+				return;
+			}
+
+			// Form submit
+			document.getElementById("resetPwdForm").submit();
+		}
+
+		function validateNewPassword(pwd) {
+			var pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 영문자와 숫자 포함 8글자 이상
+			return pattern.test(pwd);
 		}
 	</script>
 </body>

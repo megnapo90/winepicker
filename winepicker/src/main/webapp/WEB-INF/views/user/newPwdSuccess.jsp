@@ -2,10 +2,11 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>findPwd</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>findId</title>
 </head>
 <style>
 body {
@@ -83,10 +84,17 @@ body {
 	color: black;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
 <body>
+
 	<main>
 		<div class="login-bar">
-			<form id="findPwdForm">
+
+			<form id="findIdForm">
 				<img
 					src="https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png"
 					class="background" />
@@ -94,45 +102,16 @@ body {
 					<a href="${contextPath}/"> <img
 						src="https://image-resource.creatie.ai/131184926775412/131184970815644/b6328a368ee28caebfb3fbefb8a983dc.png"
 						alt="Logo" class="logo" />
-					</a> <input type="text" id="userId" name="userId" placeholder="아이디"
-						required /> <input type="text" id="userEmail" name="userEmail"
-						placeholder="가입시 사용한 이메일" required />
-					<button type="button" onclick="findPwd()">비밀번호 찾기</button>
-					<a href="${contextPath}/user/register">회원가입</a>
-				</div>
+					</a>
+					<h3>비밀번호 변경이 완료되었습니다!</h3>
+					<p>새로운 비밀번호로 로그인해주세요.</p>
+
+					<p>
+						<a href="${pageContext.request.contextPath}/user/loginPage">로그인
+							페이지로 이동하기</a>
+					</p>
 			</form>
 		</div>
 	</main>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-	<script>
-		function findPwd() {
-			const userId = document.getElementById("userId").value;
-			const userEmail = document.getElementById("userEmail").value;
-			$
-					.ajax({
-						url : "${contextPath}/user/findPwd",
-						type : 'POST',
-						data : {
-							userId : userId,
-							userEmail : userEmail
-						},
-						success : function(response) {
-							if (response.success) {
-								window.location.href = "${contextPath}/user/resetPwdForm?userId="
-										+ userId;
-							} else {
-								alert(response.message
-										|| "해당 정보로 등록된 계정이 없습니다.");
-							}
-						},
-						error : function(xhr, status, error) {
-							alert("비밀번호 찾기 과정에서 오류가 발생했습니다.");
-						}
-					});
-		}
-	</script>
 </body>
 </html>

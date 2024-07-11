@@ -4,7 +4,6 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="user">
-
 	<select id="selectUserList"> SELECT * FROM USER
 	</select>
 
@@ -39,28 +38,13 @@
 	</select>
 
 	<select id="checkEmail" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM USER WHERE EMAIL = #{userEmail}
+		SELECT COUNT(*)
+		FROM USER
+		WHERE USER_EMAIL = #{userEmail}
 	</select>
 
 
 	<select id="loginUser" parameterType="User" resultType="User">
-		SELECT * FROM USER WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
-	</select>
-	
-	 <select id="findId" parameterType="map" resultType="String">
-        SELECT USER_ID
-        FROM "USER"
-        WHERE USER_NAME = #{userName}
-        AND USER_EMAIL = #{userEmail}
-    </select>
-    
-    <select id="findPwd" parameterType="map" resultType="string">
-        SELECT USER_PWD
-        FROM "USER"
-        WHERE USER_Id = #{userId}
-        AND USER_EMAIL = #{userEmail}
-    </select>
-
 	<select id="selectFaqList" resultType="faq">
 		SELECT *
 		FROM FAQ	
@@ -94,6 +78,7 @@
 			LEFT JOIN WINE USING (WINE_NO)
 			LEFT JOIN WINE_IMAGE USING (WINE_NO)
 		WHERE USER_NO = #{userNo}
+		FROM USER WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
 	</select>
 	
 	<delete id="deleteWishItem">
@@ -125,6 +110,7 @@
 	</resultMap>
 	
 	<select id="selectMyPurchaseList" resultMap="historyExtMap">
+	<select id="findId" parameterType="map" resultType="String">
 		SELECT
 			H.ORDER_NO,
 		    H.USER_NO,
@@ -152,6 +138,10 @@
 			LEFT JOIN REVIEW R ON (H.ORDER_NO = R.ORDER_NO)
 		WHERE ORDER_DATE LIKE SYSDATE
 			AND H.USER_NO = #{userNo}
+		USER_ID
+		FROM "USER"
+		WHERE USER_NAME = #{userName}
+		AND USER_EMAIL = #{userEmail}
 	</select>
 	
 	<resultMap type="historyExt" id="historyExtMap">
@@ -190,6 +180,7 @@
 	</resultMap>
 	
 	<select id="searchMyPurchaseList" resultMap="historyExtMap">
+	<select id="findPwd" parameterType="map" resultType="String">
 		SELECT
 			H.ORDER_NO,
 		    H.USER_NO,
@@ -218,6 +209,10 @@
 		WHERE TO_CHAR(ORDER_DATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN #{startDate} AND #{endDate}
 			AND USER_NO = #{userNo}
 		ORDER BY ORDER_DATE DESC
+		USER_PWD
+		FROM "USER"
+		WHERE USER_ID = #{userId}
+		AND USER_EMAIL = #{userEmail}
 	</select>
 	
 	<select id="selectReviewItem" resultMap="historyExtMap" >
@@ -248,6 +243,11 @@
 			LEFT JOIN REVIEW R ON (H.ORDER_NO = R.ORDER_NO)
 		WHERE H.ORDER_NO = #{orderNo}
 			
+	<select id="isUserValid" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM "USER"
+		WHERE USER_ID = #{userId}
+		AND USER_EMAIL = #{userEmail}
 	</select>
 	
 	<insert id="insertMyReview" parameterType="review" useGeneratedKeys="true" >
@@ -283,6 +283,9 @@
 			MODIFY_DATE = SYSDATE
 		WHERE ORDER_NO = #{orderNo}
 	
+	<update id="updateUserPassword" parameterType="map">
+		UPDATE "USER" SET
+		USER_PWD = #{newPwd} WHERE USER_ID = #{userId}
 	</update>
 	
 	<delete id="deleteMyReview">
@@ -291,7 +294,5 @@
 		WHERE ORDER_NO = #{orderNo}
 	
 	</delete>
-	
-	
 
 </mapper>

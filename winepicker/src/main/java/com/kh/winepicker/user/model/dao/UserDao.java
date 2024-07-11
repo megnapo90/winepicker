@@ -1,5 +1,6 @@
 package com.kh.winepicker.user.model.dao;
 
+import com.kh.winepicker.model.vo.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +21,6 @@ public interface UserDao {
 	List<User> selectUserList();
 
 	int idCheck(String userId);
-
-	String findId(String userName, String userEmail);
 
 	String findPwd(String userId, String userEmail);
 
@@ -51,8 +50,13 @@ public interface UserDao {
 	int updateMyReview(HashMap<String, Object> paramMap);
 
 	int deleteMyReview(int orderNo);
+	List<String> findId(String userName, String userEmail);
 
+	boolean isUserValid(String userId, String userEmail);
 
+	boolean updateUserPassword(String userId, String newPwd);
+	
+	
 
 
 }

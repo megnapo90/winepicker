@@ -12,6 +12,8 @@ import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.Wish;
 
+import java.util.List;
+
 public interface UserService {
 
 	User login(User user);
@@ -38,18 +40,25 @@ public interface UserService {
 	List<History> searchMyPurchaseList(HashMap<String, String> paramMap);
 
 	int insertMyReview(HashMap<String, Object> paramMap);
-
-	History selectReviewItem(int orderNo);
-
-	Review selectReviewOne(int orderNo);
-
-	int updateMyReview(HashMap<String, Object> paramMap);
-
-	int deleteMyReview(int orderNo);
-
 	String findPwd(String userId, String userEmail);
 
+	History selectReviewItem(int orderNo);
 	void sendSimpleMessage(String userEmail, String subject, String text);
+
+	Review selectReviewOne(int orderNo);
+	User findUserByEmail(String userEmail);
+
+	int updateMyReview(HashMap<String, Object> paramMap);
+	void save(User user);
+
+	int deleteMyReview(int orderNo);
+	List<String> findId(String userName, String userEmail);
+
+	String findPwd(String userId, String userEmail);
+	boolean validateUser(String userId, String userEmail);
+
+	void sendSimpleMessage(String userEmail, String subject, String text);
+	boolean updatePassword(String userId, String newPwd);
 
 	User findUserByEmail(String userEmail);
 

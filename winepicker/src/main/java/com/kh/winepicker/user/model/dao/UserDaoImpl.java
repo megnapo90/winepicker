@@ -24,8 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class UserDaoImpl implements UserDao {
 
 	@Autowired
-	private SqlSession sqlSession;
-	
+	private SqlSessionTemplate sqlSession;
 
 	@Override
 	public int insertUser(User user) {
@@ -41,19 +40,10 @@ public class UserDaoImpl implements UserDao {
 	public List<User> selectUserList() {
 		return sqlSession.selectList("user.selectUserList");
 	}
-  
+
 	@Override
 	public int idCheck(String userId) {
 		return sqlSession.selectOne("user.idCheck", userId);
-	}
-
-	@Override
-	public String findId(String userName, String userEmail) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("userName", userName);
-		paramMap.put("userEmail", userEmail);
-
-		return sqlSession.selectOne("user.findId", paramMap);
 	}
 
 	@Override
@@ -61,7 +51,6 @@ public class UserDaoImpl implements UserDao {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("userId", userId);
 		paramMap.put("userEmail", userEmail);
-
 		return sqlSession.selectOne("user.findPwd", paramMap);
 	}
 
@@ -122,18 +111,33 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public Review selectReviewOne(int orderNo) {
 		return sqlSession.selectOne("user.selectReviewOne", orderNo);
+	public List<String> findId(String userName, String userEmail) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userName", userName);
+		paramMap.put("userEmail", userEmail);
+		return sqlSession.selectList("user.findId", paramMap);
 	}
 
 	@Override
 	public int updateMyReview(HashMap<String, Object> paramMap) {
 		return sqlSession.update("user.updateMyReview", paramMap);
+	public boolean isUserValid(String userId, String userEmail) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userId", userId);
+		paramMap.put("userEmail", userEmail);
+		Integer count = sqlSession.selectOne("user.isUserValid", paramMap);
+		return count != null && count > 0;
 	}
 
 	@Override
 	public int deleteMyReview(int orderNo) {
 		return sqlSession.delete("user.deleteMyReview", orderNo);
+	public boolean updateUserPassword(String userId, String newPwd) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userId", userId);
+		paramMap.put("newPwd", newPwd);
+		int rowsAffected = sqlSession.update("user.updateUserPassword", paramMap);
+		return rowsAffected > 0;
 	}
-
-	
 
 }

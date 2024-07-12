@@ -13,7 +13,9 @@ import com.kh.winepicker.common.Utils;
 import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.History;
+import com.kh.winepicker.model.vo.HistoryExt;
 import com.kh.winepicker.model.vo.ProductFilters;
+import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
@@ -169,20 +171,97 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.searchByVolume(params);
 	}
 
+	
 	@Override
-	public WineExt selectProduct(int wineNo) {
-		return productDao.selectProduct(wineNo);
+	public List<WineExt> orderPage(Map<String, Object> params) {
+		return productDao.orderPage(params);
 	}
-
+	
+	
+	
 	@Override
-	public List<WineExt> orderWineList(int wineNo) {
-		return productDao.orderWineList(wineNo);
-	}
+	@Transactional(rollbackFor = { Exception.class })
+	public int orderPage2(HistoryExt historyExt) {
+	
+		int bQuantity=historyExt.getQty();
+		int wineNo=historyExt.getWineNo();
+		int pQuantity=selectWine(wineNo).getQuantity();
+		Wine wine = selectWine(wineNo);
+		
+		
+		
+		 if (bQuantity > pQuantity) {
+		        throw new RuntimeException("주문 수량이 재고 수량을 초과했습니다.");
+		    }
+		 int result = productDao.orderPage2(historyExt);
+		 
+		 
+		 if (result == 0) {
+		        throw new RuntimeException("상품 구매 등록 실패");
+		    }
+		 	
+		 	wine.setQuantity(bQuantity);
+		 	
+		 	
+		    result *= productDao.updateProductQty(wine);
 
+		    return result;
+		
+	}
 
 	
 
-
-
-
+	
+	
 }
+
+	
+
+//	@Override
+//	@Transactional(rollbackFor = { Exception.class })
+//	public int insertHistory(HistoryExt he, User user) {
+//		String userName = he.getUser().getUserName();
+//		String eMail = he.getUser().getUserEmail();
+//		String address = he.getUser().getAddress();
+//		String phone = he.getUser().getPhone();
+//		
+//		userName = Utils.XSSHandling(userName);
+//		eMail = Utils.XSSHandling(eMail);
+//		address = Utils.XSSHandling(address);
+//		phone = Utils.XSSHandling(phone);
+//		
+//		user.setUserName(userName);
+//		user.setUserEmail(eMail);
+//		user.setAddress(address);
+//		user.setPhone(phone);
+//		
+//		
+//		int result = productDao.insertHistory(he);
+//		if(result == 0 ) {
+//			throw new RuntimeException("주문 실패");
+//		}
+//		int qty = he.getWine().getQuantity();
+//		
+//		result *= productDao.updateWineQty(qty);
+//		
+//		
+//		
+//		
+//		return 0;
+//		
+//		
+//	}
+//
+//	
+
+
+//	@Override
+//	@Transactional(rollbackFor = { Exception.class })
+//	public void insertHistory(HistoryExt he) {
+//		productDao.insertHistory(he);
+//		for(WineExt wine : he.getWines()) {
+//			wine.setOrderNo(he.getOrderNo());
+//			productDao.updateQty(wine);
+//		}
+//	}
+

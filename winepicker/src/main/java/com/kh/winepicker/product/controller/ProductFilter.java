@@ -35,23 +35,38 @@ public class ProductFilter {
 	private final ResourceLoader resourceLoader;
 	
 	
-	@GetMapping("/product/searchByVolume")
+	@GetMapping("/product/searchByAjax")
     public List<WineExt>searchByVolume(@RequestParam(value="volumes", required = false) List<Integer> volumes,
     		@RequestParam(value="countries", required = false) List<Integer> countries,
+    		@RequestParam(value="types", required = false) List<Integer> types,
+    		@RequestParam(value="redSubTypes", required = false) List<Integer> redSubTypes,
+    		@RequestParam(value="whiteSubTypes", required = false) List<Integer> whiteSubTypes,
+    		@RequestParam(value="sparklingSubTypes", required = false) List<Integer> sparklingSubTypes,
+    		
+    		
     		Model model
     		
     		) {
 		
 		if (volumes == null) volumes = new ArrayList<>();
 	    if (countries == null) countries = new ArrayList<>();
-		
+	    if (types == null) types = new ArrayList<>();
+	    if (redSubTypes == null) redSubTypes = new ArrayList<>();
+	    if (whiteSubTypes == null) whiteSubTypes = new ArrayList<>();
+	    if (sparklingSubTypes == null) sparklingSubTypes = new ArrayList<>();
+	    
+	    
+	    
 		Map<String, Object> params = new HashMap<>();
 	    params.put("volumes", volumes);
 	    params.put("countries", countries);
-		
-	    System.out.println("Received volumes: " + volumes);  
-	    System.out.println("Received types: " + countries);  
-		
+	    params.put("types", types);
+	    params.put("redSubTypes", redSubTypes);
+	    params.put("whiteSubTypes", whiteSubTypes);
+	    params.put("sparklingSubTypes", sparklingSubTypes);
+	   
+	    
+	  
 	    
 		List<WineExt> result = productService.searchByVolume(params);
 		

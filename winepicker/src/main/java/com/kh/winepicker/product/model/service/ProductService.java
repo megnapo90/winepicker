@@ -6,7 +6,9 @@ import java.util.Map;
 import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.History;
+import com.kh.winepicker.model.vo.HistoryExt;
 import com.kh.winepicker.model.vo.ProductFilters;
+import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
@@ -33,12 +35,13 @@ public interface ProductService {
 
 	List<WineExt> searchByVolume(Map<String, Object> params);
 
-	WineExt selectProduct(int wineNo);
+	List<WineExt> orderPage(Map<String, Object> params);
 
-	List<WineExt> orderWineList(int wineNo);
+	int orderPage2(HistoryExt historyExt);
 
 	
 
+	
 	
 	
 

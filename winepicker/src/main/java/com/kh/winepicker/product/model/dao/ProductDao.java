@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.History;
+import com.kh.winepicker.model.vo.HistoryExt;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
@@ -26,8 +27,6 @@ public interface ProductDao {
 
 	WineImage getWineNum(int wineNo);
 
-	
-
 	int selectListCount(Map<String, Object> paramMap);
 
 	List<WineExt> getWineList(PageInfo pi, Map<String, Object> paramMap);
@@ -40,9 +39,14 @@ public interface ProductDao {
 
 	List<WineExt> searchByVolume(Map<String, Object> params);
 
-	WineExt selectProduct(int wineNo);
+	List<WineExt> orderPage(Map<String, Object> params);
 
-	List<WineExt> orderWineList(int wineNo);
+	int updateProductQty(Wine wine);
+
+	int orderPage2(HistoryExt historyExt);
+
+
+	
 
 	
 

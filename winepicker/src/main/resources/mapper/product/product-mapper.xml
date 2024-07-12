@@ -134,7 +134,7 @@
 	</delete>
 	
 	<!-- 유저가 보는 와인 리스트 -->
-	<select id="getwineList" resultMap="wineExtMap">
+	<select id="getwineList"  resultMap="wineExtMap" >
 		SELECT
 		W.WINE_NO,
 		W.WINE_NAME,
@@ -153,7 +153,11 @@
 		C.BITTER,
 		C.SOUR,
 		G.GRAPE_NAME,
-		CT.COUNTRY_NAME
+		CT.COUNTRY_NAME,
+		
+		
+		WINE_TYPE_NO
+		
 		FROM WINE W
 		LEFT JOIN
 		WINE_IMAGE WI
@@ -169,6 +173,15 @@
 		COUNTRY CT ON CT.COUNTRY_NO=W.COUNTRY_NO
 		WHERE
 		W.STATUS = 'Y'
+       
+       <if test="wineNos != null and wineNos.size() > 0">
+        AND W.WINE_NO IN
+           <foreach item="wineNo" collection="wineNos" open="(" close=")" separator=",">
+            #{wineNo}
+        </foreach>
+       </if>
+       
+		
 		<if test="minPrice != null">
             AND W.PRICE >= #{minPrice}
         </if>
@@ -176,8 +189,6 @@
             AND #{maxPrice}>= W.PRICE 
         </if>
        
-		
-		
 		
 		<if test="keyword != null and keyword != ''">
 			AND
@@ -270,13 +281,19 @@
             C.BITTER,
             C.SOUR,
             G.GRAPE_NAME,
-            CT.COUNTRY_NAME
+            CT.COUNTRY_NAME,
+            WT.WINE_TYPE_NO,
+    		WT.WINE_TYPE_NAME
         FROM WINE W
         LEFT JOIN WINE_IMAGE WI ON WI.WINE_NO = W.WINE_NO
         LEFT JOIN CHARACTERISTIC C ON C.WINE_NO = W.WINE_NO
         LEFT JOIN GRAPE G ON G.GRAPE_NO = W.GRAPE_NO
         LEFT JOIN COUNTRY CT ON CT.COUNTRY_NO = W.COUNTRY_NO
+        LEFT JOIN WINE_TYPE WT ON WT.WINE_TYPE_NO = G.WINE_TYPE_NO
+       
         WHERE W.STATUS = 'Y'
+        
+       
         <if test="volumes != null and volumes.size() > 0">
             AND W.VOLUME IN
             <foreach item="volume" collection="volumes" open="(" close=")" separator=",">
@@ -289,6 +306,41 @@
                 #{country}
             </foreach>
         </if>
+         <if test="types != null and types.size() > 0">
+            AND WT.WINE_TYPE_NO IN
+            <foreach item="winetype" collection="types" open="(" close=")" separator=",">
+                #{wineTypeNo}
+            </foreach>
+        </if>
+        <if test="redSubTypes != null and redSubTypes.size() > 0">
+            AND W.GRAPE_NO IN
+            <foreach item="grapeNo" collection="redSubTypes" open="(" close=")" separator=",">
+                #{grapeNo}
+            </foreach> 
+        </if>
+         <if test="whiteSubTypes != null and whiteSubTypes.size() > 0">
+            AND W.GRAPE_NO IN
+            <foreach item="grapeNo" collection="whiteSubTypes" open="(" close=")" separator=",">
+                #{grapeNo}
+            </foreach> 
+        </if>
+         <if test="sparklingSubTypes != null and sparklingSubTypes.size() > 0">
+            AND W.GRAPE_NO IN
+            <foreach item="grapeNo" collection="sparklingSubTypes" open="(" close=")" separator=",">
+                #{grapeNo}
+            </foreach> 
+        </if>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     </select>
     
@@ -338,6 +390,98 @@
 	
 	
 	</select>
+ 	
+ 	
+ 	<!-- 구매 히스토리 등록 -->
+ 	
+ 	<resultMap type="historyExt" id="historyExtMap">
+		
+		<id column="ORDER_NO" property="orderNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="WINE_NO" property="wineNo"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="D_STATUS" property="dStatus"/>
+		<result column="C_STATUS" property="cStatus"/>
+		<result column="QTY" property="qty"/>
+		<result column="DELIVERY_ADDRESS" property="deliveryAddress"/>
+
+		<association property="wineImage">
+			<result column="ORIGIN_NAME" property="originName"/>
+			<result column="CHANGE_NAME" property="changeName"/>
+		</association>
+		
+		<association property="wine" columnPrefix="wine_">
+			<id column="WINE_NO" property="wineNo" />
+			<result column="WINE_NAME" property="wineName"/>
+			<result column="PRICE" property="price"/>
+			<result column="QUANTITY" property="quantity"/>
+			<result column="CONTENT" property="content"/>
+			<result column="STATUS" property="status"/>
+			
+		</association>
+		
+		<association property="review" columnPrefix="review_">
+			<id column="REVIEW_NO" property="reviewNo"/>
+			<result column="ORDER_NO" property="orderNo"/>
+			<result column="CONTENT" property="content"/>
+			<result column="STATUS" property="status"/>
+		</association>
+
+		<association column="user" property="user">
+			<id column="USER_NO" property="userNo"/>
+			<id column="GRADE_NO" property="gradeNo"/>
+			<id column="USER_ID" property="userId"/>
+			<id column="USER_PWD" property="userPwd"/>
+			<id column="USER_NAME" property="userName"/>
+			<id column="USER_EMAIL" property="userEmail"/>
+			<id column="USER_SSN" property="userSsn"/>
+			<id column="PHONE" property="phone"/>
+			<id column="ADDRESS" property="address"/>
+			<id column="ENROLLDATE" property="enrollDate"/>
+			<id column="MODIFYDATE" property="modifyDate"/>
+			<id column="STATUS" property="status"/>
+			<id column="VERIFIED" property="verified"/>
+		
+		</association>
+
+		
+	</resultMap>
+	
+ 	<insert id="insertHistroy">
+ 		INSERT INTO HISTORY
+ 		( 
+ 			ORDER_NO,
+			USER_NO,
+			WINE_NO,
+			ORDER_DATE,
+			D_STATUS,
+			C_STATUS,
+			QTY,
+			DELIVERY_ADDRESS
+			
+			)VALUES(
+			1,
+			#{userNo},
+			#{wineNo},
+			DEFAULT,
+			DEFAULT,
+			DEFAULT,
+			#{qty},
+			#{deliveryAddress}
+				)
+ 	</insert>
+ 	
+ 	<update id="updateProductQty" parameterType="wine">
+    UPDATE WINE
+    SET QUANTITY = QUANTITY - #{quantity}
+    WHERE WINE_NO = #{wineNo}
+	</update>
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
  	
  	
  	

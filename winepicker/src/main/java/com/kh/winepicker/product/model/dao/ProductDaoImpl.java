@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.History;
+import com.kh.winepicker.model.vo.HistoryExt;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
@@ -93,18 +95,23 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public WineExt selectProduct(int wineNo) {
-		return sqlSession.selectOne("product.selectProduct", wineNo);
+	public List<WineExt> orderPage(Map<String, Object> params) {
+		return sqlSession.selectList("product.getwineList", params);
 	}
 
 	@Override
-	public List<WineExt> orderWineList(int wineNo) {
-		return sqlSession.selectList("product.orderWineList", wineNo);
+	public int updateProductQty(Wine wine) {
+		return sqlSession.update("product.updateProductQty",wine );
+	}
+
+	@Override
+	public int orderPage2(HistoryExt historyExt) {
+		return sqlSession.insert("product.insertHistroy",historyExt);
 	}
 
 	
-	
 
+	
 
 	
 

@@ -1,6 +1,7 @@
 package com.kh.winepicker.model.vo;
 
 import java.sql.Date;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,5 @@ public class History {
 	private int qty;
 	private String deliveryAddress;
 	private int price;
-	private int wineCount;
 	
 }

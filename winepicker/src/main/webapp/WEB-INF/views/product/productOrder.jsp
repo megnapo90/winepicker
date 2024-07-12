@@ -118,46 +118,52 @@ h1, h2 {
 
 <body>
 <div class="order-page-container">
+
     <h1>주문 페이지</h1>
-    <c:forEach var="wineExt" items="${list }">
+    
+    <form action="order" method="post">
+    <c:forEach var="wineExt" items="${wines }">
+    	
         <div class="product-info" data-href="detail/${wineExt.wineNo }" data-price="${wineExt.price}" data-wine-no="${wineExt.wineNo }">
             <img class="product-image" src="/winepicker/resources/images/product/${wineExt.wineImage.changeName}"
                  alt="${wineExt.wineName} 이미지">
             <div class="product-details">
                 <h2 class="product-name">${wineExt.wineName}</h2>
-                <p class="product-price" id="formattedPrice-${wineExt.wineNo}">
-                    ${wineExt.price * wineCount}
+                <p class="product-price" id="formattedPrice">
+                    ${wineExt.price * quantity}
                 </p>
                 <p>
                     <label for="quantity-${wineExt.wineNo}">수량:</label>
-                    <input type="number" id="quantity-${wineExt.wineNo}" name="quantity" min="1" value="${wineCount }" required
+                    <input type="number" id="quantity" name="quantities" min="1" value="${wineExt.BQuantities }"  required
                            data-price="${wineExt.price}" data-wine-no="${wineExt.wineNo}">
+                      <input type="hidden" name="wineNos" value="${wineExt.wineNo}">
                 </p>
+                
+                
             </div>
         </div>
     </c:forEach>
-
-        
-        
        
-        <form class="order-form">
+        
             <h2>배송 정보</h2>
             <label for="name">이름:</label>
             <input type="text" id="name" name="name" required>
+            
+             <label for="phone">전화번호:</label>
+        	<input type="text" id="phone" name="phone" class="phone-input" placeholder="예: 010-1234-5678" required>	
 
             <label for="email">이메일:</label>
             <input type="email" id="email" name="email" required>
 
-            <label for="address">주소:</label>
-		           
+            <label for="address">주소:</label>      
 			<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-			<input type="text" id="address" placeholder="주소" required><br>
-			<input type="text" id="postcode" placeholder="우편번호" required>
-			<input type="text" id="detailAddress" placeholder="상세주소입력" required>
+			<input type="text" id="address" name="address" placeholder="주소" required><br>
+			<input type="text" id="postcode" name="postcode" placeholder="우편번호" required>
+			<input type="text" id="detailAddress" name = "detailAddress" placeholder="상세주소입력" required>
 
 
             <button type="submit">주문하기</button>
-        </form>
+           </form>
     </div>
 	
 	
@@ -210,52 +216,16 @@ h1, h2 {
 	        }).open();
 	    }
 	    //카카오 주소등록 끝  
-	    
-	    
+  
 	    //갯수가 변할떄 처리
 	    
-	 
-	     document.addEventListener('DOMContentLoaded', function () {
-	    	 
-	    	    const quantityInputs = document.querySelectorAll('input[name="quantity"]');
-
-	    	    quantityInputs.forEach(input => {
-	    	        const wineNo = input.dataset.wineNo;
-	    	        const formattedPriceElement = document.getElementById(`formattedPrice-\${wineNo}`);
-
-	    	        
-	    	        input.addEventListener('input', function () {
-	    	            const quantity = parseInt(input.value, 10);
-	    	            const price = parseFloat(input.dataset.price);  
-
-	    	            if (!isNaN(quantity) && !isNaN(price) && quantity > 0) {
-	    	                const totalPrice = price * quantity; 
-	    	                const formattedPrice = totalPrice.toLocaleString(); 
-	    	                if (formattedPriceElement) {
-	    	                    formattedPriceElement.textContent = formattedPrice;
-	    	                }
-	    	            } else {
-	    	                if (formattedPriceElement) {
-	    	                    formattedPriceElement.textContent = price.toLocaleString(); 
-	    	                }
-	    	            }
-	    	        });
-
-	    	        // 페이지 로드 시 초기 가격을 포맷하여 표시
-	    	        const initialQuantity = parseInt(input.value, 10);
-	    	        
-	    	        const price = parseFloat(input.dataset.price);  // 'data-price'를 가져옵니다.
-	    	        
-	    	        if (!isNaN(initialQuantity) && !isNaN(price) && initialQuantity > 0) {
-	    	            const initialTotalPrice = price * initialQuantity;
-	    	            if (formattedPriceElement) {
-	    	                formattedPriceElement.textContent = initialTotalPrice.toLocaleString();
-	    	            }
-	    	        } else if (formattedPriceElement) {
-	    	            formattedPriceElement.textContent = price.toLocaleString(); // 기본 가격 표시
-	    	        }
-	    	    });
-	    	});
+		
+	    
+	    
+	   
+	    
+	    
+	    
 	</script>
 	
 	

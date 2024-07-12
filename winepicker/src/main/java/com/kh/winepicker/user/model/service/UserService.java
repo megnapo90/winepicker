@@ -14,6 +14,7 @@ import com.kh.winepicker.model.vo.Wish;
 
 public interface UserService {
 
+	
 	User login(User user);
 
 	int insertUser(User user);
@@ -22,9 +23,24 @@ public interface UserService {
 
 	int idCheck(String userId);
 
-	String findId(String userName, String userEmail);
+	String findPwd(String userId, String userEmail);
 
+	void save(User user);
 
+	List<String> findId(String userName, String userEmail);
+
+	boolean validateUser(String userId, String userEmail);
+
+	void sendSimpleMessage(String userEmail, String subject, String text);
+
+	boolean updatePassword(String userId, String newPwd);
+
+	User findUserByEmail(String userEmail);
+
+	int myInfoChange(User user);
+
+	//-----------------------------------------------------------------
+	
 	List<Faq> selectFaqList();
 	
 	Faq selectFaq(int faqNo);
@@ -37,21 +53,23 @@ public interface UserService {
 
 	List<History> searchMyPurchaseList(HashMap<String, String> paramMap);
 
-	int insertMyReview(HashMap<String, Object> paramMap);
+	int insertMyReview(Review review);
 
 	History selectReviewItem(int orderNo);
 
 	Review selectReviewOne(int orderNo);
 
-	int updateMyReview(HashMap<String, Object> paramMap);
+	int updateMyReview(Review review);
 
 	int deleteMyReview(int orderNo);
 
-	String findPwd(String userId, String userEmail);
+	Wine selectWine(int wineNo);
 
-	void sendSimpleMessage(String userEmail, String subject, String text);
+	int updateUserStatus(int userNo);
 
-	User findUserByEmail(String userEmail);
+	
+	
+
 
 
 }

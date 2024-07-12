@@ -1,12 +1,10 @@
 package com.kh.winepicker.user.model.dao;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,19 +39,10 @@ public class UserDaoImpl implements UserDao {
 	public List<User> selectUserList() {
 		return sqlSession.selectList("user.selectUserList");
 	}
-  
+
 	@Override
 	public int idCheck(String userId) {
 		return sqlSession.selectOne("user.idCheck", userId);
-	}
-
-	@Override
-	public String findId(String userName, String userEmail) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("userName", userName);
-		paramMap.put("userEmail", userEmail);
-
-		return sqlSession.selectOne("user.findId", paramMap);
 	}
 
 	@Override
@@ -61,7 +50,6 @@ public class UserDaoImpl implements UserDao {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("userId", userId);
 		paramMap.put("userEmail", userEmail);
-
 		return sqlSession.selectOne("user.findPwd", paramMap);
 	}
 
@@ -77,6 +65,39 @@ public class UserDaoImpl implements UserDao {
 		user.setVerified(status);
 		return sqlSession.update("UserMapper.updateUserVerificationStatus", user);
 	}
+
+	@Override
+	public List<String> findId(String userName, String userEmail) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userName", userName);
+		paramMap.put("userEmail", userEmail);
+		return sqlSession.selectList("user.findId", paramMap);
+	}
+
+	@Override
+	public boolean isUserValid(String userId, String userEmail) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userId", userId);
+		paramMap.put("userEmail", userEmail);
+		Integer count = sqlSession.selectOne("user.isUserValid", paramMap);
+		return count != null && count > 0;
+	}
+
+	@Override
+	public boolean updateUserPassword(String userId, String newPwd) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userId", userId);
+		paramMap.put("newPwd", newPwd);
+		int rowsAffected = sqlSession.update("user.updateUserPassword", paramMap);
+		return rowsAffected > 0;
+	}
+
+	@Override
+	public int myInfoChange(User user) {
+		return sqlSession.update("user.myInfoChange", user);
+	}
+	
+	//---------------------------------------------------------------------------------
 
 	@Override
 	public List<Faq> selectFaqList() {
@@ -110,8 +131,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int insertMyReview(HashMap<String, Object> paramMap) {
-		return sqlSession.insert("user.insertMyReview", paramMap);
+	public int insertMyReview(Review review) {
+		return sqlSession.insert("user.insertMyReview", review);
 	}
 
 	@Override
@@ -125,13 +146,24 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int updateMyReview(HashMap<String, Object> paramMap) {
-		return sqlSession.update("user.updateMyReview", paramMap);
+	public int updateMyReview(Review review) {
+		return sqlSession.update("user.updateMyReview", review);
 	}
 
 	@Override
 	public int deleteMyReview(int orderNo) {
 		return sqlSession.delete("user.deleteMyReview", orderNo);
+	}
+
+	@Override
+	public Wine selectWine(int wineNo) {
+		return sqlSession.selectOne("user.selectWine", wineNo);
+	}
+
+	@Override
+	public int updateUserStatus(int userNo) {
+		System.out.println(3);
+		return sqlSession.update("user.updateUserStatus", userNo);
 	}
 
 	

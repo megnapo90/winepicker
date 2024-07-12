@@ -67,7 +67,7 @@
 }
 
 .purchase-list tr{
-	height: 130px;
+	height: 100px;
 }
 
 .purchase-list tr:nth-of-type(1){
@@ -76,22 +76,18 @@
 
 .purchase-list th, .purchase-list td {
 	border: 1px solid #ddd;
-	padding: 10px;
 	text-align: center;
 }
 
 .purchase-list th {
 	background-color: #f8f8f8;
+	width : 10%;
 }
 
 .purchase-list td p {
 	margin: 0;
 }
 
-.purchase-list img {
-	width: 50px;
-	height: auto;
-}
 #available-review{
 	font-weight : 300px;
 	cursor: pointer;
@@ -100,6 +96,7 @@
 .purchase-list img {
 	width: 50px;
 	height: auto;
+	margint : 0;
 }
 
 </style>

@@ -7,11 +7,6 @@ body {
 :root{
 	position: relative;
 	
-	font-weight: normal;
-	line-height: normal;
-	letter-spacing: 0.1em;
-	font-variation-settings: "opsz" auto;
-	font-family: Oranienbaum;
 }
 
 #sidebar-box{
@@ -111,7 +106,6 @@ body {
 	font-size: 20px;
 	font-weight: normal;
 	line-height: normal;
-	letter-spacing: 0.1em;
 	color: #3D3D3D;
 }
 

@@ -2,10 +2,11 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>login</title>
+<title>findId</title>
 </head>
 <style>
 body {
@@ -83,51 +84,33 @@ body {
 	color: black;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
 
 <body>
 
 	<main>
 		<div class="login-bar">
-			<form action="${pageContext.request.contextPath}/user/login"
-				method="post">
-				
+
+			<form id="findIdForm">
 				<img
 					src="https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png"
 					class="background" />
-				<div class="login-container">	
-				  <a href = "${contextPath}/">
-					<img
+				<div class="login-container">
+					<a href="${contextPath}/"> <img
 						src="https://image-resource.creatie.ai/131184926775412/131184970815644/b6328a368ee28caebfb3fbefb8a983dc.png"
-						alt="Logo" class="logo" /> 
-						</a><input type="text" id="userId"
-						name="userId" placeholder="아이디를 입력하세요" required /> <input
-						type="password" id="userPwd" name="userPwd"
-						placeholder="비밀번호를 입력하세요" required />
-					<button type="submit">로그인</button>
-					<a
-						href="${contextPath}/user/register">회원가입</a>
-					<a href="${contextPath}/user/findId">아이디 찾기</a>  <a
-						href="${contextPath}/user/findPwd">비밀번호 찾기</a>
+						alt="Logo" class="logo" />
+					</a>
+					<h3>회원가입이 완료되었습니다!</h3>
 
-				</div>
+					<p>
+						<a href="${pageContext.request.contextPath}/user/loginPage">로그인
+							페이지로 이동하기</a>
+					</p>
 			</form>
-
-
 		</div>
 	</main>
-
-	<footer> </footer>
-	<script>
-		/* import "./global.scss";
-		import {
-			ref,
-			computed,
-			reactive
-		} from 'vue';
-		const props = defineProps({
-		});
- */
-	</script>
 </body>
-
 </html>

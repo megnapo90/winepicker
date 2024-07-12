@@ -12,7 +12,7 @@ import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.Wish;
 
 public interface UserDao {
-
+	
 	User login(User user);
 
 	int insertUser(User user);
@@ -21,14 +21,22 @@ public interface UserDao {
 
 	int idCheck(String userId);
 
-	String findId(String userName, String userEmail);
-
 	String findPwd(String userId, String userEmail);
 
 	User findUserByEmail(String userEmail);
 
 	int updateUserVerificationStatus(String userEmail, boolean status);
   
+	boolean isUserValid(String userId, String userEmail);
+
+	boolean updateUserPassword(String userId, String newPwd);
+
+	int myInfoChange(User user);
+	
+	List<String> findId(String userName, String userEmail);
+
+	// --------------------------------------------------------------------------
+
 	List<Faq> selectFaqList();
 
 	Faq selectFaq(int faqNo);
@@ -37,22 +45,26 @@ public interface UserDao {
 
 	List<History> selectMyPurchaseList(int userNo);
 
-
 	int deleteWishItem(Wish wishItem);
 
 	List<History> searchMyPurchaseList(HashMap<String, String> paramMap);
 
-	int insertMyReview(HashMap<String, Object> paramMap);
+	int insertMyReview(Review review);
 
 	History selectReviewItem(int orderNo);
 
 	Review selectReviewOne(int orderNo);
 
-	int updateMyReview(HashMap<String, Object> paramMap);
+	int updateMyReview(Review review);
 
 	int deleteMyReview(int orderNo);
 
+	Wine selectWine(int wineNo);
+
+	int updateUserStatus(int userNo);
 
 
+	
 
 }
+

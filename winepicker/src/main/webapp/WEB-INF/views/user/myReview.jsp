@@ -92,7 +92,7 @@
 }
 
 .show-review-list img {
-	width: 50px;
+	width: 100px;
 	height: auto;
 }
 
@@ -131,8 +131,8 @@
 
 			<form action="searchMyReview" method="post" >
 
-				<input type="date" name="startDate">&nbsp;~&nbsp;
-				<input type="date" name="endDate">&nbsp;
+				<input type="date" name="startDate" value="${not empty startDate ? startDate :''}">&nbsp;~&nbsp;
+				<input type="date" name="endDate" value="${not empty endDate ? endDate :''}">&nbsp;
 				<input type="submit" value="조회">
 			</form>
         </div>
@@ -160,26 +160,27 @@
 	            		<td><p>리뷰관리</p></td>
 	            	</tr>
             			
-            	<c:forEach items="${reviewList }" var="review">
+            	<c:forEach items="${reviewList }" var="item">
 					<tr>
-	                	<td><img src="${contextPath}/${path }/${review.wineImage.changeName }" alt="상품 이미지"></td>
-	                	<td><p>${review.orderNo}</p></td>
-	                    <td><p>${review.orderDate}</p></td>
-	                    <td><p>${review.wine.wineName}</p></td>
-	                    <td><p>${review.qty}</p></td>
-	                    <td><p>${review.wine.price}</p></td>
-	                    <td><p>${review.DStatus == 3 ? '배송완료' : review.DStatus == 2 ? '배송중' : '배송전'}</p></td>
-						<c:if test="${review.DStatus ne 3}">
+	                	<td><img src="${contextPath}/${path }/${item.wineImage.changeName }" alt="상품 이미지"></td>
+	                	<td><p>${item.orderNo}</p></td>
+	                    <td><p>${item.orderDate}</p></td>
+	                    <td><p>${item.wine.wineName}</p></td>
+	                    <td><p>${item.qty}</p></td>
+	                    <td><p>${item.wine.price}</p></td>
+	                    <td><p>${item.DStatus == 3 ? '배송완료' : review.DStatus == 2 ? '배송중' : '배송전'}</p></td>
+						<c:if test="${item.DStatus ne 3}">
 							<td><p>작성불가</p></td>	
 						</c:if>
-						<c:if test="${review.DStatus eq 3 and review.review.content ne null }">
-							<td onclick="location.href='${contextPath}/user/review/detail/${review.orderNo}'">
-								<p>작성완료</p>
+						<c:if test="${item.DStatus eq 3 and item.review.content ne null }">
+							<td onclick="location.href='${contextPath}/user/review/detail/${item.orderNo}'">
+								<p style="color: green;">리뷰확인</p>
 							</td>	
 						</c:if>
-						<c:if test="${review.DStatus eq 3 and review.review.content eq null }">
-                    		<td id="available-review" onclick="location.href='${contextPath}/user/review/enroll/${review.orderNo}'">
-                    			<p>작성가능</p></td>
+						<c:if test="${item.DStatus eq 3 and item.review.content eq null }">
+                    		<td id="available-review" onclick="location.href='${contextPath}/user/review/enroll/${item.orderNo}'">
+                    			<p style="color: blue; ">작성하기</p>
+                    		</td>
 						</c:if>											
 	                </tr>
 
@@ -188,8 +189,8 @@
             </div>
                 <div class="review-notice">
                 	<div class="notice-detail">
-                		<span>리뷰는 주문 후 30일까지 작성 가능합니다.</span><br>
-                		<span>주문 이후 30일 지난 시점부터 작성 불가하니 참고하여 주시기 바랍니다.</span>
+                		<div>리뷰는 주문 후 30일까지 작성 가능합니다.</div>
+                		<div>주문 이후 30일 지난 시점부터 작성 불가하니 참고하여 주시기 바랍니다.</div>
                     </div>
                 </div>
             </c:otherwise>

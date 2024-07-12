@@ -17,6 +17,7 @@ import com.kh.winepicker.model.vo.History;
 import com.kh.winepicker.model.vo.Review;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
+import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.Wish;
 
 import com.kh.winepicker.user.model.dao.UserDao;
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private JavaMailSender mailSender;
-
 
 	@Override
 	public User login(User user) {
@@ -54,6 +54,56 @@ public class UserServiceImpl implements UserService {
 		return userDao.idCheck(userId);
 	}
 	
+
+	@Override
+	public String findPwd(String userId, String userEmail) {
+
+		return userDao.findPwd(userId, userEmail);
+	}
+
+	@Override
+	public void sendSimpleMessage(String to, String subject, String text) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("winepickerservice@gmail.com");
+		message.setTo(to);
+		message.setSubject(subject);
+		message.setText(text);
+		mailSender.send(message);
+	}
+
+	@Override
+	public User findUserByEmail(String userEmail) {
+		return userDao.findUserByEmail(userEmail);
+	}
+
+	@Override
+	public void save(User user) {
+	    userDao.insertUser(user);
+	}
+
+	@Override
+	public List<String> findId(String userName, String userEmail) {
+		return userDao.findId(userName,userEmail);
+	}
+
+	@Override
+	public boolean validateUser(String userId, String userEmail) {
+		 return userDao.isUserValid(userId, userEmail);
+	}
+
+	@Override
+	public boolean updatePassword(String userId, String newPwd) {
+		return userDao.updateUserPassword(userId, newPwd);
+	}
+
+	@Override
+	public int myInfoChange(User user) {
+		return userDao.myInfoChange(user);
+	}
+
+
+	// ------------------------------------------------------------------------
+
 	public List<Faq> selectFaqList() {
 		return userDao.selectFaqList();
 	}
@@ -67,17 +117,6 @@ public class UserServiceImpl implements UserService {
 	public List<Wine> selectMyWishList(int userNo) {
 		return userDao.selectMyWishList(userNo);
 
-	}
-
-	@Override
-	public String findId(String userName, String userEmail) {
-		return userDao.findId(userName, userEmail);
-	}
-
-	@Override
-	public String findPwd(String userId, String userEmail) {
-
-		return userDao.findPwd(userId, userEmail);
 	}
 
 	@Override
@@ -96,8 +135,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int insertMyReview(HashMap<String, Object> paramMap) {
-		return userDao.insertMyReview(paramMap);
+	public int insertMyReview(Review review) {
+		return userDao.insertMyReview(review);
 	}
 
 	@Override
@@ -111,8 +150,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int updateMyReview(HashMap<String, Object> paramMap) {
-		return userDao.updateMyReview(paramMap);
+	public int updateMyReview(Review review) {
+		return userDao.updateMyReview(review);
 	}
 
 	@Override
@@ -120,22 +159,14 @@ public class UserServiceImpl implements UserService {
 		return userDao.deleteMyReview(orderNo);
 	}
 
-
-	
-	public void sendSimpleMessage(String to, String subject, String text) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("winepickerservice@gmail.com");
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(text);
-		mailSender.send(message);
+	@Override
+	public Wine selectWine(int wineNo) {
+		return userDao.selectWine(wineNo);
 	}
 
 	@Override
-	public User findUserByEmail(String userEmail) {
-		return userDao.findUserByEmail(userEmail);
+	public int updateUserStatus(int userNo) {
+		return userDao.updateUserStatus(userNo);
 	}
-
-
 
 }

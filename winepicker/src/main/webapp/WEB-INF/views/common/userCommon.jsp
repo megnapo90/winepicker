@@ -30,7 +30,7 @@
 </div>
 <div class="welcome-message">
 	<p id="welcome-message-text">
-		${loginUser.userName } 홍길동 님, 환영합니다.
+		${not empty loginUser ? loginUser.userName : '홍길동'} 님, 환영합니다.
 	</p>
 </div>
 

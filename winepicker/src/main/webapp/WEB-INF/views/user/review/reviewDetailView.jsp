@@ -59,7 +59,7 @@
 }
 
 .review-item-body tr{
-	height: 130px;
+	height: 100px;
 }
 
 .review-item-body tr:nth-of-type(1){
@@ -75,6 +75,11 @@
 .review-item-body th {
 	background-color: #f8f8f8;
 	width : 20%;
+}
+
+.review-item-body img {
+	width: 100px;
+	height: auto;
 }
 
 .review-item-body td p {
@@ -202,6 +207,7 @@
      				
 	                <div class="review-buttons">
 		                <input type="button" value="수정" onclick="location.href='${contextPath}/user/review/update/${item.orderNo}'">
+		                <span style="width=10px;"></span>
 		                <input type="button" value="삭제" onclick="location.href='${contextPath}/user/review/delete/${item.orderNo}'">
 	                </div>
                     </form>
@@ -225,7 +231,7 @@
 
 <c:if test="${not empty errorMsg }">
 		<script>   
-        	alertify.alert("글 작성이 실패하였습니다.",'${errorMsg}');
+        	alertify.alert("",'${errorMsg}');
         </script>
 		<c:remove var="errorMsg"/>
 </c:if>

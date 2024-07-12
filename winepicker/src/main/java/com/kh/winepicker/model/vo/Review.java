@@ -15,7 +15,7 @@ public class Review {
 	private int orderNo;
 	private String content;
 	private Date createDate;
-	private int point;
+	private double point;
 	private char status;
 	private Date modifyDate;
 }

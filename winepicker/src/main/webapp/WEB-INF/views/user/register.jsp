@@ -72,7 +72,7 @@
 	box-sizing: border-box;
 }
 
-.input input[id="userEmail"] {
+.input input[type="userEmail"] {
 	width: 250px;
 	padding: 8px;
 	margin-top: 3px;
@@ -82,7 +82,7 @@
 }
 
 .input input[type="password"] {
-	width: 200px;
+	width: 250px;
 	padding: 8px;
 	margin-top: 3px;
 	border: 1px solid #ccc;
@@ -91,7 +91,7 @@
 }
 
 .input input[id="phone"] {
-	width: 100px;
+	width: 250px;
 	padding: 8px;
 	margin-top: 3px;
 	border: 1px solid #ccc;
@@ -99,7 +99,8 @@
 	box-sizing: border-box;
 }
 
-.input input[id="address"], .input input[id="addressDetail"] {
+.input input[id="address"], .input input[id="sample6_address"], .input input[id="sample6_detailAddress"],
+	.input input[id="sample6_extraAddress"] {
 	width: 500px;
 	padding: 8px;
 	margin-top: 3px;
@@ -130,11 +131,69 @@
 	font-family: 'Arial', sans-serif;
 	font-size: 10px;
 }
+
+.modal {
+	display: none; /* 기본적으로 숨겨진 상태 */
+	position: fixed; /* 위치 고정 */
+	z-index: 1; /* 다른 요소들보다 위에 표시 */
+	left: 0;
+	top: 0;
+	width: 100%; /* 전체 너비 */
+	height: 100%; /* 전체 높이 */
+	overflow: auto; /* 스크롤 가능하도록 */
+	background-color: rgba(0, 0, 0, 0.4); /* 배경 투명 검정 */
+}
+
+.modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 모달 창을 화면 중앙에 위치 */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%; /* 모달 창 너비 */
+}
+
+.close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* 작은 창 스타일 */
+.small-window {
+	position: relative;
+	display: inline-block;
+	margin-top: 10px;
+	width: 500px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	background-color: #f9f9f9;
+}
+
+.small-window-content {
+	max-height: 150px;
+	overflow-y: auto;
+	font-size: 10px;
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	function idCheck() {
 		const $userId = $("#register input[name=userId]");
+		const userIdVal = $userId.val().trim(); // 입력된 아이디 값(trim으로 공백 제거)
+
+		// 아이디가 입력되지 않았을 경우
+		if (userIdVal === "") {
+			alert("아이디를 입력하세요.");
+			$userId.focus(); // 입력 필드에 포커스 맞추기
+			return; // 함수 종료
+		}
 		$.ajax({
 			url : "idCheck",
 			data : {
@@ -155,49 +214,65 @@
 
 	}
 </script>
-<script>function emailCheck() {
-    const $userEmail = $("#userEmail").val();
+<script>
+	function sendVerificationCode() {
+		const userEmail = $("#userEmail").val();
 
-    $.ajax({
-        url: "${contextPath}/user/sendVerificationEmail",
-        type: "POST",
-        data: { userEmail: $userEmail },
-        success: function(response) {
-            if (response.success) {
-                alert("이메일 인증 링크를 전송했습니다. 이메일을 확인하세요.");
-            } else {
-                alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
-            }
-        },
-        error: function() {
-            alert("서버와의 통신 중 오류가 발생했습니다. 다시 시도해주세요.");
-        }
-    });
-}
+		$.ajax({
+			type : "POST",
+			url : "sendVerificationCode",
+			data : {
+				userEmail : userEmail
 
+			},
+			success : function(response) {
+				alert("인증 코드가 이메일로 전송되었습니다. 이메일을 확인해주세요.");
+			},
+			error : function() {
+				alert("인증 코드 전송에 실패하였습니다. 다시 시도해주세요.");
+			}
+		});
+	}
 </script>
 <script>
-	document.addEventListener("DOMContentLoaded", function() {
-		// 비밀번호 일치 검사
-		function validatePassword() {
-			var pwd = document.getElementById("userPwd").value;
-			var pwdCheck = document.getElementById("userPwdCheck").value;
+	document
+			.addEventListener(
+					"DOMContentLoaded",
+					function() {
+						// 비밀번호 일치 및 패턴 검사
+						function validatePassword() {
+							var pwd = document.getElementById("userPwd").value;
+							var pwdCheck = document
+									.getElementById("userPwdCheck").value;
+							var submitButton = document
+									.getElementById("submitBtn");
+							var pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 영문자와 숫자 포함 8글자 이상
 
-			if (pwd === pwdCheck) {
-				document.getElementById("pwdCheckMsg").innerHTML = "✔";
-				document.getElementById("pwdCheckMsg").style.color = "green";
-			} else {
-				document.getElementById("pwdCheckMsg").innerHTML = "✘";
-				document.getElementById("pwdCheckMsg").style.color = "red";
-			}
-		}
+							if (pwd === pwdCheck && pattern.test(pwd)) {
+								document.getElementById("pwdCheckMsg").innerHTML = "✔";
+								document.getElementById("pwdCheckMsg").style.color = "green";
+								submitButton.disabled = false; // 제출 버튼 활성화
+							} else {
+								document.getElementById("pwdCheckMsg").innerHTML = "비밀번호는 영문자와 숫자를 포함하여 8글자 이상이어야 합니다.";
+								document.getElementById("pwdCheckMsg").style.color = "red";
+								submitButton.disabled = true; // 제출 버튼 비활성화
+							}
+						}
 
-		// 비밀번호 확인 input 요소에 keyup 이벤트 리스너 추가
-		if (document.getElementById("userPwdCheck")) {
-			document.getElementById("userPwdCheck").addEventListener("keyup",
-					validatePassword);
-		}
-	});
+						// 비밀번호 입력 필드에 keyup 이벤트 리스너 추가
+						if (document.getElementById("userPwd")) {
+							document
+									.getElementById("userPwd")
+									.addEventListener("keyup", validatePassword);
+						}
+
+						// 비밀번호 확인 입력 필드에 keyup 이벤트 리스너 추가
+						if (document.getElementById("userPwdCheck")) {
+							document
+									.getElementById("userPwdCheck")
+									.addEventListener("keyup", validatePassword);
+						}
+					});
 </script>
 </head>
 
@@ -214,54 +289,98 @@
 				<h2 align="margin-right">WINE PICKER 회원가입</h2>
 
 				<div class="input">
-					<label for="userId">* 아이디</label> <input type="text" id="userId"
+					<label for="userId">아이디</label> <input type="text" id="userId"
 						name="userId" required>
 					<button type="button" onclick="idCheck();">아이디 중복 체크</button>
 					<span id="idCheckMsg"></span>
 				</div>
 
 				<div class="input">
-					<label for="userPwd">* 비밀번호</label> <input type="password"
-						id="userPwd" name="userPwd" required>
+					<label for="userPwd">비밀번호</label> <input type="password"
+						id="userPwd" name="userPwd" placeholder="영문,숫자 포함 8글자 이상" required>
 				</div>
 
 				<div class="input">
-					<label for="userPwdCheck">* 비밀번호 재입력</label> <input type="password"
+					<label for="userPwdCheck">비밀번호 재입력</label> <input type="password"
 						id="userPwdCheck" name="userPwdCheck" required> <span
 						id="pwdCheckMsg"></span>
 				</div>
 
 				<div class="input">
-					<label for="userName">* 이름</label> <input type="text" id="userName"
+					<label for="userName">이름</label> <input type="text" id="userName"
 						name="userName" required>
 				</div>
-				<br> <label for="userEmail">이메일:</label><br> <input
-					type="email" id="userEmail" name="userEmail" required>
-				<button type="button" onclick="emailCheck()">이메일 확인</button>
-				 <br> <br> <label
-					for="userSsn">주민등록번호:</label><br> <input type="text"
-					id="userSsn" name="userSsn" required><br> <br> <label
-					for="phone">전화번호:</label><br> <input type="tel" id="phone"
-					name="phone" required><br> <br>
+				<div class="input">
+					<label for="userEmail">이메일</label> <input type="userEmail"
+						id="userEmail" name="userEmail" placeholder="example@domain.com"
+						required>
+					<button type="button" onclick="sendVerificationCode()">인증코드
+						전송</button>
+					<label for="verificationCode">인증코드</label> <input type="text"
+						id="verificationCode" name="verificationCode" required><br>
+				</div>
+
 
 				<div class="input">
-					<label for="address">* 주소</label> <input type="text"
-						id="sample6_postcode" placeholder="우편번호"> <input
+					<label for="userSsn">주민등록번호</label> <input type="text"
+						id="birthDate" name="birthDate" placeholder="YYMMDD" required>
+					- <input type="text" id="ssnTail" name="ssnTail"
+						placeholder="뒷자리 7자리 숫자" required pattern="[0-9]{7}"><br>
+				</div>
+				<div class="input">
+					<label for="phone">전화번호</label><input type="tel" id="phone"
+						name="phone" placeholder="-포함" required>
+
+				</div>
+
+				<div class="input">
+					<label for="address"> 주소</label> <input type="text"
+						id="sample6_postcode" placeholder="우편번호" readonly> <input
 						type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-					<input type="text" id="sample6_address" placeholder="주소"><br>
-					<input type="text" id="sample6_detailAddress" placeholder="상세주소">
+					<input type="text" id="sample6_address" placeholder="주소" readonly><br>
+					<input type="text" id="sample6_detailAddress" placeholder="상세주소"><br>
 					<input type="text" id="sample6_extraAddress" placeholder="참고항목">
 				</div>
+
+				<div class="input">
+					<label>이용약관 동의</label><br>
+
+
+					<div class="small-window">
+						<div class="small-window-content">
+							<h4>이용약관</h4>
+							<p>이용약관내용</p>
+							<p></p>
+						</div>
+					</div>
+					<br> 이용약관 동의 (필수) <input type="checkbox" id="termsAgreement"
+						name="termsAgreement" required>
+				</div>
+
+
+				<div class="small-window">
+					<div class="small-window-content">
+						<h4>이용약관</h4>
+						<p>이용약관내용</p>
+						<p></p>
+					</div>
+				</div>
+				<br> 개인정보 수집 이용 조회 동의 (필수)<input type="checkbox"
+					id="privacyAgreement" name="privacyAgreement" required>
+
+				<!-- 작은 창 -->
+
+
 				<div class="input">
 					<label></label>
 					<div align="margin-right">
-						<button type="submit">회원가입</button>
+						<button type="submit" id="submitBtn">회원가입</button>
 						<p>${msg}</p>
 					</div>
 				</div>
-			</div>
-			<input type="hidden" id="fullAddress" name="address">
 		</form>
+		<input type="hidden" id="fullAddress" name="address">
+
 
 	</main>
 

@@ -119,6 +119,10 @@ body {
 	background-color: #5a6268;
 	color: #ffffff;
 }
+/* 모달이 항상 최상위에 위치하도록 설정 */
+        .modal {
+            z-index: 2;
+        }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script
@@ -126,6 +130,7 @@ body {
 </head>
 
 <body>
+
 	<main>
 		<div class="login-bar">
 			<!-- form 태그 수정 -->
@@ -163,39 +168,51 @@ body {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">닫기</button>
+						data-dismiss="modal" onclick="closeModal()">닫기</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script>
+	
 		function findId() {
 			const userName = document.getElementById("userName").value;
 			const userEmail = document.getElementById("userEmail").value;
 
 			$.ajax({
-				url : '${contextPath}/user/findId',
+				url : "${contextPath}/user/findId", // URL이 동적으로 채워지지 않을 경우, 서버에서 적절한 값이 설정되어야 합니다.
 				type : 'POST',
 				data : {
 					userName : userName,
 					userEmail : userEmail
 				},
 				success : function(response) {
-					if (response.user) {
-						$("#foundIdMessage")
-								.text("찾은 아이디: " + response.user);
+					if (response.user && response.user.length > 0) {
+						let idsText = "찾은 아이디: ";
+						response.user.forEach(function(userId) {
+							idsText += userId + ", ";
+						});
+						idsText = idsText.slice(0, -2); // 마지막 쉼표와 공백 제거
+						$("#foundIdMessage").text(idsText);
 					} else {
-						$("#foundIdMessage").text(response.msg);
+						$("#foundIdMessage").text(
+								response.msg || "해당 정보로 등록된 아이디가 없습니다.");
 					}
-					 $("#foundIdModal").fadeIn(300);
+					$("#foundIdModal").fadeIn(300);
 				},
 				error : function(xhr, status, error) {
 					$("#foundIdMessage").text("아이디 찾기 과정에서 오류가 발생했습니다.");
-					 $("#foundIdModal").fadeIn(300);
+					$("#foundIdModal").fadeIn(300);
 				}
 			});
 		}
+
+		function closeModal() {
+			$("#foundIdModal").fadeOut(300);
+		}
 	</script>
+
+
 </body>
 </html>

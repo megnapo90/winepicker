@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+ 
 <style>
          /* 전체 레이아웃 */
         .container {
@@ -123,10 +124,39 @@
             font-size: 14px;
             color: #333;
         }
+        
+        
+        #price-slider .noUi-handle {
+            background-color: #fff;
+            border: 2px solid #007bff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            top: -9px; 
+        }
+        
+        #price-slider .noUi-connect {
+            background: #007bff;
+        }
+        
+        #price-slider .noUi-base {
+            background: #e0e0e0;
+            height: 6px;
+        }
+   		.noUi-target {
+	   	background: none;
+	    border-radius: 4px;
+	    border: none;
+	    box-shadow: none;
+	
+    }
+       
+        
+        
     </style>
 </head>
 <body>
-
+	
         <div class="filter-container">
             <div class="filter-header">
                 <h2>Filter
@@ -135,18 +165,22 @@
                     </button>
                 </h2>
             </div>
+            
+            
+            
             <div class="filter-section">
-                <!-- 용량 필터 -->
-                <div class="filter-group">
-                    <label for="volume">용량
-                    <button type="button" class="toggle-btn" onclick="toggleSubFilter('volumeOptions')">+</button>
-                    </label>
-                    <div id="volumeOptions" class="sub-options">
-                        <label><input type="checkbox" name="volume-option" value="750" class=""> 750ml</label>
-                        <label><input type="checkbox" name="volume-option" value="375" class=""> 375ml</label>
+               <div class="slider-container">
+        <div id="price-slider"></div>
+        
+            <div id="price-slider"></div>
+                    <div class="slider-values">
+                        <span id="minValue"></span> ~ <span id="maxValue"></span>
                     </div>
-                </div>
-
+                    <input type="hidden" id="min-price" name="minPrice" value="${minPrice}">
+                    <input type="hidden" id="max-price" name="maxPrice" value="${maxPrice}">
+   				 </div>
+    
+   
                 <!-- 종류 필터 -->
                 <div class="filter-group">
                     <label for="type">종류
@@ -172,6 +206,17 @@
                         </div>
                     </div>
                 </div>
+                
+                 <!-- 용량 필터 -->
+                <div class="filter-group">
+                    <label for="volume">용량
+                    <button type="button" class="toggle-btn" onclick="toggleSubFilter('volumeOptions')">+</button>
+                    </label>
+                    <div id="volumeOptions" class="sub-options">
+                        <label><input type="checkbox" name="volume-option" value="750" class=""> 750ml</label>
+                        <label><input type="checkbox" name="volume-option" value="375" class=""> 375ml</label>
+                    </div>
+                </div>
 
                 <!-- 나라 필터 -->
                 <div class="filter-group">
@@ -188,147 +233,219 @@
   
            
 
-    <script>
-    $(document).ready(function() {
-        // 필터 상태 변경 시 searchProducts 호출
-        $('#volumeOptions input[name="volume-option"]').on('change', searchProducts);
-        $('#typeOptions input[name="type-option"]').on('change', updateSubFilters);
-        $('#typeOptions input[name="red-subType-option"], #typeOptions input[name="white-subType-option"], #typeOptions input[name="sparkling-subType-option"]').on('change', searchProducts);
-        $('#countryOptions input[name="country-option"]').on('change', searchProducts);
-
-        // 리셋 버튼 클릭 시 필터 초기화
-        $('#resetFilters').on('click', function() {
-            $('input[type="checkbox"]').prop('checked', false);
-            $('.sub-options').hide();
-            searchProducts();
-        });
-    });
-
-    // 특정 하위 옵션 그룹을 토글하는 함수
-    function toggleSubFilter(subFilterId) {
-        const subFilter = document.getElementById(subFilterId);
-        if (subFilter) {
-            // `volumeOptions`, `typeOptions`, `countryOptions`는 `+` 버튼으로 열고 닫기
-            if (subFilter.style.display === 'none' || subFilter.style.display === '') {
-                subFilter.style.display = 'block';
-            } else {
-                subFilter.style.display = 'none';
-            }
-        }
-    }
-
-    // 레드, 화이트, 스파클링의 체크 상태에 따라 하위 필터를 업데이트하는 함수
-    function updateSubFilters() {
-        const isCheckedRed = $('#red').is(':checked');
-        const isCheckedWhite = $('#white').is(':checked');
-        const isCheckedSparkling = $('#sparkling').is(':checked');
-
-        $('#redSubFilter').toggle(isCheckedRed);
-        $('#whiteSubFilter').toggle(isCheckedWhite);
-        $('#sparklingSubFilter').toggle(isCheckedSparkling);
-
-        // 체크박스가 해제되면 하위 필터의 체크박스도 해제
-        if (!isCheckedRed) {
-            $('#redSubFilter input[type="checkbox"]').prop('checked', false);
-        }
-        if (!isCheckedWhite) {
-            $('#whiteSubFilter input[type="checkbox"]').prop('checked', false);
-        }
-        if (!isCheckedSparkling) {
-            $('#sparklingSubFilter input[type="checkbox"]').prop('checked', false);
-        }
-
-        // 필터 상태에 따라 검색 호출
-        searchProducts();
-    }
-
-    // 제품 목록을 검색하고 업데이트하는 함수
-    function searchProducts() {
-        var selectedVolumes = [];
-        $('#volumeOptions input[name="volume-option"]:checked').each(function() {
-            selectedVolumes.push(parseInt($(this).val()));
-        });
-
-        var selectedTypes = [];
-        $('#typeOptions input[name="type-option"]:checked').each(function() {
-            selectedTypes.push(parseInt($(this).val()));
-        });
-
-        var selectedRedSubTypes = [];
-        $('#redSubFilter input[name="red-subType-option"]:checked').each(function() {
-            selectedRedSubTypes.push(parseInt($(this).val()));
-        });
-
-        var selectedWhiteSubTypes = [];
-        $('#whiteSubFilter input[name="white-subType-option"]:checked').each(function() {
-            selectedWhiteSubTypes.push(parseInt($(this).val()));
-        });
-
-        var selectedSparklingSubTypes = [];
-        $('#sparklingSubFilter input[name="sparkling-subType-option"]:checked').each(function() {
-            selectedSparklingSubTypes.push(parseInt($(this).val()));
-        });
-
-        var selectedCountries = [];
-        $('#countryOptions input[name="country-option"]:checked').each(function() {
-            selectedCountries.push(parseInt($(this).val()));
-        });
-
-        console.log({
-            volumes: selectedVolumes,
-            types: selectedTypes,
-            redSubTypes: selectedRedSubTypes,
-            whiteSubTypes: selectedWhiteSubTypes,
-            sparklingSubTypes: selectedSparklingSubTypes,
-            countries: selectedCountries
-        });
-
-        $.ajax({
-            url: `${contextPath}/product/searchByVolume`,  // `${contextPath}` 변수를 사용
-            type: 'GET',
-            traditional: true,
-            data: {
-                volumes: selectedVolumes,
-                types: selectedTypes,
-                redSubTypes: selectedRedSubTypes,
-                whiteSubTypes: selectedWhiteSubTypes,
-                sparklingSubTypes: selectedSparklingSubTypes,
-                countries: selectedCountries
-            },
-            success: function(result) {
-                console.log('서버 응답 데이터:', result);
-
-                var wineExts = '';
-                for (var wineExt of result) {
-                    console.log('처리 중인 데이터:', wineExt);
-                    console.log('처리 중인 데이터:', wineExt.wineName);
-                    console.log('처리 중인 데이터:', wineExt.wineImage.changeName);
-                    
-                    wineExts += `<div class="product" data-href="detail/\${wineExt.wineNo}" data-price="\${wineExt.price}"  data-wineNo="\${wineExt.wineNo}">`;
-                    wineExts += `  <img src="${contextPath}/resources/images/product/\${wineExt.wineImage.changeName}" alt="\${wineExt.wineName} 이미지">`;
-                    wineExts += `  <p>\${wineExt.wineName}</p>`;
-                    wineExts += `  <p>\${wineExt.price}원</p>`;
-                    wineExts += `  <p>\${wineExt.countryNo}</p>`;
-                    wineExts += `  <p>\${wineExt.grapeNo}</p>`;
-                    wineExts += `</div>`;
-                }
-
-                $('#productList').html(wineExts);
-                
-                $('.product').on('click', function() {
-                    var href = $(this).data('href');
-                    window.location.href = href;
-                });
-                
-            },
-            error: function(error) {
-                console.error('AJAX 요청 에러:', error);
-                $('#productList').html('<p>데이터를 불러오는 중 오류가 발생했습니다.</p>');
-            }
-        });
-    }
-  
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.js"></script>
     
-    </script>
+   <script>
+// 전역 변수로 priceSlider 선언
+   var priceSlider;
+
+   document.addEventListener('DOMContentLoaded', function() {
+	    // 초기값 설정
+	    var minPrice = ${minPrice};  // 최소 금액 설정
+	    var maxPrice = ${maxPrice};  // 최대 금액 설정
+
+	    // 가격 슬라이더 초기화
+	    priceSlider = document.getElementById('price-slider');
+
+	    if (priceSlider) {
+	        // noUiSlider 생성
+	        noUiSlider.create(priceSlider, {
+	            start: [minPrice, maxPrice],
+	            connect: true,
+	            range: {
+	                'min': minPrice,
+	                'max': maxPrice
+	            },
+	            step: 1000,
+	            format: {
+	                to: function (value) {
+	                    return (Math.ceil(value / 10000) * 10000).toLocaleString();
+	                },
+	                from: function (value) {
+	                    return Number(value.replace(/,/g, ''));
+	                }
+	            }
+	        });
+
+	        // 슬라이더의 값이 업데이트 될 때마다 호출
+	        priceSlider.noUiSlider.on('update', function (values) {
+	            // 값 변경 시에만 `searchProducts` 호출
+	            document.getElementById('minValue').textContent = values[0];
+	            document.getElementById('maxValue').textContent = values[1];
+	            document.getElementById('min-price').value = values[0];
+	            document.getElementById('max-price').value = values[1];
+	        });
+
+	        // 슬라이더의 값이 완료된 후 호출
+	        priceSlider.noUiSlider.on('set', function (values) {
+	            searchProducts();
+	        });
+	    } else {
+	        console.error('가격 슬라이더 요소가 없습니다.');
+	    }
+
+	    // 필터 상태 변경 시 searchProducts 호출
+	    document.querySelectorAll('#volumeOptions input[name="volume-option"]').forEach(function(el) {
+	        el.addEventListener('change', searchProducts);
+	    });
+	    document.querySelectorAll('#typeOptions input[name="type-option"]').forEach(function(el) {
+	        el.addEventListener('change', updateSubFilters);
+	    });
+	    document.querySelectorAll('#typeOptions input[name="red-subType-option"], #typeOptions input[name="white-subType-option"], #typeOptions input[name="sparkling-subType-option"]').forEach(function(el) {
+	        el.addEventListener('change', searchProducts);
+	    });
+	    document.querySelectorAll('#countryOptions input[name="country-option"]').forEach(function(el) {
+	        el.addEventListener('change', searchProducts);
+	    });
+
+	    // 리셋 버튼 클릭 시 필터 초기화
+	    document.getElementById('resetFilters').addEventListener('click', function() {
+	        document.querySelectorAll('input[type="checkbox"]').forEach(function(el) {
+	            el.checked = false;
+	        });
+	        document.querySelectorAll('.sub-options').forEach(function(el) {
+	            el.style.display = 'none';
+	        });
+	        if (priceSlider) {
+	            priceSlider.noUiSlider.set([minPrice, maxPrice]);
+	        }
+	        document.getElementById('min-price').value = minPrice;
+	        document.getElementById('max-price').value = maxPrice;
+
+	        searchProducts(); // 리셋 후 필터 상태에 따라 검색 호출
+	    });
+	});
+
+	// 특정 하위 옵션 그룹을 토글하는 함수
+	function toggleSubFilter(subFilterId) {
+	    const subFilter = document.getElementById(subFilterId);
+	    if (subFilter) {
+	        if (subFilter.style.display === 'none' || subFilter.style.display === '') {
+	            subFilter.style.display = 'block';
+	        } else {
+	            subFilter.style.display = 'none';
+	        }
+	    }
+	}
+
+	// 레드, 화이트, 스파클링의 체크 상태에 따라 하위 필터를 업데이트하는 함수
+	function updateSubFilters() {
+	    const isCheckedRed = document.getElementById('red').checked;
+	    const isCheckedWhite = document.getElementById('white').checked;
+	    const isCheckedSparkling = document.getElementById('sparkling').checked;
+
+	    document.getElementById('redSubFilter').style.display = isCheckedRed ? 'block' : 'none';
+	    document.getElementById('whiteSubFilter').style.display = isCheckedWhite ? 'block' : 'none';
+	    document.getElementById('sparklingSubFilter').style.display = isCheckedSparkling ? 'block' : 'none';
+
+	    // 체크박스가 해제되면 하위 필터의 체크박스도 해제
+	    if (!isCheckedRed) {
+	        document.querySelectorAll('#redSubFilter input[type="checkbox"]').forEach(function(el) {
+	            el.checked = false;
+	        });
+	    }
+	    if (!isCheckedWhite) {
+	        document.querySelectorAll('#whiteSubFilter input[type="checkbox"]').forEach(function(el) {
+	            el.checked = false;
+	        });
+	    }
+	    if (!isCheckedSparkling) {
+	        document.querySelectorAll('#sparklingSubFilter input[type="checkbox"]').forEach(function(el) {
+	            el.checked = false;
+	        });
+	    }
+
+	    // 필터 상태에 따라 검색 호출
+	    searchProducts();
+	}
+
+	// 제품 목록을 검색하고 업데이트하는 함수
+	function searchProducts() {
+	    var selectedVolumes = [];
+	    document.querySelectorAll('#volumeOptions input[name="volume-option"]:checked').forEach(function(el) {
+	        selectedVolumes.push(parseInt(el.value));
+	    });
+
+	    var selectedTypes = [];
+	    document.querySelectorAll('#typeOptions input[name="type-option"]:checked').forEach(function(el) {
+	        selectedTypes.push(parseInt(el.value));
+	    });
+
+	    var selectedRedSubTypes = [];
+	    document.querySelectorAll('#redSubFilter input[name="red-subType-option"]:checked').forEach(function(el) {
+	        selectedRedSubTypes.push(parseInt(el.value));
+	    });
+
+	    var selectedWhiteSubTypes = [];
+	    document.querySelectorAll('#whiteSubFilter input[name="white-subType-option"]:checked').forEach(function(el) {
+	        selectedWhiteSubTypes.push(parseInt(el.value));
+	    });
+
+	    var selectedSparklingSubTypes = [];
+	    document.querySelectorAll('#sparklingSubFilter input[name="sparkling-subType-option"]:checked').forEach(function(el) {
+	        selectedSparklingSubTypes.push(parseInt(el.value));
+	    });
+
+	    var selectedCountries = [];
+	    document.querySelectorAll('#countryOptions input[name="country-option"]:checked').forEach(function(el) {
+	        selectedCountries.push(parseInt(el.value));
+	    });
+
+	    // 슬라이더의 값 가져오기
+	    if (priceSlider && priceSlider.noUiSlider) {
+	        var priceRange = priceSlider.noUiSlider.get();
+	        var minPrices = parseInt(priceRange[0].replace(/,/g, ''));
+	        var maxPrices = parseInt(priceRange[1].replace(/,/g, ''));
+	    } else {
+	        console.error('noUiSlider가 초기화되지 않았습니다.');
+	        return;
+	    }
+
+	    $.ajax({
+	        url: `${contextPath}/product/searchByAjax`,
+	        type: 'GET',
+	        traditional: true,
+	        data: {
+	            volumes: selectedVolumes,
+	            types: selectedTypes,
+	            redSubTypes: selectedRedSubTypes,
+	            whiteSubTypes: selectedWhiteSubTypes,
+	            sparklingSubTypes: selectedSparklingSubTypes,
+	            countries: selectedCountries,
+	            minPrices: minPrices,  // 추가: 슬라이더의 최소 가격
+	            maxPrices: maxPrices  // 추가: 슬라이더의 최대 가격
+	        },
+	        success: function(result) {
+	            console.log('서버 응답 데이터:', result);
+
+	            var wineExts = '';
+	            for (var wineExt of result) {
+	                wineExts += `<div class="product" data-href="detail/${wineExt.wineNo}" data-price="${wineExt.price}" data-wineNo="${wineExt.wineNo}">`;
+	                wineExts += `  <img src="${contextPath}/resources/images/product/${wineExt.wineImage.changeName}" alt="${wineExt.wineName} 이미지">`;
+	                wineExts += `  <p>${wineExt.wineName}</p>`;
+	                wineExts += `  <p>${wineExt.price.toLocaleString()}원</p>`;
+	                wineExts += `  <p>${wineExt.countryNo}</p>`;
+	                wineExts += `  <p>${wineExt.grapeNo}</p>`;
+	                wineExts += `</div>`;
+	            }
+
+	            document.getElementById('productList').innerHTML = wineExts;
+
+	            document.querySelectorAll('.product').forEach(function(product) {
+	                product.addEventListener('click', function() {
+	                    var href = product.getAttribute('data-href');
+	                    window.location.href = href;
+	                });
+	            });
+	        },
+	        error: function(error) {
+	            console.error('AJAX 요청 에러:', error);
+	            document.getElementById('productList').innerHTML = '<p>데이터를 불러오는 중 오류가 발생했습니다.</p>';
+	        }
+	    });
+	}
+
+</script>
 </body>
 </html>

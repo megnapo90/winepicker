@@ -8,6 +8,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	#noticeImage img{
+		width: 500px;
+	}
+</style>
+
 </head>
 <body>
 
@@ -21,31 +27,29 @@
 		<br>
 		<div class="innerOuter">
 			<h2>공지사항</h2>
+			<input id="delete" type="button" value="삭제" style="display: none;" onclick='location.href = "${contextPath}/admin/deleteNotice/"+${notice.noticeNo}'>
+			<input id="update" type="button" value="수정" style="display: none;" onclick='location.href = "${contextPath}/admin/updateNotice/"+${notice.noticeNo}'>
+			
+			<c:if test="${loginUser.gradeNo eq 0}">
+				<script>
+					$("#delete").css("display", "block");	
+					$("#update").css("display", "block");	
+				</script>
+			</c:if>
 			<br>
 			<table id="contentArea" align="center" class="table">
 				<tr>
 					<th width="100">제목</th>
 					<td colspan="3">${notice.noticeTitle}</td>
-					<td><input type="button" value="삭제" onclick='location.href = "${contextPath}/admin/deleteNotice/"+${notice.noticeNo}'></td>
-					<td><input type="button" value="수정" onclick='location.href = "${contextPath}/admin/updateNotice/"+${notice.noticeNo}'></td>
 				</tr>
 				<tr>
 					<th>작성일</th>
 					<td>${notice.createDate}</td>
 				</tr>
 				
-				<c:if test="${board.attachment ne null}">
-					<tr>
-						<th>첨부파일</th>
-						<td>
-							<button type="button" class="btn btn-outline-success btn-block"
-							onclick="location.href='${contextPath}/board/fileDownload/${board.boardNo}'">
-							${board.attachment.originName} - 다운로드</button>
-						</td>
-					</tr>
-				</c:if>
 				
-				<c:if test="${boardCode == 'P'}">
+				
+				<%-- <c:if test="${boardCode == 'P'}">
 					<c:set var="imgList" value="${board.imgList}" />
 
 					<c:if test="${not empty imgList }">
@@ -61,10 +65,18 @@
 							</tr>
 						</c:forEach>
 					</c:if>
-				</c:if>
+				</c:if> --%>
+				
 				<tr>
 					<th>내용</th>
 					<td colspan="4">
+					
+						<c:if test="${notice.originName ne null and notice.changeName ne null}">
+						<div id="noticeImage">
+							<img alt="공지게시판 이미지" src="${contextPath}/resources/admin/notice/${notice.changeName}">
+						</div>
+						</c:if>
+						
 						<p style="height: 150px;">${notice.noticeContent}</p>
 					</td>
 				</tr>

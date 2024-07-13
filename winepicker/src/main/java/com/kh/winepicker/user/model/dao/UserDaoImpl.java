@@ -167,5 +167,52 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	
+// ============================ 민욱 시작 =============================================
+	@Override
+    public List<User> getAllUsers() {
+        return sqlSession.selectList("user.selectAllUsers");
+    }
+
+    @Override
+    public User getUserById(String userId) {
+        return sqlSession.selectOne("user.selectUserById", userId);
+    }
+
+    @Override
+    public int deleteUser(String userId) {
+        return sqlSession.delete("user.deleteUser", userId);
+    }
+
+    @Override
+    public int removeUser(String userId) {
+        return sqlSession.delete("user.removeUser", userId);
+    }
+
+    @Override
+    public List<User> searchUsers(String keyword) {
+        return sqlSession.selectList("user.searchUsers", keyword);
+    }
+
+    @Override
+    public int deleteUsers(List<String> userIds) {
+        return sqlSession.delete("user.deleteUsers", userIds);
+    }
+    
+    @Override
+    public User selectUserByNo(int userNo) {
+        return sqlSession.selectOne("user.selectUserByNo", userNo);
+    }
+
+    @Override
+    public int updateUser(User user) {
+        return sqlSession.update("user.updateUser", user);
+    }
+
+    @Override
+    public List<User> getUsersByNo(List<Integer> userNo) {
+        return sqlSession.selectList("user.getUsersByNo", userNo);
+    }
+// ============================ 민욱 끝 =============================================		
+	
 
 }

@@ -26,10 +26,10 @@
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/worldMap.png");	
 	}
 
-	.ARGENTINA{
-		/* display: none; */
+	.Argentina{
+		display: none;
 	}
-	.ARGENTINA>.flag{
+	.Argentina>.flag{
 		position: absolute;
 		left: 370px;
 		top: 317px;
@@ -40,7 +40,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/Argentina.png");
 	}
-	.ARGENTINA>.line{
+	.Argentina>.line{
 		position: absolute;
 		left: 270px;
 		top: 410px;
@@ -53,10 +53,10 @@
 		border: 1px dashed #3D3D3D;		
 	}
 	
-	.AUSTRALIA{
-		/* display: none; */
+	.Australia{
+		display: none;
 	}
-	.AUSTRALIA>.flag{
+	.Australia>.flag{
 		position: absolute;
 		left: 650px;
 		top: 311px;
@@ -67,7 +67,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/Australia.png");
 	}
-	.AUSTRALIA>.line{
+	.Australia>.line{
 		position: absolute;
 		left: 727px;
 		top: 383px;
@@ -80,10 +80,10 @@
 		border: 1px dashed #3D3D3D;
 	}
 	
-	.CHILE{
-		/* display: none; */
+	.Chile{
+		display: none;
 	}
-	.CHILE>.flag{
+	.Chile>.flag{
 		position: absolute;
 		left: 327px;
 		top: 255px;
@@ -94,7 +94,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/Chile.png");
 	}
-	.CHILE>.line{
+	.Chile>.line{
 		position: absolute;
 		left: 226px;
 		top: 377px;
@@ -108,10 +108,10 @@
 	}
 	
 	
-	.FRANCE{
-		/* display: none; */
+	.France{
+		display: none;
 	}
-	.FRANCE>.flag{
+	.France>.flag{
 		position: absolute;
 		left: 420px;
 		top: 51px;
@@ -122,7 +122,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/France.png");
 	}
-	.FRANCE>.line{
+	.France>.line{
 		position: absolute;
 		left: 425px;
 		top: 155px;
@@ -137,10 +137,10 @@
 	}
 	
 	
-	.GERMANY{
-		/* display: none; */
+	.Germany{
+		display: none;
 	}
-	.GERMANY>.flag{
+	.Germany>.flag{
 		position: absolute;
 		left: 544px;
 		top: 27px;
@@ -151,7 +151,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/Germany.png");
 	}
-	.GERMANY>.line{
+	.Germany>.line{
 		position: absolute;
 		left: 467px;
 		top: 133px;
@@ -167,10 +167,10 @@
 
 	
 	
-	.ITALY{
-		/* display: none; */
+	.Italy{
+		display: none;
 	}
-	.ITALY>.flag{
+	.Italy>.flag{
 		position: absolute;
 		left: 610px;
 		top: 160px;
@@ -181,7 +181,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/Italy.png");
 	}
-	.ITALY>.line{
+	.Italy>.line{
 		position: absolute;
 		left: 500px;
 		top: 200px;
@@ -197,10 +197,10 @@
 
 	
 	
-	.NEWZEALAND{
-		/* display: none; */
+	.NewZealand{
+		display: none;
 	}
-	.NEWZEALAND>.flag{
+	.NewZealand>.flag{
 		position: absolute;
 		left: 817px;
 		top: 247px;
@@ -211,7 +211,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/NewZealand.png");
 	}
-	.NEWZEALAND>.line{
+	.NewZealand>.line{
 		position: absolute;
 		left: 842px;
 		top: 377px;
@@ -227,10 +227,10 @@
 
 	
 	
-	.PORTUGAL{
-		/* display: none; */
+	.Portugal{
+		display: none;
 	}
-	.PORTUGAL>.flag{
+	.Portugal>.flag{
 		position: absolute;
 		left: 295px;
 		top: 196px;
@@ -241,7 +241,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/Portugal.png");
 	}
-	.PORTUGAL>.line{
+	.Portugal>.line{
 		position: absolute;
 		left: 374px;
 		top: 212px;
@@ -257,10 +257,10 @@
 
 	
 	
-	.SPAIN{
-		/* display: none; */
+	.Spain{
+		display: none;
 	}
-	.SPAIN>.flag{
+	.Spain>.flag{
 		position: absolute;
 		left: 416px;
 		top: 374px;
@@ -271,7 +271,7 @@
 			
 		background: no-repeat center/100% url("${contextPath}/resources/admin/country/Spain.png");
 	}
-	.SPAIN>.line{
+	.Spain>.line{
 		position: absolute;
 		left: 393px;
 		top: 298px;
@@ -288,7 +288,7 @@
 	
 	
 	.USA{
-		/* display: none; */
+		display: none;
 	}
 	.USA>.flag{
 		position: absolute;
@@ -330,56 +330,61 @@
 
 </style>
 
+
+
+
+<body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
 
 
 
-<body>
+
+
 	<div class="section">
 		<div class="worldMap">
 		
-			<div class="ARGENTINA">
+			<div class="Argentina">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="AUSTRALIA">
+			<div class="Australia">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="CHILE">
+			<div class="Chile">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="FRANCE">
+			<div class="France">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="GERMANY">
+			<div class="Germany">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="ITALY">
+			<div class="Italy">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="NEWZEALAND">
+			<div class="NewZealand">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="PORTUGAL">
+			<div class="portugal">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="SPAIN">
+			<div class="spain">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
@@ -409,7 +414,7 @@
     				<c:forEach var="i" items="${iList}">
     				<c:if test="${i.countryNo gt 0}">
     					<li class="depth${i.depth}">
-    						<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName} 정보글</a>
+    						<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName}</a>
     					</li>
     				</c:if>
     				</c:forEach>

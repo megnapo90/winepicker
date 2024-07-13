@@ -46,7 +46,14 @@
 	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
    
 <div class="section">
+
 	<div class="content">
+	<input id="noticeEnroll" type="button" value="공지 등록" onclick="noticeEnroll()" style="display: none;">
+	<c:if test="${loginUser.gradeNo eq 0}">
+		<script>
+			$("#noticeEnroll").css("display", "block");
+		</script>
+	</c:if>
 	
         <br><br>
         
@@ -94,8 +101,8 @@
         
         <br>
         
-        <c:set var="url" value="${boardCode}?currentPage="/>
-        <c:if test="${not empty param.condition }">
+        <c:set var="url" value="?currentPage="/>
+        <c:if test="${not empty param.condition}">
 	        <c:set var="sParam" value="&condition=${param.condition}&keyword=${param.keyword}"/>
         </c:if>
         
@@ -104,12 +111,12 @@
         		<!-- 이전 버튼 -->
         		<c:if test="${pi.currentPage eq 1}">
         			<li class="page-item">
-        				<a class="page-link">Previous</a>
+        				<a class="page-link">이전</a>
         			</li>
         		</c:if>
         		<c:if test="${pi.currentPage ne 1}">
         			<li class="page-item">
-        				<a class="page-link" href="${url}${pi.currentPage-1}${sParam}">Previous</a>
+        				<a class="page-link" href="${url}${pi.currentPage-1}${sParam}">이전</a>
         			</li>
         		</c:if>
         		
@@ -122,12 +129,12 @@
         		<!-- 다음 버튼 -->
         		<c:if test="${pi.currentPage eq pi.maxPage}">
         			<li class="page-item">
-        				<a class="page-link" >Next</a>
+        				<a class="page-link" >다음</a>
         			</li>
         		</c:if>
         		<c:if test="${pi.currentPage ne pi.maxPage}">
         			<li class="page-item">
-        				<a class="page-link" href="${url}${pi.currentPage+1}${sParam}">Next</a>
+        				<a class="page-link" href="${url}${pi.currentPage+1}${sParam}">다음</a>
         			</li>
         		</c:if>
         	</ul>
@@ -135,7 +142,7 @@
         
         <br clear="both">
         
-        <form id="searchForm" method="get" align="center" action="${boardCode}">
+        <form id="searchForm" method="get" align="center" action="">
         	
 			<div class="select">
 				<select class="custom-select" name="condition">
@@ -148,6 +155,7 @@
             	<input type="text" class="form-control" name="keyword" value="${param.keyword}" />
             </div>
             <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+            
         </form>
         
         
@@ -156,6 +164,12 @@
 	</div>
 	
 </div>
+
+<script>
+	function noticeEnroll(){
+		location.href = "${contextPath}/admin/noticeEnroll";
+	}
+</script>
 
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

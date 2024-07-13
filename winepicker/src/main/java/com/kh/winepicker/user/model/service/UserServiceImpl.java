@@ -168,5 +168,67 @@ public class UserServiceImpl implements UserService {
 	public int updateUserStatus(int userNo) {
 		return userDao.updateUserStatus(userNo);
 	}
+	
+	
+	
+	
+// ============================ 민욱 시작 =============================================
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
+    }
+
+    @Override
+    public User getUserById(String userId) {
+        return userDao.getUserById(userId);
+    }
+
+    @Override
+    public int updateUser(User user) {
+        return userDao.updateUser(user);
+    }
+
+    @Override
+    public int deleteUser(String userId) {
+        return userDao.deleteUser(userId);
+    }
+
+    @Override
+    public int removeUser(String userId) {
+        return userDao.removeUser(userId);
+    }
+
+    @Override
+    public List<User> searchUsers(String keyword) {
+        return userDao.searchUsers(keyword);
+    }
+
+    @Override
+    public int deleteUsers(List<String> userIds) {
+        return userDao.deleteUsers(userIds);
+    }
+    
+    @Override
+    public User getUserByNo(int userNo) {
+        return userDao.selectUserByNo(userNo);
+    }
+
+    @Override
+    public int modifyUser(User user) {
+        return userDao.updateUser(user);
+    }
+    
+    @Override
+    public List<User> getUsersByNo(List<Integer> userNo) {
+        return userDao.getUsersByNo(userNo);
+    }
+// ============================ 민욱 끝 =============================================	
+	
+	
+	
+	
+	
+	
+	
 
 }

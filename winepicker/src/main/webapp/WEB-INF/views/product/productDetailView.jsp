@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <button class="cart">장바구니</button>
+                    <button class="cart" onclick="addToCart(${wine.wineNo})">장바구니</button>
                     <button class="btn_order" id="order" onclick="movePage()">구매 하기</button>
                     
                    
@@ -60,6 +60,31 @@
 	
 	<script>
 
+	 function addToCart(wineNo) {
+	        const quantityInput = document.querySelector(`input[data-wine-id='\${wineNo}']`);
+	        const quantity = parseInt(quantityInput.value);
+		
+	        if (quantity > 0 && quantity <= quantityInput.max) {
+	            fetch(`${contextPath}/product/addToCart`, {
+	                method: 'POST',
+	                headers: {
+	                    'Content-Type': 'application/json'
+	                },
+	                body: JSON.stringify({ wineNo: wineNo, quantity: quantity })
+	            })
+	            .then(response => response.text())
+	            .then(data => {
+	                alert(data); // 예시: 'Item added to cart'
+	                window.location.href = `${contextPath}/product/cart`; // 장바구니 페이지로 이동
+	            })
+	            .catch(error => console.error('Error:', error));
+	        } else {
+	            alert('유효한 수량을 입력하세요.');
+	        }
+	    }
+
+	
+	
 	function movePage(){
 		const bQuantityInputs = document.querySelectorAll('.quantity-input');
 		 
@@ -80,6 +105,10 @@
 		location.href = `${contextPath}/product/order?cart=\${encodeURIComponent(cartJSON)}`;
 		
 	}
+	
+
+	
+	
 	
 	document.addEventListener('DOMContentLoaded', () => {
 	    const quantityInputs = document.querySelectorAll('.quantity-input');

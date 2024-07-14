@@ -11,139 +11,211 @@
 <title>Insert title here</title>
 </head>
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+
+.new-wine {
+    text-align: center; /* 텍스트 중앙 정렬 */
+    margin: 50px;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
+.new-wine ul {
+    list-style-type: none; /* 목록의 기본 점 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
 }
 
+.new-wine li {
+    margin: 0; /* 기본 여백 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+}
+
+.new-wine-title {
+   	font-size: 36px;
+    font-weight: bold; /* 글씨 굵게 */
+    color: #333; /* 텍스트 색상 */
+    margin-bottom: 10px; /* 하단 여백 추가 */
+}
+
+.new-wine li:not(.new-wine-title) {
+    font-size: 12px; /* 폰트 크기 조정 */
+    color: #555; /* 텍스트 색상 */
+}
+
+
+
+
+
+/* 페이지 컨테이너 */
 .order-page-container {
-    background-color: #fff;
+    max-width: 1000px;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #f9f9f9;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
+/* 제품 정보 */
 .product-info {
     display: flex;
-    align-items: center;
     margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-info:hover {
+    background-color: #f1f1f1;
 }
 
 .product-image {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
-    margin-right: 20px;
+    margin-right: 15px;
 }
 
 .product-details {
-    flex-grow: 1;
+    flex: 1;
 }
 
 .product-name {
-    font-size: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
     margin-bottom: 10px;
 }
 
 .product-price {
-    font-size: 18px;
-    color: #555;
+    font-size: 1.1em;
+    color: #e74c3c;
     margin-bottom: 10px;
 }
 
-.product-details label {
-    font-weight: bold;
+.product-info p {
+    margin: 5px 0;
 }
 
-.product-details input {
-    width: 60px;
+
+/* 수량 입력 */
+input[type="number"] {
+    width: 80px;
     padding: 5px;
-    margin-top: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
-.order-form {
-    display: flex;
-    flex-direction: column;
+input[type="number"]:focus {
+    border-color: #3498db;
+    outline: none;
 }
 
-.order-form label {
+/* 배송 정보 */
+h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #2c3e50;
+}
+
+label {
+    display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: #333;
 }
 
-.order-form input {
-    margin-bottom: 15px;
+input[type="text"], 
+input[type="email"] {
+    width: calc(100% - 22px);
     padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    border: 1px solid #ccc;
 }
 
-.order-form button {
-    background-color: #28a745;
+input[type="text"]:focus, 
+input[type="email"]:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* 우편번호 찾기 버튼 */
+input[type="button"] {
+    background-color: #3498db;
     color: #fff;
     border: none;
-    cursor: pointer;
-    font-size: 16px;
     padding: 10px;
     border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
 }
 
-.order-form button:hover {
-    background-color: #218838;
+input[type="button"]:hover {
+    background-color: #2980b9;
 }
 
 
+/* 제출 버튼 */
+button[type="submit"] {
+	
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: auto;
+    display : block;
+}
 
+button[type="submit"]:hover {
+    background-color: #27ae60;
+}
 </style>
 
 
 
 
 <body>
-<div class="order-page-container">
 
-    <h1>주문 페이지</h1>
-    
+	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	
+	
+	
+	<div class="new-wine">
+		 <ul>
+            <li class="new-wine-title">주문하기</li>
+            <li>Order</li>
+        </ul>
+		
+	</div>
+	<hr>
+
+<div class="order-page-container">
     <form action="order" method="post">
-    <c:forEach var="wineExt" items="${wines }">
-    	
-        <div class="product-info" data-href="detail/${wineExt.wineNo }" data-price="${wineExt.price}" data-wine-no="${wineExt.wineNo }">
-            <img class="product-image" src="/winepicker/resources/images/product/${wineExt.wineImage.changeName}"
-                 alt="${wineExt.wineName} 이미지">
-            <div class="product-details">
-                <h2 class="product-name">${wineExt.wineName}</h2>
-                <p class="product-price" id="formattedPrice">
-                    ${wineExt.price * quantity}
-                </p>
-                <p>
-                    <label for="quantity-${wineExt.wineNo}">수량:</label>
-                    <input type="number" id="quantity" name="quantities" min="1" value="${wineExt.BQuantities }"  required
-                           data-price="${wineExt.price}" data-wine-no="${wineExt.wineNo}">
-                      <input type="hidden" name="wineNos" value="${wineExt.wineNo}">
-                </p>
-                
-                
+        <c:forEach var="wineExt" items="${wines }">
+            <div class="product-info" data-href="detail/${wineExt.wineNo }" data-price="${wineExt.price}" data-wine-no="${wineExt.wineNo }">
+                <img class="product-image" src="/winepicker/resources/images/product/${wineExt.wineImage.changeName}"
+                     alt="${wineExt.wineName} 이미지">
+                <div class="product-details">
+                    <h2 class="product-name">${wineExt.wineName}</h2>
+                    <p class="product-price" id="formattedPrice-${wineExt.wineNo}">
+                        ${wineExt.price}
+                    </p>
+                    <p>
+                        <label for="quantity-${wineExt.wineNo}">수량:</label>
+                        <input type="number" id="quantity-${wineExt.wineNo}" name="quantities" min="1" value="${wineExt.BQuantities }"  required
+                               data-price="${wineExt.price}" data-wine-no="${wineExt.wineNo}">
+                        <input type="hidden" name="wineNos" value="${wineExt.wineNo}">
+                    </p>
+                </div>
             </div>
-        </div>
-    </c:forEach>
-       
+        </c:forEach>
+    </form>
+</div>
         
             <h2>배송 정보</h2>
             <label for="name">이름:</label>
@@ -166,10 +238,11 @@ h1, h2 {
            </form>
     </div>
 	
-	
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 
 
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
 	<script>
 	//카카오 주소등록 
 	    function execDaumPostcode() {
@@ -218,16 +291,26 @@ h1, h2 {
 	    //카카오 주소등록 끝  
   
 	    //갯수가 변할떄 처리
-	    
-		
-	    
-	    
-	   
-	    
-	    
+	document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[name="quantities"]').forEach(function(quantityInput) {
+        quantityInput.addEventListener('input', function(event) {
+        	
+        
+            let quantity = parseInt(event.target.value, 10) || 0; 
+            let price = parseInt(event.target.getAttribute('data-price'));
+
+            let totalPrice = price * quantity;
+            let wineNo = event.target.getAttribute('data-wine-no');
+          
+            const formattedPrice = new Intl.NumberFormat('ko-KR').format(totalPrice);
+            document.getElementById(`formattedPrice-\${wineNo}`).textContent = formattedPrice; 
+        });
+
+        quantityInput.dispatchEvent(new Event('input'));
+    });
+});
 	    
 	</script>
-	
 	
     
 	

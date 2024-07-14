@@ -39,6 +39,12 @@ public interface ProductService {
 
 	int orderPage2(HistoryExt historyExt);
 
+	List<WineExt> getNewProductList(Map<String, Object> paramMap);
+
+
+
+	Wine getWineById(int wineNo);
+
 	
 
 	

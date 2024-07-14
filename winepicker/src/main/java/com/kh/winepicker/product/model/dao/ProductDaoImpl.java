@@ -109,6 +109,17 @@ public class ProductDaoImpl implements ProductDao{
 		return sqlSession.insert("product.insertHistroy",historyExt);
 	}
 
+	@Override
+	public List<WineExt> getNewProductList(Map<String, Object> paramMap) {
+		return sqlSession.selectList("product.getNewProductList",paramMap);
+	}
+
+
+	@Override
+	public Wine getWineById(int wineNo) {
+		return sqlSession.selectOne("product.cart",wineNo);
+	}
+
 	
 
 	

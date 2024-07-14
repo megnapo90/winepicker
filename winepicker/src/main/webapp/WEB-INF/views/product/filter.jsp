@@ -17,6 +17,7 @@
 
         /* 사이드바 필터 스타일 */
         .filter-container {
+      
             width: 300px;
             background-color: #ffffff;
             border-radius: 10px;

@@ -480,6 +480,29 @@
  	
  	
  	
+ 	<select id="getNewProductList" resultMap="wineExtMap">
+	SELECT *
+	FROM (
+    SELECT W.WINE_NAME, W.PRICE, W.COUNTRY_NO, G.WINE_TYPE_NO, WI.CHANGE_NAME, W.WINE_NO
+    FROM WINE W 
+    LEFT JOIN WINE_IMAGE WI ON WI.WINE_NO = W.WINE_NO
+    LEFT JOIN GRAPE G ON G.GRAPE_NO = W.GRAPE_NO
+    WHERE W.STATUS = 'Y'
+    ORDER BY W.WINE_NO DESC
+    )
+    WHERE ROWNUM &lt; 5
+		
+ 	</select>
+ 	
+ 	
+ 	<select id="cart" resultMap="wineExtMap">
+ 	SELECT
+		W.PRICE, W.WINE_NO, W.WINE_NAME, WI.ORIGIN_NAME, WI.CHANGE_NAME
+ 	FROM WINE W
+ 	LEFT JOIN WINE_IMAGE WI ON WI.WINE_NO = W.WINE_NO
+ 	WHERE W.WINE_NO = #{wineNo}
+ 	</select>
+ 	
  	
  	
  	

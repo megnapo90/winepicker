@@ -6,156 +6,176 @@
 <head>
 <meta charset="UTF-8">
 <title>고객센터</title>
+<link rel="stylesheet"
+	href="${contextPath}/resources/css/userCommon.css">
 
 <style>
-
-.callcenter {
-	height : 100%;
+/* 공통 스타일 */
+body {
 	margin: 0;
+	padding: 0;
+}
+
+header {
+	color: white;
+	text-align: center;
+}
+
+.main-content {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* 최소 높이를 화면 높이와 같게 설정 */
+}
+
+.user-common {
 	padding: 20px;
+	width: 300px;
+	font-weight: bold;
+}
+
+.main-section {
+	display: flex;
+	flex: 1; /* 남은 공간을 모두 차지 */
+}
+
+.page-name {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.content {
+	flex: 1;
+}
+/* 공통 스타일 */
+.callcenter {
+	height: 100%;
+	margin-top: 50px;
 }
 
 .callcenter .call-center-menu {
-	
 	width: 98%;
-	height : 6%;
-    margin : auto;
-    margin-bottom : 10px;
-    display: flex;
-    align-items: center;
+	height: 6%;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
 }
 
-.call-center-menu div{
+.call-center-menu div {
 	font-style: italic;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 400;
-	
 	text-align: center;
-
 	background: #D0D0D0;
-	width : 22%;
-	height : 100%;
-	margin : auto;
-	
+	width: 20%;
+	height: 100%;
+	margin-left: 10px;
 }
 
-.call-center-menu div p{
-	margin-top : 7px;
+.call-center-menu div p {
+	margin-top: 10px;
 }
 
-#blank{
+#blank {
 	background: white;
 }
 
 #faq-detail {
-	opacity: 1;
-	background: #D3D3D3;
-	
-	font-style: oblique;
-	height: 150px;
-	
-	padding : 25px;
+	background: #D0D0D0;
+	height: 90px;
+	padding: 10px;
 }
-.call-center-menu .faq{
-	opacity: 1;
-	background: #5E5E5E;
-	font-family: Noto Serif Gurmukhi;
-	font-size: 25px;
-	font-weight: normal;
-	line-height: normal;
-	letter-spacing: 0.1em;
-	color: #FFFFFF;	
+
+.call-center-menu .faq {
+	color: #FFFFFF;
 }
 
 .faq-list-box {
 	overflow-x: auto;
+	margin-top: 20px;
 }
 
 .faq-list {
-	margin : auto;
-	width: 95%;
+	margin-left: 20px;
+	width: 60%; 
 	border-collapse: collapse;
 }
 
-.faq-list tr{
+.faq-list tr {
 	height: 90px;
-	
 	box-sizing: border-box;
 	border-width: 0px 0px 0.5px 0px;
 	border-style: solid;
 	border-color: rgba(0, 0, 0, 0.5);
-	
 }
 
 .faq-list th, .faq-list td {
-	margin : auto;
-	padding: 10px;
+	margin: auto;
 	text-align: left;
 }
 
 .faq-list th {
-	width : 10%;
-	font-family: Alike Angular;
-	font-size: 30px;
-	font-weight: 400;
-	line-height: normal;
+	width: 10%;
 	text-align: center;
-	letter-spacing: 0.1em;
-	font-variation-settings: "opsz" auto;
 	color: #3D3D3D;
 }
+
 .faq-list td {
-	font-family: Alike Angular;
-	font-size: 25px;
-	font-weight: normal;
-	line-height: normal;
-	letter-spacing: 0.1em;
-	font-variation-settings: "opsz" auto;
-	color: #3D3D3D;
+	
 }
 
 .faq-list td p {
 	margin: 0;
 }
-
 </style>
 </head>
 <body>
-	
-<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-<jsp:include page="/WEB-INF/views/common/userCommon.jsp"/>
 
-    <div class="page-name">	
-		고객센터
-	</div>
-	<div class="content">
-		<div class="callcenter">
-			<div class="call-center-menu">
-				<div class="faq" onclick=showFaq()>
-		        	<p>FAQ</p>        
-	            </div>
-	            <div class="ask" onclick="location.href='${contextPath}/ask/askPage'">
-	            	<p>1:1문의</p>     	
-	            </div>
-	            <div id="blank"></div>
-	            <div class="user-notice" onclick=showNotice()>
-					<p>이용약관 및 개인정보처리 방침</p>
+	<header>
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	</header>
+
+	<div class="main-content">
+
+		<div class="user-common">
+			<jsp:include page="/WEB-INF/views/common/userCommon.jsp" />
+		</div>
+
+		<div class="main-section">
+
+			<div class="page-name">고객센터</div>
+			<div class="content">
+				<div class="callcenter">
+					<div class="call-center-menu">
+						<div class="faq" onclick=showFaq()>
+							<p>FAQ</p>
+						</div>
+						<div class="ask"
+							onclick="location.href='${contextPath}/ask/askPage'">
+							<p>1:1문의</p>
+						</div>
+						<div id="blank"></div>
+						<div class="user-notice" onclick=showNotice()>
+							<p>이용약관 및 개인정보처리 방침</p>
+						</div>
+					</div>
+					<div class="faq-list-box">
+						<table class="faq-list">
+
+							<c:forEach items="${faqList }" var="faq">
+								<tr id="${faq.faqNo }" onclick=showFaqDetail(${faq.faqNo});>
+									<th>Q${faq.faqNo }</th>
+									<td>${faq.faqTitle }</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div>
 				</div>
 			</div>
-	        <div class="faq-list-box">    
-	        <table class="faq-list">
-	            	
-	          	<c:forEach items="${faqList }" var="faq">
-	            	<tr id="${faq.faqNo }" onclick=showFaqDetail(${faq.faqNo});>
-	            		<th>Q${faq.faqNo }</th>
-	            		<td>${faq.faqTitle }</td>
-	            	</tr>
-	            </c:forEach>
-	        </table>
-	        </div>
 		</div>
+
 	</div>
-<script>
+
+	<script>
 	
 	function showFaq(){
 		location.href="${contextPath}/user/callCenter"
@@ -200,7 +220,9 @@
 	
 	
 </script>
+	<footer>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	</footer>
 
-<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>

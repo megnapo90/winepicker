@@ -7,12 +7,50 @@
 <head>
 <meta charset="UTF-8">
 <title>최근 본 상품</title>
+<link rel="stylesheet" href="${contextPath}/resources/css/userCommon.css">
+
 <style>
-.search-history {
+/* 공통 스타일 */
+body {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	color: white;
+	text-align: center;
+}
+
+.main-content {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* 최소 높이를 화면 높이와 같게 설정 */
+}
+
+.user-common {
 	
+	padding: 20px;
+	width: 300px;
+	font-weight: bold;
+}
+
+.main-section {
+	display: flex;
+	flex: 1; /* 남은 공간을 모두 차지 */
+}
+
+.page-name {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.content {
+	flex: 1;
+}
+/* 공통 스타일 */ 
+.search-history {
 	height : 100%;
 	margin-top: 20px;
-	padding: 20px;
 }
 
 .empty-select-list {
@@ -25,12 +63,11 @@
 	padding-top : 15%;
 	text-align : center;
 	font-size : 20px;
-	font-weight : 10px;
 }
 
 .search-list-box {
 	overflow-x: auto;
-	margin-top : 50px;
+	margin-top: 20px;
 }
 
 .search-list {
@@ -48,12 +85,12 @@
 
 .search-list th, .search-list td {
 	border: 1px solid #ddd;
-	padding: 10px;
 	text-align: center;
 }
 
 .search-list th {
 	background-color: #f8f8f8;
+	width: 10%;
 }
 
 .search-list td p {
@@ -63,29 +100,31 @@
 .search-list img {
 	width: 50px;
 	height: auto;
+	margin: 0;
 }
+
 
 </style>
 
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-<jsp:include page="/WEB-INF/views/common/userCommon.jsp"/>
-
-
-	<div class="page-name">
-    	최근 본 상품
-    </div>
+	<header>
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	</header>
+	<div class="main-content">
+		<div class="user-common">
+			<jsp:include page="/WEB-INF/views/common/userCommon.jsp" />
+		</div>
+		<div class="main-section">
+			<div class="page-name">최근 본 상품</div>
 	
 	<div class="content">
-		<div class="page-detail">
-			최근 조회 상품
-		</div>	
+		<!-- <div class="page-detail">최근 조회 상품</div> -->	
 		<div class="search-history">
 			<c:choose>
 	
-				<c:when test="${searchList ne null}">
+				<c:when test="${empty searchList}">
 					<div class="empty-select-list">
 						<p>최근 조회한 상품이 없습니다.</p>
 					</div>
@@ -102,7 +141,7 @@
 	
 							<c:forEach items="${searchList }" var="s">
 								<tr>
-									<td><img src="<%-- ${wine.imageURL} --%>" alt="상품 이미지"></td>
+									<td><img src="${contextPath}/${path }/${item.wineImage.changeName }" alt="상품 이미지"></td>
 									<td><p>
 											<%-- ${s.productName} --%>
 										</p></td>
@@ -120,10 +159,13 @@
 			</c:choose>
 		</div>
 	</div>
+	</div>
+	</div>
 
+	<footer>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	</footer>
 
-
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
 </body>
 </html>

@@ -37,13 +37,19 @@ public interface ProductDao {
 
 	List<WineExt> getwineList(List<Integer> volumes);
 
-	List<WineExt> searchByVolume(Map<String, Object> params);
+	List<WineExt> searchByAjax(Map<String, Object> params);
 
 	List<WineExt> orderPage(Map<String, Object> params);
 
 	int updateProductQty(Wine wine);
 
 	int orderPage2(HistoryExt historyExt);
+
+	List<WineExt> getNewProductList(Map<String, Object> paramMap);
+
+
+
+	Wine getWineById(int wineNo);
 
 
 	

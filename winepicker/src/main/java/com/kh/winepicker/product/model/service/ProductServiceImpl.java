@@ -77,22 +77,6 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional(rollbackFor = { Exception.class })
 	public void deleteWine(int wineNo) {
 
-//		WineExt wine = (WineExt)productDao.selectWine(wineNo);
-//		
-//		WineImage wi= wine.getAttachment();
-//
-//		String saveDir = application.getRealPath("/resources/images/product/");
-//		
-//		File file = new File(saveDir, wi.getChangeName());
-//		
-//		
-//		if(file.exists()) {
-//			productDao.deleteWine(wineNo);
-//			file.delete();		
-//			
-//		}else {
-//			return "product/productUpdateForm";
-//		}
 
 		try {
 			// 1. wineNo로 Wine 객체를 조회합니다.
@@ -167,8 +151,8 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public List<WineExt> searchByVolume(Map<String, Object> params) {
-		return productDao.searchByVolume(params);
+	public List<WineExt> searchByAjax(Map<String, Object> params) {
+		return productDao.searchByAjax(params);
 	}
 
 	
@@ -209,59 +193,26 @@ public class ProductServiceImpl implements ProductService {
 		
 	}
 
+	@Override
+	public List<WineExt> getNewProductList(Map<String, Object> paramMap) {
+		
+		return productDao.getNewProductList(paramMap);
+	}
+
+	@Override
+	public Wine getWineById(int wineNo) {
+		return productDao.getWineById(wineNo);
+	}
+
+
 	
 
+	
+	
+	
+	
 	
 	
 }
 
 	
-
-//	@Override
-//	@Transactional(rollbackFor = { Exception.class })
-//	public int insertHistory(HistoryExt he, User user) {
-//		String userName = he.getUser().getUserName();
-//		String eMail = he.getUser().getUserEmail();
-//		String address = he.getUser().getAddress();
-//		String phone = he.getUser().getPhone();
-//		
-//		userName = Utils.XSSHandling(userName);
-//		eMail = Utils.XSSHandling(eMail);
-//		address = Utils.XSSHandling(address);
-//		phone = Utils.XSSHandling(phone);
-//		
-//		user.setUserName(userName);
-//		user.setUserEmail(eMail);
-//		user.setAddress(address);
-//		user.setPhone(phone);
-//		
-//		
-//		int result = productDao.insertHistory(he);
-//		if(result == 0 ) {
-//			throw new RuntimeException("주문 실패");
-//		}
-//		int qty = he.getWine().getQuantity();
-//		
-//		result *= productDao.updateWineQty(qty);
-//		
-//		
-//		
-//		
-//		return 0;
-//		
-//		
-//	}
-//
-//	
-
-
-//	@Override
-//	@Transactional(rollbackFor = { Exception.class })
-//	public void insertHistory(HistoryExt he) {
-//		productDao.insertHistory(he);
-//		for(WineExt wine : he.getWines()) {
-//			wine.setOrderNo(he.getOrderNo());
-//			productDao.updateQty(wine);
-//		}
-//	}
-

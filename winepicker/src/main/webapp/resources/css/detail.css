@@ -15,7 +15,7 @@ body {
 .product-image {
     width: 540px; /* 원하는 이미지 가로 크기 */
     height: auto; /* 이미지 비율 유지 */
-    background-color: #e0e0e0;
+   
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,9 +23,11 @@ body {
 }
 
 .product-image img {
+		background-color: white;
 	 width: 480px; /* 원하는 이미지 가로 크기 */
     height: auto; /* 이미지 비율 유지 */
     margin: 0;
+	
 }
 
 .favorite {

@@ -292,7 +292,7 @@
         LEFT JOIN WINE_TYPE WT ON WT.WINE_TYPE_NO = G.WINE_TYPE_NO
        
         WHERE W.STATUS = 'Y'
-        
+       
        
         <if test="volumes != null and volumes.size() > 0">
             AND W.VOLUME IN
@@ -307,9 +307,9 @@
             </foreach>
         </if>
          <if test="types != null and types.size() > 0">
-            AND WT.WINE_TYPE_NO IN
-            <foreach item="winetype" collection="types" open="(" close=")" separator=",">
-                #{wineTypeNo}
+            AND G.WINE_TYPE_NO IN
+            <foreach item="type" collection="types" open="(" close=")" separator=",">
+                #{type}
             </foreach>
         </if>
         <if test="redSubTypes != null and redSubTypes.size() > 0">
@@ -331,14 +331,34 @@
             </foreach> 
         </if>
         
+        <if test="minPrices != null and minPrices.size() > 0">
+             AND W.PRICE >=
+            <foreach item="minPrice" collection="minPrices" open="(" close=")" separator=",">
+                 #{minPrice}
+            </foreach>
+        </if>
         
         
-        
-        
-        
-        
-        
-        
+        <if test="maxPrices != null and maxPrices.size() > 0">
+        	AND W.PRICE &lt;=
+            <foreach item="maxPrice" collection="maxPrices" open="(" close=")" separator=",">
+                 ${maxPrice}
+            </foreach>
+        </if>
+       
+       
+       <choose>
+			<when test="sortOption == 'pricehigh'">
+				ORDER BY W.PRICE DESC
+			</when>
+			<when test="sortOption == 'pricelow'">
+				ORDER BY W.PRICE ASC
+			</when>
+			<when test="sortOption == 'recent'">
+				ORDER BY W.WINE_NO DESC
+			</when>
+
+		</choose>
         
         
 
@@ -479,6 +499,29 @@
  	
  	
  	
+ 	
+ 	<select id="getNewProductList" resultMap="wineExtMap">
+	SELECT *
+	FROM (
+    SELECT W.WINE_NAME, W.PRICE, W.COUNTRY_NO, G.WINE_TYPE_NO, WI.CHANGE_NAME, W.WINE_NO
+    FROM WINE W 
+    LEFT JOIN WINE_IMAGE WI ON WI.WINE_NO = W.WINE_NO
+    LEFT JOIN GRAPE G ON G.GRAPE_NO = W.GRAPE_NO
+    WHERE W.STATUS = 'Y'
+    ORDER BY W.WINE_NO DESC
+    )
+    WHERE ROWNUM &lt; 5
+		
+ 	</select>
+ 	
+ 	
+ 	<select id="cart" resultMap="wineExtMap">
+ 	SELECT
+		W.PRICE, W.WINE_NO, W.WINE_NAME, WI.ORIGIN_NAME, WI.CHANGE_NAME
+ 	FROM WINE W
+ 	LEFT JOIN WINE_IMAGE WI ON WI.WINE_NO = W.WINE_NO
+ 	WHERE W.WINE_NO = #{wineNo}
+ 	</select>
  	
  	
  	

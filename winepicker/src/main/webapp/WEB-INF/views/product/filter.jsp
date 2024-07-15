@@ -11,18 +11,19 @@
          /* 전체 레이아웃 */
         .container {
             display: flex;
-            padding: 20px;
+            padding: 0px;
             background-color: #f0f2f5;
         }
 
         /* 사이드바 필터 스타일 */
         .filter-container {
-            width: 300px;
+      
+            width: 280px;
             background-color: #ffffff;
             border-radius: 10px;
-            padding: 20px;
+            padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-right: 30px;
+            
         }
 
         /* 필터 헤더 스타일 */
@@ -45,7 +46,7 @@
             border: none;
             color: #dc3545;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 22px;
         }
 
         #resetFilters img {
@@ -62,13 +63,14 @@
             font-weight: bold;
             display: block;
             margin-bottom: 10px;
-            font-size: 16px;
+            font-size: 20px;
             color: #333;
         }
 
         .toggle-btn {
-            font-size: 16px;
+            font-size: 18px;
             color: #007bff;
+            
             background: none;
             border: none;
             cursor: pointer;
@@ -78,7 +80,8 @@
         .toggle-btn:hover {
             color: #0056b3;
         }
-
+        
+   
         /* 서브 필터의 기본 스타일 */
         .sub-options {
             display: none;
@@ -88,13 +91,36 @@
         .sub-options label {
             display: block;
             margin-bottom: 5px;
-            font-size: 14px;
+            font-size: 18px;
             color: #333;
         }
 
         .sub-options input {
             margin-right: 5px;
         }
+        
+        #redSubFilter input{
+       		margin-left:16px;
+        	
+        }
+         #redSubFilter label{
+         	font-size: 16px;
+         }
+        
+          #whiteSubFilter input{
+       		margin-left:16px;
+        	
+        }
+         #whiteSubFilter label{
+         	font-size: 16px;
+         }
+          #sparklingSubFilter input{
+       		margin-left:16px;
+        	
+        }
+         #sparklingSubFilter label{
+         	font-size: 16px;
+         }
         
 
         /* 제품 목록 스타일 */
@@ -148,10 +174,26 @@
 	    border-radius: 4px;
 	    border: none;
 	    box-shadow: none;
+	   	width: 240px;
 	
     }
+       .slider-container p{
+       	font-size : 18px;
+       	font-weight : bold;
+       }
        
-        
+      .slider-values {
+    display: flex; /* Flexbox 레이아웃 활성화 */
+    justify-content: space-between; /* 자식 요소를 양쪽 끝으로 배치 */
+    align-items: center; /* 자식 요소 수직 정렬 */
+    font-size: 1em; /* 글자 크기 조정 (필요시) */
+    padding: 0 10px; 
+    margin-bottom: 10px;
+}
+
+#minValue, #maxValue {
+    white-space: nowrap; /* 텍스트가 줄 바꿈 없이 한 줄에 표시되도록 함 */
+}
         
     </style>
 </head>
@@ -170,8 +212,9 @@
             
             <div class="filter-section">
                <div class="slider-container">
-        <div id="price-slider"></div>
-        
+       
+                    		<p> 가격 </p>
+
             <div id="price-slider"></div>
                     <div class="slider-values">
                         <span id="minValue"></span> ~ <span id="maxValue"></span>
@@ -192,17 +235,25 @@
                             <label><input type="checkbox" name="red-subType-option" value="1" class=""> 카베르네 소비뇽</label>
                             <label><input type="checkbox" name="red-subType-option" value="2" class=""> 메를로</label>
                             <label><input type="checkbox" name="red-subType-option" value="3" class=""> 피노 누아</label>
+                            <label><input type="checkbox" name="red-subType-option" value="4" class=""> 쉬라 </label>
+                            <label><input type="checkbox" name="red-subType-option" value="5" class=""> 그 외</label>
                         </div>
                         <label><input type="checkbox" id="white" name="type-option" value="2" class=""> 화이트</label>
+                      
                         <div id="whiteSubFilter" class="sub-options sub-filter">
-                            <label><input type="checkbox" name="white-subType-option" value="1" class=""> 소비뇽 블랑</label>
-                            <label><input type="checkbox" name="white-subType-option" value="2" class=""> 샤르도네</label>
-                            <label><input type="checkbox" name="white-subType-option" value="3" class=""> 리슬링</label>
+                            <label><input type="checkbox" name="white-subType-option" value="6" class=""> 샤르도네 </label>
+                            <label><input type="checkbox" name="white-subType-option" value="7" class=""> 소비뇽 블랑 </label>
+                            <label><input type="checkbox" name="white-subType-option" value="8" class=""> 리슬링</label>
+                            <label><input type="checkbox" name="white-subType-option" value="9" class=""> 그 외 </label>
+                            
                         </div>
                         <label><input type="checkbox" id="sparkling" name="type-option" value="3" class=""> 스파클링</label>
                         <div id="sparklingSubFilter" class="sub-options sub-filter">
-                            <label><input type="checkbox" name="sparkling-subType-option" value="1" class=""> 샤르도네</label>
-                            <label><input type="checkbox" name="sparkling-subType-option" value="2" class=""> 피노 그리지오</label>
+                            <label><input type="checkbox" name="sparkling-subType-option" value="1" class="">샤르도네</label>
+                            <label><input type="checkbox" name="sparkling-subType-option" value="1" class="">소비뇽 블랑</label>
+                            <label><input type="checkbox" name="sparkling-subType-option" value="2" class="">뮈스카 </label>
+                            <label><input type="checkbox" name="sparkling-subType-option" value="2" class="">그 외</label>
+                            
                         </div>
                     </div>
                 </div>
@@ -226,6 +277,11 @@
                     <div id="countryOptions" class="sub-options">
                         <label><input type="checkbox" name="country-option" value="1" class=""> 프랑스</label>
                         <label><input type="checkbox" name="country-option" value="2" class=""> 이탈리아</label>
+                        <label><input type="checkbox" name="country-option" value="3" class=""> 미국 </label>
+                        <label><input type="checkbox" name="country-option" value="4" class=""> 칠레 </label>
+                        <label><input type="checkbox" name="country-option" value="5" class=""> 호주</label>
+                        <label><input type="checkbox" name="country-option" value="6" class=""> 그 외 </label>
+                        
                     </div>
                 </div>
             </div>
@@ -242,8 +298,8 @@
 
    document.addEventListener('DOMContentLoaded', function() {
 	    // 초기값 설정
-	    var minPrice = ${minPrice};  // 최소 금액 설정
-	    var maxPrice = ${maxPrice};  // 최대 금액 설정
+	    var minPrice = Math.floor(${minPrice} / 10000) * 10000;
+	    var maxPrice = Math.ceil(${maxPrice} / 10000) * 10000;
 
 	    // 가격 슬라이더 초기화
 	    priceSlider = document.getElementById('price-slider');
@@ -260,7 +316,7 @@
 	            step: 1000,
 	            format: {
 	                to: function (value) {
-	                    return (Math.ceil(value / 10000) * 10000).toLocaleString();
+	                    return value.toLocaleString();
 	                },
 	                from: function (value) {
 	                    return Number(value.replace(/,/g, ''));
@@ -418,21 +474,29 @@
 	        },
 	        success: function(result) {
 	            console.log('서버 응답 데이터:', result);
-
+				
 	            var wineExts = '';
 	            for (var wineExt of result) {
-	                wineExts += `<div class="product" data-href="detail/${wineExt.wineNo}" data-price="${wineExt.price}" data-wineNo="${wineExt.wineNo}">`;
-	                wineExts += `  <img src="${contextPath}/resources/images/product/${wineExt.wineImage.changeName}" alt="${wineExt.wineName} 이미지">`;
-	                wineExts += `  <p>${wineExt.wineName}</p>`;
-	                wineExts += `  <p>${wineExt.price.toLocaleString()}원</p>`;
-	                wineExts += `  <p>${wineExt.countryNo}</p>`;
-	                wineExts += `  <p>${wineExt.grapeNo}</p>`;
+	           	var formattedPrice = wineExt.price.toLocaleString();
+	            	
+	                wineExts += `<div class="wine-card-info-wrap" data-href="${contextPath}/product/detail/\${wineExt.wineNo}">`;
+	                wineExts += `  <div class="wine-image-wrap">`;
+	                wineExts += `    <img src="${contextPath}/resources/images/product/\${wineExt.wineImage.changeName}" alt="\{wineExt.wineName}">`;
+	                wineExts += `    <p class="wine-title">\${wineExt.wineName}</p>`;
+	                wineExts += `  </div>`;
+	                wineExts += `  <div class="wine-price-info">`;
+	                wineExts += `    <p>\${formattedPrice}원</p>`;
+	                wineExts += `  </div>`;
+	                wineExts += `  <div class="type-country">`;
+	                wineExts += `    <img src="${contextPath}/resources/css/images/product/country/country\${wineExt.countryNo}.png" alt="\${wineExt.countryNo} Image" class="country-image" />`;
+	                wineExts += `    <img src="${contextPath}/resources/css/images/product/type/type\${wineExt.grape.wineTypeNo}.svg" alt="\${wineExt.grape.wineTypeNo} Image" class="type-image" />`;
+	                wineExts += `  </div>`;
 	                wineExts += `</div>`;
 	            }
 
 	            document.getElementById('productList').innerHTML = wineExts;
 
-	            document.querySelectorAll('.product').forEach(function(product) {
+	            document.querySelectorAll('.wine-card-info-wrap').forEach(function(product) {
 	                product.addEventListener('click', function() {
 	                    var href = product.getAttribute('data-href');
 	                    window.location.href = href;

@@ -91,7 +91,8 @@ body {
 					src="https://image-resource.creatie.ai/131184926775412/131184970815644/0767f2c61d3ed3185734ca9bf7712adc.png"
 					class="background" />
 				<div class="login-container">
-					<a href="${contextPath}/"> <img
+					<a href="${contextPath}/"> 
+					<img
 						src="https://image-resource.creatie.ai/131184926775412/131184970815644/b6328a368ee28caebfb3fbefb8a983dc.png"
 						alt="Logo" class="logo" />
 					</a> <input type="hidden" id="userId" name="userId"

@@ -90,7 +90,7 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public List<WineExt> searchByVolume(Map<String, Object> params) {
+	public List<WineExt> searchByAjax(Map<String, Object> params) {
 		return sqlSession.selectList("product.searchByVolume", params);
 	}
 
@@ -107,6 +107,17 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public int orderPage2(HistoryExt historyExt) {
 		return sqlSession.insert("product.insertHistroy",historyExt);
+	}
+
+	@Override
+	public List<WineExt> getNewProductList(Map<String, Object> paramMap) {
+		return sqlSession.selectList("product.getNewProductList",paramMap);
+	}
+
+
+	@Override
+	public Wine getWineById(int wineNo) {
+		return sqlSession.selectOne("product.cart",wineNo);
 	}
 
 	

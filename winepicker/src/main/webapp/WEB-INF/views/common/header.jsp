@@ -227,9 +227,10 @@ li, ul, a {
 </style>
 
 <c:if test="${not empty alertMsg}">
-	<script type="text/javascript">
+	<script>
 		alertify.alert("","${alertMsg}");
 	</script>
+	<c:remove var="alertMsg"/>
 </c:if>
 
 
@@ -240,8 +241,7 @@ li, ul, a {
 		<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 		<a href="${contextPath}" class="header-link">
 			<div class="logo-container">
-				<img src="${contextPath}/resources/common/headerlogo.png"
-					class="logo">
+				<img src="${contextPath}/resources/common/headerlogo.png"class="logo">
 			</div>
 		</a>
 		<div class="nav">

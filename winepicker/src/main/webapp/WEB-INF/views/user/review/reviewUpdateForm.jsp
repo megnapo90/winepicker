@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -170,24 +171,37 @@ header {
 	border-radius: 4px;
 	cursor: pointer;
 }
+/* 별점  */
+.rating {
+	display: flex;
+	align-items: center;
+	height: 150px;
+}
+#point {
+	width: 200px;
+	margin-right: 10px;
+}
+.star-output {
+	font-size: 1.5em;
+	
+}
+
 </style>
 <c:if test="${not empty errorMsg}">
 	<script>
-	    	alert("",'${errorMsg}');	
+	    	alert('${errorMsg}');	
 	    </script>
 	<c:remove var="errorMsg" />
 </c:if>
 <script>
-document
-	.addEventListener(
-		"DOMContentLoaded",
-		function() {
-			var point = document.querySelector("#point").value;
+        document.addEventListener('DOMContentLoaded', function() {
+            const rangeInput = document.getElementById('point');
+            const starOutput = document.getElementById('star-output');
 
-			point = document.querySelector("#point-number").innerText;
-			
-			
-		}
+            rangeInput.addEventListener('input', function() {
+                starOutput.textContent = rangeInput.value;
+            });
+        });
 </script>
 
 </head>
@@ -239,7 +253,8 @@ document
 									<td><p>${item.wine.wineName}</p></td>
 									<td><p>${item.wine.content}</p></td>
 									<td><p>${item.qty}</p></td>
-									<td><p>${item.wine.price}</p></td>
+									<td><p><fmt:formatNumber value="${item.wine.price}"
+														pattern="#,###" /></p></td>
 								</tr>
 							</table>
 
@@ -253,11 +268,10 @@ document
 											<input type="text" id="title" name="reveiwContent"
 												value="${review.content }">
 										</div>
-										<div class="review-content">
-											<p>별점</p>
-											<input type="range" min="0.0" max="5.0" id="point"
-												name="reveiwPoint" value="${review.point }">
-											<p id="point-number"></p>
+										<div class="rating">
+											<p>만족도</p>
+											<input type="range" min="0.0" max="5.0" step="0.5" id="point" name="reveiwPoint" value=${review.point }>
+											<div class="star-output" id="star-output">${review.point }</div>
 										</div>
 									</div>
 

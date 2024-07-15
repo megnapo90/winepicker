@@ -139,17 +139,17 @@ header {
 								<td><p>금액</p></td>
 							</tr>
 	
-							<c:forEach items="${searchList }" var="s">
+							<c:forEach items="${searchList }" var="item">
 								<tr>
 									<td><img src="${contextPath}/${path }/${item.wineImage.changeName }" alt="상품 이미지"></td>
 									<td><p>
-											<%-- ${s.productName} --%>
+											${item.wineName}
 										</p></td>
 									<td><p>
-											<%-- ${s.content} --%>
+											${item.content}
 										</p></td>
 									<td><p>
-											<%-- ${s.price} --%>
+											${item.price}
 										</p></td>
 								</tr>
 							</c:forEach>

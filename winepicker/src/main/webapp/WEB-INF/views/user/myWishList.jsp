@@ -111,6 +111,13 @@ header {
 	height: auto;
 	margin: 0;
 }
+.close-button {
+	cursor: pointer;
+	color: red;
+}
+.button{
+	cursor: pointer;
+}
 
 .addShoppingBag {
 	margin-top: 10px;
@@ -146,10 +153,7 @@ header {
 			<div class="page-name">관심 상품</div>
 
 			<div class="content">
-				<!-- <div class="page-detail">
-			관심 상품
-		</div> -->
-
+				
 				<div class="wish-list">
 
 					<c:choose>
@@ -181,24 +185,23 @@ header {
 											<td>${wish.content }</td>
 											<td><fmt:formatNumber value="${wish.price}"
 														pattern="#,###" /></td>
-											<td onclick=addShoppingBag(${wish.wineNo})>장바구니</td>
+											<td class="button" onclick=addToCart(${wish.wineNo})>담기</td>
 											<c:choose>
 												<c:when test="${wish.quantity eq 0}">
-
 													<td><span style="color: red;">sold out</span></td>
-
 												</c:when>
 												<c:otherwise>
-													<td onclick=purchaseItem(${wish.wineNo})>구매하기</td>
+													<td class="button" id="quantity-input" data-wine-no="${wish.wineNo}" onclick=movePage(${wish.wineNo})>구매</td>
 												</c:otherwise>
 											</c:choose>
-											<td onclick=removeItem(${wish.wineNo})>삭제</td>
+											<td onclick=removeItem(${wish.wineNo})>
+												<span class="close-button">X</span>
+											</td>
 										</tr>
 									</c:forEach>
 								</table>
 								<div class="addShoppingBag">
-									<input type="button" onclick=addShoppingBagAll(${wishList})
-										value="장바구니">
+									<input type="button" onclick=purchaseAllItem(); value="전체구매">
 								</div>
 							</div>
 						</c:otherwise>
@@ -209,17 +212,63 @@ header {
 	</div>
 
 	<script>
-	function addShoppingBag(no){
-		//장바구니 모달창에 상품 추가
-	}
+	/* function addToCart(wineNo) {
+        
+        const quantity = 1;
+	
+        $.ajax({
+        	url : "${contextPath}/product/addToCart",
+        	data : {
+        		wineNo : wineNo,
+        		quantity : quantity
+        	},
+        	method : "POST",
+        	success : function(){
+        		window.location.href = `${contextPath}/product/cart`; // 장바구니 페이지로 이동
+        	},
+        	error : function(){
+        		alert("장바구니 담기에 실패하였습니다.");
+        	}
 
-	function addShoppingBagAll(list){
-		//관심상품 전체 장바구니 모달창에 추가	
+        })
+         */
+        function addToCart(wineNo) {
+	        const quantity = 1;
+	        if (quantity > 0) {
+	            fetch(`${contextPath}/product/addToCart`, {
+	                method: 'POST',
+	                headers: {
+	                    'Content-Type': 'application/json'
+	                },
+	                body: JSON.stringify({ wineNo: wineNo, quantity: quantity })
+	            })
+	            .then(response => response.text())
+	            .then(data => {
+	                alert(data); // 예시: 'Item added to cart'
+	                window.location.href = `${contextPath}/product/cart`; // 장바구니 페이지로 이동
+	            })
+	            .catch(error => console.error('Error:', error));
+	        } 
+	    }
+
+	function movePage(wineNo){
+		/* const bQuantityInputs = document.querySelectorAll('.quantity-input');*/
+		 
+		const wineNos = [];
+		const bQuantities = [];
+		
+		wineNos.push(wineNo)
+		bQuantities.push(1);
+		
+		const cartJSON = JSON.stringify(wineNos.map((wineNo, index) => ({
+	        wineNo: wineNo,
+	        bQuantity: bQuantities[index]
+	    })));
+		
+		location.href = `${contextPath}/product/order?cart=\${encodeURIComponent(cartJSON)}`;
 	}
 	
-	function purchaseItem(no){
-		//구매하기 화면으로 넘김
-	}
+	
 	function removeItem(no){
 
 		$.ajax({
@@ -233,6 +282,29 @@ header {
 
 		
 	}
+	
+	function addToCart(wineNo) {
+        const quantityInput = document.querySelector(`input[data-wine-id='\${wineNo}']`);
+        const quantity = parseInt(quantityInput.value);
+	
+        if (quantity > 0 && quantity <= quantityInput.max) {
+            fetch(`${contextPath}/product/addToCart`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ wineNo: wineNo, quantity: quantity })
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // 예시: 'Item added to cart'
+                window.location.href = `${contextPath}/product/cart`; // 장바구니 페이지로 이동
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+            alert('유효한 수량을 입력하세요.');
+        }
+    }
 
 </script>
 

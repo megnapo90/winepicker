@@ -1,14 +1,12 @@
 package com.kh.winepicker.admin.controller;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,19 +28,18 @@ import com.kh.winepicker.model.vo.Characteristic;
 import com.kh.winepicker.model.vo.Country;
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.Grape;
-import com.kh.winepicker.model.vo.Info;
 import com.kh.winepicker.model.vo.Info2;
 import com.kh.winepicker.model.vo.Notice;
+import com.kh.winepicker.model.vo.Popup;
 import com.kh.winepicker.model.vo.Review;
 import com.kh.winepicker.model.vo.User;
-import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineImage;
 import com.kh.winepicker.model.vo.WineType;
+import com.kh.winepicker.product.model.service.ProductService;
 import com.kh.winepicker.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/admin")
@@ -53,6 +50,7 @@ public class AdminController {
 	private final AdminService adminService;
 	private final ServletContext application;
 	private final ResourceLoader resourceLoader;
+	private final ProductService productService;
 	
 	
 //	============================== 관리자 페이지로 이동 =======================================
@@ -357,12 +355,6 @@ public class AdminController {
     
     
     
-    
-    
-    
-    
-    
-    
 	
 	@GetMapping("/grape")
 	public String grapeList(
@@ -624,107 +616,201 @@ public class AdminController {
 		return "redirect:/admin/info/"+i.getInfoName();
 		
 	}
+
+
+	@GetMapping("wineTypeList")
+	@ResponseBody
+	public List<Grape> wineTypeList(
+			WineType wineType
+			){
+		
+		List<Grape> gList = adminService.grapeList2(wineType.getWineTypeNo());
+		
+		
+		return gList;
+	}	
 	
 	
 	
+	/* 상품 등록 */
+	@GetMapping("/enrollWine")
+	public String enrollWineForm(
+			Model model
+			) {
+		
+		List<Grape> gList = adminService.grapeList();
+		model.addAttribute("gList", gList);
+		
+		List<Country> cList = adminService.countryList();
+		model.addAttribute("cList", cList);
+		
+		List<WineType> wtList = adminService.selectTypeList();
+		model.addAttribute("wtList", wtList);
+		
+		return "product/productEnrollForm";
+	}
+	
+	
+	
+	@PostMapping("/enrollWine")
+	public String insertWine(
+			Characteristic characteristic,
+			Country country,
+			Grape grape,
+			WineImage wineImage,
+			WineType wineType,
+			WineExt wineExt,
+			RedirectAttributes ra,
+			@RequestParam(value="upfile") MultipartFile upfile
+			) {
+		
+		
+		if(upfile != null && !upfile.isEmpty()) {
+			String webpath = "/resources/images/product/";
+			String serverFolderPath = application.getRealPath(webpath);
+			File dir = new File(serverFolderPath);
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			String changeName = serverFolderPath.replace("\\", "/") + Utils.saveFile(upfile, serverFolderPath);
+			
+			wineImage = new WineImage();
+			wineImage.setChangeName(changeName);
+			wineImage.setOriginName(upfile.getOriginalFilename());
+		}
+		
+		
+		wineExt.setWineImage(wineImage);
+		wineExt.setCharacteristic(characteristic);
+		
+		int result = 0;
+		
+		try {
+			result = adminService.insertWine2(wineExt);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		String url = "";
+		if(result > 0) {
+			ra.addFlashAttribute("alertMsg", wineExt.getWineName()+"등록 성공 ");
+			url = "redirect:/admin/wineList";
+		}else {
+			
+			url = "/product/productEnrollForm";
+		}
+		
+		
+		
+		return url;
+	}
+	
+	
+	
+	
+	@GetMapping("/updatewine/{wineNo}")
+	public String updateWine(
+			@PathVariable("wineNo") int wineNo,
+			Model model
+			) {
+		
+		WineExt wine = (WineExt)productService.selectWine(wineNo);
+		wine.setContent(Utils.newLineclear(wine.getContent()));
+		
+		model.addAttribute("wine", wine);
+		return "product/productUpdateForm";
+		
+	}
 
 	
-//	===================================== 정보글 등록 ==========================================
-//	@GetMapping("/enrollGrape")
-//	public String enrollGrapeForm(
-//			Model model
-//			) {
-//		
-//		List<WineType> wtList = adminService.selectTypeList();
-//		
-//		model.addAttribute("wtList", wtList);
-//		
-//		return "admin/info/enrollGrapeForm";
-//	}
+	@PostMapping("/deletewine/{wineNo}")
+	public String deleteWine(
+			@PathVariable("wineNo") int wineNo
+			) {
+		
+				try {
+
+					productService.deleteWine(wineNo);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+		return "redirect:/admin/wineList";
+		
+	}	
+	
+	
+	
+	@GetMapping("/popupList")
+	public String popupList(
+			Model model
+			) {
+		List<Popup> pList = adminService.popupList();
+		
+		model.addAttribute("pList", pList);
+		
+		return "admin/popupListView";
+	}
+	
+	@GetMapping("/popupEnroll")
+	public String popupEnroll() {
+		return "admin/popupEnrollForm";
+	}
+	
+	@PostMapping("/popupEnroll")
+	public String popupEnroll(
+			Popup p,
+			RedirectAttributes ra,
+			@RequestParam(value = "upfile", required = false) MultipartFile upfile
+			) {
+		
+		if(upfile != null && !upfile.isEmpty()) {
+			String webPath = "/resources/admin/notice/";
+			String serverFolderPath = application.getRealPath(webPath);
+			
+			File dir = new File(serverFolderPath);
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			String changeName = Utils.saveFile(upfile, serverFolderPath);
+			
+			p.setChangeName(changeName);
+			p.setOriginName(upfile.getOriginalFilename());
+		}
+		
+		int result = adminService.popupEnroll(p);
+		
+		if(result > 0) {
+			ra.addFlashAttribute("alertMsg", "팝업 등록 성공");
+		}else {
+			ra.addFlashAttribute("alertMsg", "팝업 등록 실패...");
+		}
+		
+		return "redirect:/admin/popupList";
+		
+		
+	}
+	
+	
 //	
-////	@PostMapping("/enrollGrape")
-//	
-//	
-//	
-//	@GetMapping("/infoEnroll")
-//	public String infoEnrollForm(
-//			Model model
-//			) {
-//		
-//		List<Grape> gList = adminService.grapeList();
-//		List<Country> cList = adminService.countryList();
-//		List<WineType> wtList = adminService.selectTypeList();
-//		List<Info2> iList = adminService.selectInfoList();
-//		
-//		model.addAttribute("gList", gList);
-//		model.addAttribute("cList", cList);
-//		model.addAttribute("wtList", wtList);
-//		model.addAttribute("iList", iList);
-//		
-//		return "admin/info/infoEnrollForm";
-//	}
-//	
-//	@PostMapping("/infoEnroll")
-//	public String infoEnroll(
-//			Info i,
+//	@GetMapping("/deleteNotice/{noticeNo}")
+//	public String deletNotice(
+//			Notice n,
 //			RedirectAttributes ra
 //			) {
-//		
-//		int result = adminService.insertInfo(i);
+//		int result = adminService.deleteNotice(n);
 //		
 //		if(result>0) {
-//			ra.addFlashAttribute("alertMsg", "정보글 등록 성공!");
+//			ra.addFlashAttribute("alertMsg", "공지사항 삭제 성공!");
 //		}else {
-//			ra.addFlashAttribute("alertMsg", "정보글 등록 실패...");
+//			ra.addFlashAttribute("alertMsg", "삭제 실패...");
 //		}
-//		return "redirect:/admin/adminPage";
+//		return "redirect:/admin/notice";
 //	}
-//	
-//	@GetMapping("/insertInfo/selectInfoList")
-//	@ResponseBody
-//	public HashMap<String, Object> insertInfoSelect(
-//			Info2 info
-//			//@RequestParam(value = "infoName") String infoName
-//			) {
-//		String infoName = info.getInfoName();
-//		
-//		System.out.println(infoName);
-//		HashMap<String, Object> map = new HashMap<>();
-//		
-//		infoName = infoName.toUpperCase();
-//		
-//		info = adminService.selectInfo(infoName);
-//		
-//		
-//		map.put("infoName", info.getInfoName());
-//		map.put("content", info.getContent());
-//		map.put("subtitle", info.getSubtitle());
-//		map.put("originName", info.getOriginName());
-//		map.put("changeName", info.getChangeName());
-//		map.put("countryNo", info.getCountryNo());
-//		map.put("wineTypeNo", info.getWineTypeNo());
-//		map.put("grapeNo", info.getGrapeNo());
-//		map.put("depth", info.getDepth());
-//		
-//		
-//		return map;
-//	}
-//	
-//	@GetMapping("wineTypeList")
-//	@ResponseBody
-//	public List<Grape> wineTypeList(
-//			WineType wineType
-//			){
-//		
-//		List<Grape> gList = adminService.grapeList2(wineType.getWineTypeNo());
-//		
-//		
-//		return gList;
-//	}	
-	
-	
-	
-	
 	
 	
 	

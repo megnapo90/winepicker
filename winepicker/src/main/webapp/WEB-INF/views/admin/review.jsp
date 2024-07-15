@@ -96,6 +96,11 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/adminList.jsp"/>
+
+<div class="section">
+
 <div class="content">
     <div class="innerOuter">
         <h2>리뷰 관리</h2>
@@ -154,8 +159,8 @@
                             </tr>
                         </c:forEach>
                     </c:if>
-                    <c:if test="${not empty reviewList && reviewList.size() < 20}">
-                            <c:forEach var="i" begin="1" end="${20 - reviewList.size()}">
+                    <c:if test="${not empty reviewList && reviewList.size() < 10}">
+                            <c:forEach var="i" begin="1" end="${10 - reviewList.size()}">
 								<tr>
 									<td class="checkbox-column"><input type="checkbox"
 										disabled></td>
@@ -173,6 +178,8 @@
             </table>
         </div>
     </div>
+</div>
+
 </div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

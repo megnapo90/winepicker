@@ -95,7 +95,12 @@
     </style>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+   	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+
+
+<div class="section">
+
 
     <div class="content">
         <div class="innerOuter">
@@ -132,7 +137,7 @@
                             </tr>
                         </c:forEach>
                         <c:if test="${empty reviewList}">
-                        <c:forEach var="i" begin="1" end="${20 - reviewList.size()}">
+                        <c:forEach var="i" begin="1" end="${10 - reviewList.size()}">
                                 <tr>
                                     <td class="checkbox-column"><input type="checkbox" disabled></td>
                                     <td class="number-column"></td>
@@ -146,6 +151,8 @@
             </div>
         </div>
     </div>
+    
+</div>
 
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 

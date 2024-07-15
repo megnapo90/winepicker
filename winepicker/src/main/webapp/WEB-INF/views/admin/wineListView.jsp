@@ -27,6 +27,7 @@ td{
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/adminList.jsp"/>
 
 
 <div class="section">
@@ -69,27 +70,7 @@ td{
 	
 </div>	
 
-<div id="list">
 
-	<ul class="ul">
-		<li><a href="${contextPath}/admin/userList">회원 목록 조회</a>
-		<li><a href="${contextPath}/admin/searchUser">회원 검색</a>
-		<li><a href="${contextPath}/admin/enrollWine">와인등록</a>
-		<li><a href="${contextPath}/admin/deletWine">게시글 삭제</a>
-		
-		
-		<li><a href="${contextPath}/admin/grape">포도조회</a>
-		
-		
-		<li><a href="${contextPath}/admin/noticeEnroll">공지 등록</a>
-		
-		
-		
-		<li><a href="${contextPath}/admin/info/main">정보글 등록/수정</a>
-	
-	</ul>
-	
-</div>
 
 	<script>
 		function updateWine(no){

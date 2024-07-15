@@ -60,7 +60,13 @@
     </style>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+	<jsp:include page="/WEB-INF/views/admin/adminList.jsp"/>
+	
+	
+<div class="section"> 
+    
     <div class="content">
         <div class="innerOuter">
             <h2>내 정보 변경</h2>
@@ -105,6 +111,10 @@
             </form>
         </div>
     </div>
+    
+</div>      
+    
+    
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

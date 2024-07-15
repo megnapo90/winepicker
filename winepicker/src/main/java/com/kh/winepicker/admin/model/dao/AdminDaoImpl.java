@@ -16,6 +16,7 @@ import com.kh.winepicker.model.vo.Grape;
 import com.kh.winepicker.model.vo.Info;
 import com.kh.winepicker.model.vo.Info2;
 import com.kh.winepicker.model.vo.Notice;
+import com.kh.winepicker.model.vo.Popup;
 import com.kh.winepicker.model.vo.Review;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.model.vo.WineType;
@@ -249,9 +250,19 @@ public class AdminDaoImpl implements AdminDao{
         params.put("replyContent", replyContent);
         return sqlSession.update("admin.updateReviewReply", params);
     }
+
 // ============================= 민욱 끝 ==========================================	
 	
 	
+    @Override
+    public List<Popup> popupList() {
+    	return sqlSession.selectList("admin.popupList");
+    }
+
+	@Override
+	public int popupEnroll(Popup p) {
+		return sqlSession.insert("admin.popupEnroll", p);
+	}
 	
 	
 	

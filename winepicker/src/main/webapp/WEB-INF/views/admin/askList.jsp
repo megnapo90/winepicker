@@ -95,8 +95,12 @@
     </style>
 </head>
 <body>
-    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+	<jsp:include page="/WEB-INF/views/admin/adminList.jsp"/>
     
+    
+<div class="section">
     <div class="content">
         <div class="innerOuter">
             <h2>1:1 문의 조회</h2>
@@ -150,6 +154,8 @@
             </div>
         </div>
     </div>
+    
+</div>
 
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 

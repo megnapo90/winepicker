@@ -58,8 +58,8 @@
 	}
 	.Australia>.flag{
 		position: absolute;
-		left: 650px;
-		top: 311px;
+		left: 800px;
+		top: 380px;
 
 		width: 80px;
 		height: 60px;
@@ -69,12 +69,12 @@
 	}
 	.Australia>.line{
 		position: absolute;
-		left: 727px;
-		top: 383px;
+		left: 850px;
+		top: 460px;
 
-		width: 116.05px;
+		width: 150px;
 		height: 0px;
-		transform: rotate(18.59deg);
+		transform: rotate(35deg);
 		opacity: 1;
 			
 		border: 1px dashed #3D3D3D;
@@ -85,8 +85,8 @@
 	}
 	.Chile>.flag{
 		position: absolute;
-		left: 327px;
-		top: 255px;
+		left: 370px;
+		top: 330px;
 
 		width: 80px;
 		height: 60px;
@@ -96,12 +96,12 @@
 	}
 	.Chile>.line{
 		position: absolute;
-		left: 226px;
-		top: 377px;
+		left: 285px;
+		top: 435px;
 
-		width: 146.74px;
+		width: 150px;
 		height: 0px;
-		transform: rotate(114.99deg);
+		transform: rotate(115deg);
 		opacity: 1;
 			
 		border: 1px dashed #3D3D3D;	
@@ -113,8 +113,8 @@
 	}
 	.France>.flag{
 		position: absolute;
-		left: 420px;
-		top: 51px;
+		left: 520px;
+		top: 80px;
 
 		width: 80px;
 		height: 80px;
@@ -124,8 +124,8 @@
 	}
 	.France>.line{
 		position: absolute;
-		left: 425px;
-		top: 155px;
+		left: 520px;
+		top: 190px;
 
 		width: 100px;
 		height: 0px;
@@ -172,8 +172,8 @@
 	}
 	.Italy>.flag{
 		position: absolute;
-		left: 610px;
-		top: 160px;
+		left: 710px;
+		top: 190px;
 
 		width: 80px;
 		height: 60px;
@@ -183,8 +183,8 @@
 	}
 	.Italy>.line{
 		position: absolute;
-		left: 500px;
-		top: 200px;
+		left: 600px;
+		top: 240px;
 
 		width: 120px;
 		height: 0px;
@@ -292,8 +292,8 @@
 	}
 	.USA>.flag{
 		position: absolute;
-		left: 322px;
-		top: 154px;
+		left: 350px;
+		top: 200px;
 
 		width: 80px;
 		height: 41.84px;
@@ -304,10 +304,10 @@
 	}
 	.USA>.line{
 		position: absolute;
-		left: 200px;
-		top: 212px;
+		left: 220px;
+		top: 250px;
 
-		width: 123.08px;
+		width: 140px;
 		height: 0px;
 		transform: rotate(163.48deg);
 		opacity: 1;

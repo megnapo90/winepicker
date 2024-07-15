@@ -461,7 +461,20 @@
     </update>
 <!-- ============================== 민욱 끝 ============================== -->	
 	
+	<select id="popupList" resultType="popup">
+		SELECT * FROM POPUP
+	</select>
 	
+	<insert id="popupEnroll" parameterType="popup">
+		INSERT INTO POPUP
+		VALUES(
+			SEQ_POPUP.NEXTVAL,
+			#{popupTitle},
+			#{originName},
+			#{changeName},
+			DEFAULT
+		)
+	</insert>
 	
 	
 	

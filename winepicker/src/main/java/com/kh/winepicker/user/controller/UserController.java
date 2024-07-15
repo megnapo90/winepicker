@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,13 +114,14 @@ public class UserController {
 	public String insertUser(@RequestParam("birthDate") String birthDate, @RequestParam("ssnTail") String ssnTail,
 			User user, String address, String verificationCode, RedirectAttributes ra, Model model,
 			HttpSession session) {
+		
 		// 이메일 인증 여부 확인
 		String sessionVerificationCode = (String) session.getAttribute("verificationCode");
 		if (sessionVerificationCode == null || sessionVerificationCode.isEmpty()){
-			model.addAttribute("msg", "이메일 인증을 먼저 진행해주세요.");
+			model.addAttribute("errorMsg", "이메일 인증을 먼저 진행해주세요.");
 			return "user/register";
 		} else if(!sessionVerificationCode.equals(verificationCode)){
-			model.addAttribute("msg", "이메일 인증이 실패하였습니다. 다시 진행해주세요.");
+			model.addAttribute("errorMsg", "이메일 인증이 실패하였습니다. 다시 진행해주세요.");
 			return "user/register";
 		}
 		
@@ -127,7 +129,7 @@ public class UserController {
 
 		// 주민등록번호 유효성 검사
 		if (!isValidSsn(userSsn)) {
-			model.addAttribute("msg", "유효하지 않은 주민등록번호입니다.");
+			model.addAttribute("errorMsg", "유효하지 않은 주민등록번호입니다.");
 			return "user/register";
 		}
 
@@ -137,6 +139,8 @@ public class UserController {
 		user.setAddress(address);
 		user.setUserSsn(userSsn);
 
+		session.removeAttribute("verificationCode");
+
 		// 사용자 정보 DB에 저장
 		int result = userService.insertUser(user);
 
@@ -145,7 +149,7 @@ public class UserController {
 			//model.addAttribute("msg", "회원가입이 완료되었습니다.");
 			return "user/registerSuccess";
 		} else {
-			model.addAttribute("msg", "회원가입 실패. 다시 시도해주세요.");
+			model.addAttribute("errorMsg", "회원가입 실패. 다시 시도해주세요.");
 			return "user/register";
 		}
 
@@ -203,6 +207,38 @@ public class UserController {
 		session.setAttribute("verificationCode", verificationCode);
 
 		return ResponseEntity.ok("인증 코드가 이메일로 전송되었습니다.");
+	}
+	
+	@PostMapping("/verifyEmail")
+	@ResponseBody
+	public ResponseEntity<Map<String, String>> verifyEmail(
+			String inputCode,
+			HttpSession session) {
+		
+		String sessionVerificationCode = (String) session.getAttribute("verificationCode");
+		
+		Map<String, String> response = new HashMap<String, String>();
+		
+		String message = "";
+		
+		if (sessionVerificationCode == null || sessionVerificationCode.isEmpty()){
+			message = "이메일 인증을 진행해주세요.";
+			response.put("message", message);
+			
+		} else if(inputCode == null || inputCode.isEmpty()) {
+			message = "인증코드를 입력해주세요.";
+			response.put("message", message);
+		
+		} else if(!sessionVerificationCode.equals(inputCode)){
+			message = "인증코드가 일치하지 않습니다. 확인해주세요.";
+			response.put("message", message);
+		
+		} else if(sessionVerificationCode.equals(inputCode)) {
+			message = "이메일 인증이 완료되었습니다.";
+			response.put("message", message);
+		
+		}
+			return ResponseEntity.ok(response);
 	}
 	
 	
@@ -293,22 +329,23 @@ public class UserController {
 	// 비밀번호 변경 로직
 	@PostMapping("/resetPwd")
 	public String resetPassword(String userId, String newPwd, String confirmPwd,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes ra) {
+		
 		if (!newPwd.equals(confirmPwd)) {
-			redirectAttributes.addFlashAttribute("errorMsg", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+			ra.addFlashAttribute("alertMsg", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
 			return "redirect:/user/resetPwdForm?userId=" + userId;
 		}
 
 		// 새로운 비밀번호를 암호화
 		String encodedPwd = encoder.encode(newPwd);
 
-		// 사용자의 비밀번호를 업데이트
+		// 사용자의 비밀번호를 업데이트 (1 = true, 0 = false)
 		boolean passwordUpdated = userService.updatePassword(userId, encodedPwd);
 
 		if (passwordUpdated) {
 			return "redirect:/user/newPwdSuccess";
 		} else {
-			redirectAttributes.addFlashAttribute("errorMsg", "비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+			ra.addFlashAttribute("alertMsg", "비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
 			return "redirect:/user/resetPwdForm?userId=" + userId;
 		}
 	}
@@ -329,7 +366,7 @@ public class UserController {
 			HttpSession session, Model model) {
 
 		User loginUser = (User) session.getAttribute("loginUser");
-
+		
 
 		String encodedPwd = encoder.encode(userPwd);
 		user.setUserPwd(encodedPwd);
@@ -370,24 +407,14 @@ public class UserController {
 
 			log.info("purchaseList ? {}", pList);
 			
-			Calendar now = Calendar.getInstance();
-			System.out.println(now);
-			int year = now.getTime().getYear();
-			System.out.println(year);
-			int month = now.getTime().getMonth()+1;
-			System.out.println(month);
-			int date = now.getTime().getDate();
-			System.out.println(date);
-			
-			// 날짜 문자열로 변환하는 부분 공통 함수로 빼기
-			String today = String.valueOf(year) + "-" + String.valueOf(month) +"-"+ String.valueOf(date);
-			
-			log.info("today ? {}",today);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String formattedToday = dateFormat.format(new Date());
+			log.info("formattedToday ? {}", formattedToday);
 			
 			String path = "resources/images/product";
+			
 			model.addAttribute("path", path);
-			model.addAttribute("startDate", today);
-			model.addAttribute("endDate", today);
+			model.addAttribute("today", formattedToday);
 			
 			return "user/myPage";
 		}
@@ -402,11 +429,11 @@ public class UserController {
 					RedirectAttributes ra) {
 				
 				int userNo = loginUser.getUserNo();
-				userNo = 1;
+				
 				//날짜를 설정하지 않고 검색하려고 한 경우
 				if(startDate == null || endDate == null) { 
 					
-					model.addAttribute("errorMsg", "날짜를 입력해주세요.");
+					model.addAttribute("alertMsg", "날짜를 입력해주세요.");
 					return "user/myPage";
 				}
 				
@@ -424,12 +451,12 @@ public class UserController {
 				// 검색 시작일자를 종료일자보다 크게 설정한 경우
 				if(startDate.getTime() > endDate.getTime()) {
 					
-					model.addAttribute("errorMsg", "검색 시작일자가 종료일자보다 큽니다.");
+					model.addAttribute("alertMsg", "검색 시작일자가 종료일자보다 큽니다.");
 					return "user/myPage";
 				
 					// 오늘부터 1년 전의 날짜를 검색하려고 한 경우 
 				}else if(dateGap > 365) {
-					model.addAttribute("errorMsg", "오늘부터 1년 이내의 주문 내역만 조회 가능합니다.");
+					model.addAttribute("alertMsg", "오늘부터 1년 이내의 주문 내역만 조회 가능합니다.");
 					return "user/myPage";
 				}
 				
@@ -440,8 +467,10 @@ public class UserController {
 				paramMap.put("userNo", String.valueOf(userNo));
 				
 				List<History> pList = userService.searchMyPurchaseList(paramMap);
+				
 				model.addAttribute("purchaseList", pList);
-
+				model.addAttribute("paramMap", paramMap);
+				
 				String path = "resources/images/product";
 				model.addAttribute("path", path);
 
@@ -457,17 +486,24 @@ public class UserController {
 		public String selectMyPurchaseList(Model model, 
 				@ModelAttribute("loginUser") User loginUser) {
 
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String formattedToday = dateFormat.format(new Date());
+			
+			log.info("formattedToday ? {}", formattedToday);
+			
+			String path = "resources/images/product";
+			
+			model.addAttribute("path", path);
+			model.addAttribute("today", formattedToday);
+
 			int userNo = loginUser.getUserNo();
 
 			List<History> rList = userService.selectMyPurchaseList(userNo);
-
-			model.addAttribute("reviewList", rList);
-
 			log.info("reviewList ? {}", rList);
-
-			String path = "resources/images/product";
-			model.addAttribute("path", path);
-
+			
+			model.addAttribute("reviewList", rList);
+			
 			return "user/myReview";
 		}
 
@@ -492,8 +528,6 @@ public class UserController {
 			log.info("startDate ? {}", startDate);
 			log.info("endDate ? {}", endDate);
 			
-			System.out.println();
-			
 			Calendar now = Calendar.getInstance();
 			
 			long gap = now.getTimeInMillis() - startDate.getTime();
@@ -517,11 +551,12 @@ public class UserController {
 			HashMap<String, String> paramMap = dateFormatting(startDate, endDate);
 
 			log.info("paramMap ? {}", paramMap);
-
+			
 			paramMap.put("userNo", String.valueOf(userNo));
 			
 			List<History> rList = userService.searchMyPurchaseList(paramMap);
 			model.addAttribute("reviewList", rList);
+			model.addAttribute("paramMap", paramMap);
 
 			String path = "resources/images/product";
 			model.addAttribute("path", path);
@@ -821,11 +856,11 @@ public class UserController {
 
 		// SimpleDateFormat을 사용하여 포맷팅 (시작일자, 종료일자) 입력
 		private HashMap<String, String> dateFormatting(Date date1, Date date2) {
-				
+			
 			Date startDate = new Date();
 			Date endDate = new Date();
-			
-			if(date1.getTime() < date2.getTime()) {
+
+			if(date1.getTime() <= date2.getTime()) {
 				startDate = date1;
 				endDate = date2;
 			}else {
@@ -836,7 +871,8 @@ public class UserController {
 			SimpleDateFormat formatterS = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
 			Timestamp timestampStart = new Timestamp(startDate.getTime());
 			String formattedStartDate = formatterS.format(timestampStart);
-				SimpleDateFormat formatterE = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+			
+			SimpleDateFormat formatterE = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
 			Timestamp timestampEnd = new Timestamp(endDate.getTime());
 			String formattedEndDate = formatterE.format(timestampEnd);
 			HashMap<String, String> paramMap = new HashMap<String, String>();

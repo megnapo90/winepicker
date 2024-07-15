@@ -1,116 +1,143 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>1:1 문의사항 등록</title>
+<link rel="stylesheet"
+	href="${contextPath}/resources/css/userCommon.css">
+
 <style>
-.callcenter {
-	height : 100%;
+/* 공통 스타일 */
+body {
 	margin: 0;
+	padding: 0;
+}
+
+header {
+	color: white;
+	text-align: center;
+}
+
+.main-content {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* 최소 높이를 화면 높이와 같게 설정 */
+}
+
+.user-common {
 	padding: 20px;
+	width: 300px;
+	font-weight: bold;
+}
+
+.main-section {
+	display: flex;
+	flex: 1; /* 남은 공간을 모두 차지 */
+}
+
+.page-name {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.content {
+	flex: 1;
+}
+/* 공통 스타일 */
+.callcenter {
+	height: 100%;
+	margin-top: 50px;
 }
 
 .callcenter .call-center-menu {
-	
 	width: 98%;
-	height : 6%;
-    margin : auto;
-    margin-bottom : 10px;
-    display: flex;
-    align-items: center;
+	height: 6%;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
 }
 
-.call-center-menu div{
+.call-center-menu div {
 	font-style: italic;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 400;
-	
 	text-align: center;
-
 	background: #D0D0D0;
-	width : 22%;
-	height : 100%;
-	margin : auto;
-	
+	width: 20%;
+	height: 100%;
+	margin-left: 10px;
 }
 
-.call-center-menu div p{
-	margin-top : 7px;
+.call-center-menu div p {
+	margin-top: 10px;
 }
 
-#blank{
+#blank {
 	background: white;
 }
 
-.call-center-menu .ask{
-	opacity: 1;
-	background: #5E5E5E;
-	font-family: Noto Serif Gurmukhi;
-	font-size: 25px;
-	font-weight: normal;
-	line-height: normal;
-	letter-spacing: 0.1em;
-	color: #FFFFFF;	
+.call-center-menu .ask {
+	color: #FFFFFF;
 }
 
 .ask-insert-box {
-	overflow-x: auto;
-	padding : 20px;
+	overflow-x: hidden;
+	padding: 20px;
 }
 
 .ask-menu-title {
-	
 	width: 98%;
-	height : 6%;
-    margin : 15px;
-    
-   	font-family: Noto Serif Gurmukhi;
-	font-size: 30px;
-
+	height: 6%;
+	margin: 15px;
+	font-size: 20px;
 }
 
 .ask-insert-container {
-	padding : 20px;
+	padding: 20px;
 }
 
 .ask-insert {
-	width: 100%;
+	/* width: 100%; */
 	border-collapse: collapse;
 }
 
-.ask-insert div{
+.ask-insert div {
 	display: flex;
-	margin : 0px 0px 10px 0px;
+	margin: 0px 0px 10px 0px;
+}
+
+#title {
+	width : 40%;
 	
 }
 
-#title{
-	width : 90%;
-}
-#content{
-	width : 90%;
-}
-#upfile{
-	width : 90%;
+#content {
+	width : 40%;
+	
 }
 
-
-.ask-insert div p{
-	width : 100px;
-	text-align : center;
-	font-size: 18px;
+#upfile {
+	width : 40%;
+	
 }
 
-.askEnroll{
-	margin-right : 40px;
-	margin-top : 10px;
+.ask-insert div p {
+	width: 100px;
+	text-align: center;
+	font-size: 16px;
+}
+
+.askEnroll {
+	margin-right: 40px;
+	margin-top: 10px;
 	display: flex;
-    justify-content: flex-end;
-    align-items: center;
+	justify-content: center;
+	align-items: center;
 }
+
 .askEnroll input[type="submit"] {
 	padding: 5px 10px;
 	border: none;
@@ -119,79 +146,84 @@
 	border-radius: 4px;
 	cursor: pointer;
 }
-
 </style>
-</head>
-<body>
-
-	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-	<jsp:include page="/WEB-INF/views/common/userCommon.jsp"/>
-
-
-
-	<div class="page-name" onclick=showFaq()>	
-		고객센터
-	</div>
-	<div class="content">
-		<div class="callcenter">
-			<div class="call-center-menu">
-				<div class="faq" onclick=showFaq()>
-		        	<p>FAQ</p>        
-	            </div>
-	            <div class="ask" onclick="location.href='${contextPath}/ask/askPage'">
-	            	<p>1:1문의</p>     	
-	            </div>
-	            <div id="blank"></div>
-	            <div class="user-notice" onclick=showNotice()>
-					<p>이용약관 및 개인정보처리 방침</p>
-				</div>
-			</div>        
-                      
-            <div class="ask-insert-box">
-                <div class="ask-menu-title" onclick="location.href='${contextPath}/ask/askPage'">
-                	1:1 문의작성
-
-                </div>
-            <div class="ask-insert-container"> 
-                
-                <div class="ask-insert-form"> 
-                	<form action="${contextPath}/ask/askInsert" id="enrollForm" method="post" enctype="multipart/form-data">
-                    <div class="ask-insert">
-                        <div class="ask-title">
-                            <p>제목</p>
-                            <input type="text" id="title" name="askTitle" required placeholder="문의 제목" >
-                        </div>
-                        <div class="ask-content">
-                            <p>내용</p>
-	                        <textarea id="content" name="askContent" rows="10" cols="50" required placeholder="문의 내용"></textarea>
-                        </div>
-                        <div class="ask-upfile">
-                            <p>첨부파일</p>
-                        	<input type="file" id="upfile" name="upfile">
-                        </div>
-                    </div>
-     				
-	                <div class="askEnroll">
-		                <input type="submit" id="formSubmit" value="등록">
-	                </div>
-                    </form>
-            	</div>
-
-          </div>
-	</div>
-	</div>
-</div> 
-
-
 
 <c:if test="${not empty errorMsg }">
-		<script>   
-        	alertify.alert("글 작성이 실패하였습니다.",'${errorMsg}');
+	<script>   
+        	alert("",'${errorMsg}');
         </script>
-		<c:remove var="errorMsg"/>
+	<c:remove var="errorMsg" />
 </c:if>
+</head>
+<body>
+	<header>
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	</header>
 
-<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	<div class="main-content">
 
+		<div class="user-common">
+			<jsp:include page="/WEB-INF/views/common/userCommon.jsp" />
+		</div>
+
+		<div class="main-section">
+			<div class="page-name" onclick=showFaq()>고객센터</div>
+			<div class="content">
+				<div class="callcenter">
+					<div class="call-center-menu">
+						<div class="faq" onclick=showFaq()>
+							<p>FAQ</p>
+						</div>
+						<div class="ask"
+							onclick="location.href='${contextPath}/ask/askPage'">
+							<p>1:1문의</p>
+						</div>
+						<div id="blank"></div>
+						<div class="user-notice" onclick=showNotice()>
+							<p>이용약관 및 개인정보처리 방침</p>
+						</div>
+					</div>
+
+					<div class="ask-insert-box">
+						<div class="ask-menu-title"
+							onclick="location.href='${contextPath}/ask/askPage'">1:1
+							문의작성</div>
+						<div class="ask-insert-container">
+
+							<div class="ask-insert-form">
+								<form action="${contextPath}/ask/askInsert" id="enrollForm"
+									method="post" enctype="multipart/form-data">
+									<div class="ask-insert">
+										<div class="ask-title">
+											<p>제목</p>
+											<input type="text" id="title" name="askTitle" required
+												placeholder="문의 제목">
+										</div>
+										<div class="ask-content">
+											<p>내용</p>
+											<textarea id="content" name="askContent" rows="10" cols="50"
+												required placeholder="문의 내용"></textarea>
+										</div>
+										<div class="ask-upfile">
+											<p>첨부파일</p>
+											<input type="file" id="upfile" name="upfile">
+										</div>
+									</div>
+
+									<div class="askEnroll">
+										<input type="submit" id="formSubmit" value="등록">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	</footer>
 </body>
 </html>

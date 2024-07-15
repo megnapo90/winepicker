@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +9,12 @@
 <title>insertUser</title>
 <style>
 .insertuser {
+	
 	margin-left: 30px;
 	padding-top: 100px;
+	
 }
+
 
 .insertuser .input label {
 	display: block;
@@ -72,7 +76,7 @@
 	box-sizing: border-box;
 }
 
-.input input[type="userEmail"] {
+.input input[type="email"] {
 	width: 250px;
 	padding: 8px;
 	margin-top: 3px;
@@ -181,8 +185,15 @@
 	overflow-y: auto;
 	font-size: 10px;
 }
+
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<c:if test="${not empty errorMsg}">
+	<script>
+		alert(${errorMsg});
+	</script>
+	<c:remove var="errorMsg"/>
+</c:if>
 <script>
 	function idCheck() {
 		const $userId = $("#register input[name=userId]");
@@ -233,6 +244,26 @@
 			}
 		});
 	}
+	
+	function verifyEmail() {
+		const inputCode = $("#verificationCode").val();
+
+		$.ajax({
+			type : "POST",
+			url : "verifyEmail",
+			data : {
+				inputCode : inputCode
+
+			},
+			success : function(response) {
+				alert(response.message);
+			},
+			error : function() {
+				alert("오류가 발생하였습니다. 다시 진행해주세요.");				
+			}
+		});
+	}
+	
 </script>
 <script>
 	document
@@ -286,13 +317,12 @@
 
 
 			<div class="insertuser">
-				<h2 align="margin-right">WINE PICKER 회원가입</h2>
+				<h2>WINE PICKER 회원가입</h2>
 
 				<div class="input">
 					<label for="userId">아이디</label> <input type="text" id="userId"
 						name="userId" required>
 					<button type="button" onclick="idCheck();">아이디 중복 체크</button>
-					<span id="idCheckMsg"></span>
 				</div>
 
 				<div class="input">
@@ -310,27 +340,31 @@
 					<label for="userName">이름</label> <input type="text" id="userName"
 						name="userName" required>
 				</div>
+				
 				<div class="input">
-					<label for="userEmail">이메일</label> <input type="userEmail"
+					<label for="userEmail">이메일</label> <input type="email"
 						id="userEmail" name="userEmail" placeholder="example@domain.com"
 						required>
 					<button type="button" onclick="sendVerificationCode()">인증코드
 						전송</button>
-					<label for="verificationCode">인증코드</label> <input type="text"
-						id="verificationCode" name="verificationCode" required><br>
 				</div>
-
+				<div class="input">
+					<label for="verificationCode">인증코드</label> <input type="text"
+						id="verificationCode" name="verificationCode" required>
+					<button type="button" onclick="verifyEmail()">
+						확인</button>	
+				</div>
 
 				<div class="input">
 					<label for="userSsn">주민등록번호</label> <input type="text"
 						id="birthDate" name="birthDate" placeholder="YYMMDD" required>
-					- <input type="text" id="ssnTail" name="ssnTail"
+					- <input type="password" id="ssnTail" name="ssnTail"
 						placeholder="뒷자리 7자리 숫자" required pattern="[0-9]{7}"><br>
 				</div>
 				<div class="input">
 					<label for="phone">전화번호</label><input type="tel" id="phone"
-						name="phone" placeholder="-포함" required>
-
+						name="phone" placeholder="-포함" required pattern="^01[0-9]-[0-9]{3,4}-[0-9]{4}$">
+																			<!-- 전화번호 패턴 추가 -->
 				</div>
 
 				<div class="input">
@@ -361,7 +395,7 @@
 				<div class="small-window">
 					<div class="small-window-content">
 						<h4>이용약관</h4>
-						<p>이용약관내용</p>
+						<p>개인정보 수집 이용 조회 동의 (필수)</p>
 						<p></p>
 					</div>
 				</div>
@@ -372,16 +406,16 @@
 
 
 				<div class="input">
-					<label></label>
-					<div align="margin-right">
+					<div>
 						<button type="submit" id="submitBtn">회원가입</button>
 						<p>${msg}</p>
 					</div>
 				</div>
+			</div>
 		</form>
 		<input type="hidden" id="fullAddress" name="address">
 
-
+	
 	</main>
 
 

@@ -11,32 +11,23 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css"
 	rel="stylesheet">
 <style>
-<
-style>body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #f5f5f5;
-}
 
-.header {
-	background-color: #333;
-	color: white;
-	padding: 20px;
-	text-align: center;
-}
+
 
 .title {
 	text-align: center;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	font-size: 40px;
-	font-weight: normal;
-	color: #3D3D3D;
+	margin-top: 60px;
+	margin-bottom: 30px;
+	font-size: 36px;
+	font-weight: bold;
+	color: #333;
 }
 
+	
+
+
 hr {
-	width: 80%;
+	width: 100%;
 	margin: 20px auto;
 	border-top: 2px solid #D8D8D8;
 }
@@ -46,6 +37,28 @@ hr {
 	flex-wrap: wrap;
 	margin: 20px;
 }
+
+
+
+.content-container {
+    display: flex; /* 필터와 와인 컨테이너를 가로로 배치 */
+    flex: 1;
+    gap: 20px; /* 필터와 와인 컨테이너 사이의 간격 설정 */
+}
+
+
+.filter-container {
+    width: 250px; /* 필터 컨테이너의 너비 설정 */
+}
+
+
+.wine-container {
+    flex: 1; /* 와인 컨테이너가 남은 공간을 채우도록 설정 */
+}
+
+
+
+
 
 .products-container {
 	flex: 1;
@@ -75,170 +88,81 @@ hr {
 	text-decoration: underline; /* 마우스를 올렸을 때 텍스트에 밑줄 */
 }
 
-.products {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 20px;
+
+/* 전체 컨테이너 */
+.wine-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.product {
-	background-color: white;
-	padding: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	text-align: center;
+/* 슬라이드 랩 */
+.wine-list-wrap {
+    display: flex;
+    overflow: hidden; /* 슬라이드가 넘치지 않게 숨김 */
+    position: relative;
 }
 
-.product img {
-	width: 100%;
-	height: auto;
-	background-color: #ddd;
+/* 각 와인 카드 */
+.wine-card-info-wrap {
+    flex: 0 0 25%; /* 4개의 카드가 화면에 보이도록 설정 */
+    box-sizing: border-box;
+    padding: 10px;
+    transition: transform 0.5s ease; /* 슬라이드 전환 애니메이션 */
 }
 
-.product p {
-	margin: 10px 0;
+/* 와인 이미지 */
+.wine-image-wrap {
+    position: relative;
 }
 
-.filter {
-	width: 100%;
-	max-width: 250px;
-	padding: 20px;
-	background-color: white;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	margin-bottom: 20px;
-	box-sizing: border-box;
+.wine-image-wrap img {
+    width: 100%;
+    height: auto;
 }
 
-.filter h2 {
-	margin-top: 0;
-	font-size: 1.5em;
-	display: flex;
-	align-items: center;
-	justify-content: space-between; /* 제목과 버튼 사이의 공간을 조절 */
+
+.type-country {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
 }
 
-.filter label {
-	display: block;
-	margin: 10px 0 5px;
-	font-size: 1em;
+.type-country .country-image {
+    width: 32px;  
+    height: 32px; 
+    margin : 1px; 
 }
 
-.filter input[type="range"] {
-	width: 100%;
-	margin-bottom: 10px;
+/* .type-image 클래스의 이미지 크기 설정 */
+.type-country .type-image {
+    width: 32px;   
+    height: 32px; 
+    margin : 1px;  
 }
 
-.filter select {
-	width: 100%;
-	padding: 5px;
-	font-size: 1em;
-	margin-bottom: 10px;
+/* 와인 제목 */
+.wine-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
 }
 
-#resetFilters {
-	background: none;
-	border: none;
-	padding: 0;
-	cursor: pointer;
+/* 가격 정보 */
+.wine-price-info {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
 }
 
-#resetFilters img {
-	width: 24px; /* 아이콘의 너비 */
-	height: 24px; /* 아이콘의 높이 */
+/* 기타 정보 */
+.wine-etc-info {
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
 }
 
-/* 버튼을 클릭할 때의 스타일 */
-#resetFilters:hover img {
-	opacity: 0.7;
-}
-
-/* 체크박스 스타일링 */
-.custom-checkbox {
-	display: none;
-}
-
-.custom-checkbox+label {
-	display: inline-block;
-	position: relative;
-	padding-left: 30px;
-	cursor: pointer;
-	user-select: none;
-}
-
-.custom-checkbox+label::before {
-	content: '';
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	border: 2px solid #ccc;
-	border-radius: 3px;
-	position: absolute;
-	left: 0;
-	top: 0;
-	background:
-		url('${contextPath}/resources/css/images/product/checkbox.png')
-		no-repeat center center; /* 체크 전 이미지 */
-	background-size: contain;
-	transition: background-color 0.3s, border-color 0.3s;
-}
-
-.custom-checkbox:checked+label::before {
-	background: #84515F;
-}
-
-.custom-checkbox+label::after {
-	content: '';
-	position: absolute;
-	left: 4px;
-	top: 4px;
-	width: 12px;
-	height: 12px;
-	background: url('${contextPath}/resources/css/images/product/checkbox.png' ')
-		no-repeat center center;
-	background-size: contain;
-	opacity: 0;
-}
-
-.custom-checkbox:checked+label::after {
-	opacity: 1;
-}
-
-/* 페이징 처리 */
-#pagingArea {
-	display: flex;
-	justify-content: center;
-	width: 100%;
-}
-
-#pagingArea.pagination {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
-}
-
-.page-item {
-	margin: 0 5px; /* 페이지 아이템 사이에 간격 추가 */
-}
-
-.page-link {
-	display: block;
-	padding: 10px 15px;
-	text-decoration: none;
-	color: #007bff;
-}
-
-.page-link.on {
-	font-weight: bold;
-	color: #fff;
-	background-color: #007bff;
-	border-radius: 5px;
-}
-
-.page-link:hover {
-	background-color: #0056b3;
-	color: #fff;
-	border-radius: 5px;
-}
 </style>
 
 </head>
@@ -254,48 +178,60 @@ hr {
 
 	<hr>
 
-	<jsp:include page="/WEB-INF/views/product/filter.jsp" />
-
-<%-- 	<div class="products-container">
-		<div class="sort-options">
-
-			<a href="#recent" class="${sortOption == 'recent' ? 'active' : ''}"
-				onclick="sortProducts('recent')">최신순</a> <a href="#pricehigh"
-				class="${sortOption == 'pricehigh' ? 'active' : ''}"
-				onclick="sortProducts('pricehigh')">가격 높은 순</a> <a href="#pricelow"
-				class="${sortOption == 'pricelow' ? 'active' : ''}"
-				onclick="sortProducts('pricelow')">가격 낮은 순</a>
-		</div>
---%>
-
 
 
    <div class="products-container">
+   
+   
     <div class="sort-options">
         <a href="#recent" class="${sortOption == 'recent' ? 'active' : ''}" data-sort="recent" onclick="sortProducts('recent')">최신순</a>
         <a href="#pricehigh" class="${sortOption == 'pricehigh' ? 'active' : ''}" data-sort="pricehigh" onclick="sortProducts('pricehigh')">가격 높은 순</a>
         <a href="#pricelow" class="${sortOption == 'pricelow' ? 'active' : ''}" data-sort="pricelow" onclick="sortProducts('pricelow')">가격 낮은 순</a>
     </div>
+    
+ 	 <div class="content-container">
 
-		<div class="products" id="productList">
+	  <jsp:include page="/WEB-INF/views/product/filter.jsp" />
+
+
+
+	<div class="wine-container">
+		<div class="wine-list-wrap"  id="productList">
 			<c:forEach var="wine" items="${list}">
-				<div class="product" data-href="detail/${wine.wineNo}"
-				data-price="${wine.price}" 
-                 data-wineNo="${wine.wineNo}">
-                
-					<img
-						src="${contextPath}/resources/images/product/${wine.wineImage.changeName}"
-						alt="${wine.wineName} 이미지">
-					<p>${wine.wineName}</p>
-					<p>${wine.formattedPrice}원</p>
-					<p>${wine.countryNo}</p>		
-					<P>${wine.grapeNo}</p>
+				<div class="wine-card-info-wrap"
+					data-href="${contextPath}/product/detail/${wine.wineNo}">
+					<div class="wine-image-wrap">
+						<img
+							src="${contextPath}/resources/images/product/${wine.wineImage.changeName}"
+							alt="${wine.wineName}">
+						<p class="wine-title">${wine.wineName}</p>
+					</div>
+					<div class="wine-price-info">
+						<p>${wine.formattedPrice}원</p>
+					</div>
+
+					<div class="type-country">
+
+
+						<img
+							src="${contextPath }/resources/css/images/product/country/country${wine.countryNo}.png"
+							alt="${wine.countryNo} Image" class="country-image" /> <img
+							src="${contextPath}/resources/css/images/product/type/type${wine.grape.wineTypeNo}.svg"
+							alt="${wine.grape.wineTypeNo} Image" class="type-image" />
+
+
+
+					</div>
 				</div>
 			</c:forEach>
 		</div>
+
 	</div>
+</div>
 
 
+
+</div>
 
 
 
@@ -352,15 +288,13 @@ hr {
 			form.submit();
 		}
 		
-	
-		document.querySelectorAll('.product').forEach(product => {
+		
+		document.querySelectorAll('.wine-card-info-wrap').forEach(product => {
 		    product.addEventListener('click', () => {
 		        window.location.href = product.getAttribute('data-href');
 		    });
 		});
-
- 
-
+	 
 		
 		
 	</script>

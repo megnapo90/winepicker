@@ -36,12 +36,16 @@ public class ProductFilter {
 	
 	
 	@GetMapping("/product/searchByAjax")
-    public List<WineExt>searchByVolume(@RequestParam(value="volumes", required = false) List<Integer> volumes,
+    public List<WineExt>searchByVolume(
+    		@RequestParam(value="volumes", required = false) List<Integer> volumes,
     		@RequestParam(value="countries", required = false) List<Integer> countries,
     		@RequestParam(value="types", required = false) List<Integer> types,
     		@RequestParam(value="redSubTypes", required = false) List<Integer> redSubTypes,
     		@RequestParam(value="whiteSubTypes", required = false) List<Integer> whiteSubTypes,
     		@RequestParam(value="sparklingSubTypes", required = false) List<Integer> sparklingSubTypes,
+    		@RequestParam(value="minPrices", required = false) List<Integer> minPrices,
+    		@RequestParam(value="maxPrices", required = false) List<Integer> maxPrices,
+    		
     		
     		
     		Model model
@@ -54,6 +58,8 @@ public class ProductFilter {
 	    if (redSubTypes == null) redSubTypes = new ArrayList<>();
 	    if (whiteSubTypes == null) whiteSubTypes = new ArrayList<>();
 	    if (sparklingSubTypes == null) sparklingSubTypes = new ArrayList<>();
+	    if (minPrices == null) minPrices = new ArrayList<>();
+	    if (maxPrices == null) maxPrices = new ArrayList<>();
 	    
 	    
 	    
@@ -64,11 +70,13 @@ public class ProductFilter {
 	    params.put("redSubTypes", redSubTypes);
 	    params.put("whiteSubTypes", whiteSubTypes);
 	    params.put("sparklingSubTypes", sparklingSubTypes);
+	    params.put("minPrices", minPrices);
+	    params.put("maxPrices", maxPrices);
 	   
 	    
-	  
-	    
-		List<WineExt> result = productService.searchByVolume(params);
+	    System.out.println(params);
+
+		List<WineExt> result = productService.searchByAjax(params);
 		
 		model.addAttribute("wine", result);
 		

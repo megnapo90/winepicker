@@ -151,8 +151,8 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public List<WineExt> searchByVolume(Map<String, Object> params) {
-		return productDao.searchByVolume(params);
+	public List<WineExt> searchByAjax(Map<String, Object> params) {
+		return productDao.searchByAjax(params);
 	}
 
 	

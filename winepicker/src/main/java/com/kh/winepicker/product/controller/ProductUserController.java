@@ -14,8 +14,10 @@ import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.winepicker.common.Pagination;
 import com.kh.winepicker.common.Utils;
 import com.kh.winepicker.common.model.vo.PageInfo;
+import com.kh.winepicker.model.vo.Cart;
 import com.kh.winepicker.model.vo.History;
 import com.kh.winepicker.model.vo.HistoryExt;
 import com.kh.winepicker.model.vo.ProductFilters;
@@ -55,6 +58,29 @@ public class ProductUserController {
 	private final ProductService productService;
 	private final ServletContext application;
 	private final ResourceLoader resourceLoader;
+
+	
+	@GetMapping("/")
+	public String getNewProductList(@RequestParam Map<String, Object>paramMap,
+			Model model) {
+		
+		List<WineExt> list = (List<WineExt>) productService.getNewProductList(paramMap);
+		
+		NumberFormat currencyFormat = NumberFormat.getNumberInstance(Locale.US);
+
+		for (WineExt wine : list) {
+			String formattedPrice = currencyFormat.format(wine.getPrice());
+			wine.setFormattedPrice(formattedPrice); // 포맷된 가격을 WineExt 객체에 추가
+		}
+		
+		model.addAttribute("list",list);
+		
+		return "main";
+		
+	}
+	
+	
+	
 
 	@GetMapping("/product/list")
 	public String getWineList(@RequestParam Map<String, Object> paramMap,
@@ -211,7 +237,7 @@ public class ProductUserController {
 	                    wine.setBQuantities(1); // 기본값 설정
 	                }
 	            }
-	            System.out.println(wines);
+	           
 	           
 	            
 	            model.addAttribute("wines",wines);
@@ -231,16 +257,26 @@ public class ProductUserController {
 	}
 	
 
-
+	
 	@PostMapping("/product/order")
 	public String orderPage2(
 			@RequestParam Map<String, Object> paramMap,
 			@RequestParam List<Integer> quantities,
 	        @RequestParam List<Integer> wineNos,
+	       // @ModelAttribute("loginUser") User loginUser,
 			Model model
+			
 			) {
+		
+		
+//	    if (loginUser == null) {
+//	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+//	        return "common/errorPage";
+//	    }
+
+	  //  int userNo = loginUser.getUserNo();
+		int userNo = 2;
 	
-		int userNo = 1;
 		String address = (String) paramMap.get("address");
         String postcode = (String) paramMap.get("postcode");
         String detailAddress = (String) paramMap.get("detailAddress");
@@ -260,7 +296,7 @@ public class ProductUserController {
             historyExt.setDeliveryAddress(deliveryAddress);
             historyExt.setQty(bQuantity);
   
-            list.add(historyExt);  // 리스트에 HistoryExt 객체를 추가합니다.
+            list.add(historyExt);  // 리스트에 HistoryExt 추가 
         }
 
         boolean isSuccess = true;  // 주문 처리 성공 여부를 추적하는 변수
@@ -276,12 +312,95 @@ public class ProductUserController {
 
         // 루프 종료 후 최종 결과 처리
         if (isSuccess) {
-            return "redirect:/product/productOrder";
+            return "redirect:/product/orderConfirm";
         } else {
             model.addAttribute("errorMsg", "구매실패");
             return "common/errorPage";
         }
     }
+
+	
+	
+	
+	@PostMapping(value = "/product/addToCart", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> addToCart(
+	        @RequestBody Map<String, Object> cartData,
+	        HttpSession session) {
+
+	    int wineNo = (Integer) cartData.get("wineNo");
+	    int quantity = (Integer) cartData.get("quantity");
+	    System.out.println(wineNo);
+	    // 기존 세션 장바구니 정보 가져오기
+	    List<Cart> sessionCarts = (List<Cart>) session.getAttribute("cart");
+	   
+	    if (sessionCarts == null) {
+	        sessionCarts = new ArrayList<>();
+	    }
+
+	    // 장바구니에 동일한 상품이 있는지 확인하고 수량 업데이트
+	    boolean itemExists = false;
+	    for (Cart cart : sessionCarts) {
+	        if (cart.getWine().getWineNo() == wineNo) {
+	            cart.setCartQty(cart.getCartQty() + quantity);
+	            itemExists = true;
+	            break;
+	        }
+	    }
+
+	    // 동일한 상품이 없는 경우 새 항목 추가
+	    if (!itemExists) {
+	        Wine wine = productService.getWineById(wineNo);
+	        Cart newCart = new Cart();
+	        newCart.setWine(wine);
+	        newCart.setCartQty(quantity);
+	        sessionCarts.add(newCart);
+	    }
+
+	    // 세션에 업데이트된 장바구니 정보 저장
+	    session.setAttribute("cart", sessionCarts);
+	    
+	    System.out.println("Post Updated Cart: " + sessionCarts);
+	    
+	    return ResponseEntity.ok("정상적으로 장바구니에 담겼습니다.");
+	    
+	  
+	   
+	}
+	
+
+	@GetMapping("/product/cart")
+	public String productCart(HttpSession session, Model model) {
+	    // 세션에서 장바구니 정보 가져오기
+	    List<Cart> sessionCarts = (List<Cart>) session.getAttribute("cart");
+	    if (sessionCarts == null) {
+	        sessionCarts = new ArrayList<>();
+	    }
+
+	    
+	    model.addAttribute("wines", sessionCarts);
+	    
+	    return "product/cart";
+	}
+	
+	
+	
+	
+	
+	
+	
+	  @PostMapping("/product/cart/remove")
+	  public String removeFromCart(@RequestParam("wineNo") String wineNo, HttpSession session) {
+		  Cart cart = (Cart) session.getAttribute("cart");
+
+	        if (cart != null && wineNo != null) {
+	          
+	            cart.removeWine(wineNo);
+	            session.setAttribute("cart", cart);
+	        }
+
+	        return "redirect:/cart";
+	    }
 
 	
 	

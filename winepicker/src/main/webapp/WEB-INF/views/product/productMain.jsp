@@ -46,7 +46,7 @@
             padding: 10px 20px;
             border: none;
             border-radius: 24px; /* 둥근 모서리 */
-            background-color: #4285f4; /* 버튼 배경색 (구글 블루) */
+            background-color: #282934; 
             color: #fff;
             font-size: 16px;
             cursor: pointer;

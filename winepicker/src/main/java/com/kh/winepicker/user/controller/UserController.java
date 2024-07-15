@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +11,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -520,7 +517,6 @@ public class UserController {
 
 			//날짜를 설정하지 않고 검색하려고 한 경우
 			if(startDate == null || endDate == null) { 
-				
 				model.addAttribute("errorMsg", "날짜를 입력해주세요.");
 				return "user/myReview";
 			}
@@ -551,12 +547,13 @@ public class UserController {
 			HashMap<String, String> paramMap = dateFormatting(startDate, endDate);
 
 			log.info("paramMap ? {}", paramMap);
+			model.addAttribute("paramMap", paramMap);
 			
 			paramMap.put("userNo", String.valueOf(userNo));
 			
 			List<History> rList = userService.searchMyPurchaseList(paramMap);
+			
 			model.addAttribute("reviewList", rList);
-			model.addAttribute("paramMap", paramMap);
 
 			String path = "resources/images/product";
 			model.addAttribute("path", path);
@@ -676,7 +673,7 @@ public class UserController {
 			
 			review.setOrderNo(orderNo);
 			review.setContent(Utils.XSSHandling(content));
-			review.setPoint(point*0.5);
+			review.setPoint(point);
 			
 			int result = userService.updateMyReview(review);
 			
@@ -718,7 +715,15 @@ public class UserController {
 
 		// 최근 본 상품으로 이동
 		@GetMapping("/myRecentProduct")
-		public String showMyRecentProduct() {
+		public String showMyRecentProduct(HttpSession session, Model model) {
+			
+			Map<String, Object> wineList = (Map<String, Object>) session.getAttribute("wineList");
+			for(String wineNo : wineList.keySet()) {
+				System.out.println(wineNo);
+			}
+			
+			model.addAttribute("searchList", wineList);
+			
 			return "user/myRecentProduct";
 		}
 

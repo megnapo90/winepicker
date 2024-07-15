@@ -148,10 +148,8 @@ header {
     font-size: 15px;
 }
 
-.review-content #point {
-	width: 30%;
+.review-content {
 	height: 40px;
-	font-size: 17px;
 }
 
 .review-enroll {
@@ -170,24 +168,39 @@ header {
 	border-radius: 4px;
 	cursor: pointer;
 }
+
+/* 별점  */
+.rating {
+	display: flex;
+	align-items: center;
+	height: 150px;
+}
+#point {
+	width: 200px;
+	margin-right: 10px;
+}
+.star-output {
+	font-size: 1.5em;
+	
+}
+
 </style>
 <c:if test="${not empty errorMsg}">
 	<script>
-	    	alert("",'${errorMsg}');	
-	    </script>
+		alert('${errorMsg}');	
+	</script>
 	<c:remove var="errorMsg" />
 </c:if>
-<script>
-document
-	.addEventListener(
-		"DOMContentLoaded",
-		function() {
-			var point = document.querySelector("#point").value;
 
-			point = document.querySelector("#point-number").innerText;
-			
-			
-		}
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rangeInput = document.getElementById('point');
+            const starOutput = document.getElementById('star-output');
+
+            rangeInput.addEventListener('input', function() {
+                starOutput.textContent = rangeInput.value;
+            });
+        });
 </script>
 
 </head>
@@ -238,7 +251,8 @@ document
 									<td><p>${review.wine.wineName}</p></td>
 									<td><p>${review.wine.content}</p></td>
 									<td><p>${review.qty}</p></td>
-									<td><p>${review.wine.price}</p></td>
+									<td><p><fmt:formatNumber value="${review.wine.price}"
+														pattern="#,###" /></p></td>
 								</tr>
 							</table>
 
@@ -252,11 +266,10 @@ document
 											<input type="text" id="title" name="reveiwContent" required
 												placeholder="한줄평을 등록하세요. (50자 이내)">
 										</div>
-										<div class="review-content">
-											<p>별점</p>
-											<input type="range" min="0.0" max="5.0" id="point"
-												name="reveiwPoint">
-											<p id="point-number"></p>
+										<div class="rating">
+											<p>만족도</p>
+									        <input type="range" min="0.0" max="5.0" step="0.5" id="point" name="reveiwPoint" value="0.0">
+									        <div class="star-output" id="star-output">0.0</div>
 										</div>
 									</div>
 
@@ -269,8 +282,7 @@ document
 					</div>
 				</div>
 			</div>
-		</div>
-
+			</div>
 	<footer>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</footer>

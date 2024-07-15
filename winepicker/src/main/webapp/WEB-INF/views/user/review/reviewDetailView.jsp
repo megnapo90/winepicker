@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -147,9 +148,9 @@ header {
 	text-align: center;
 }
 
-.review-title #title {
+.review-title #title{
 	text-align: left;
-    width: 10%;
+   	width: 50%;
     height: auto;
     font-size: 15px;
 }
@@ -211,11 +212,11 @@ header {
 						<div class="review-insert-container">
 							<div class="review-item-header">
 								<div>
-									<p>주문번호 :</p>
+									<p>주문번호 : </p>
 									<p>${item.orderNo}</p>
 								</div>
 								<div>
-									<p>주문일자 :</p>
+									<p>주문일자 : </p>
 									<p>${item.orderDate}</p>
 								</div>
 							</div>
@@ -236,7 +237,8 @@ header {
 									<td><p>${item.wine.wineName}</p></td>
 									<td><p>${item.wine.content}</p></td>
 									<td><p>${item.qty}</p></td>
-									<td><p>${item.wine.price}</p></td>
+									<td><p><fmt:formatNumber value="${item.wine.price}"
+														pattern="#,###" /></p></td>
 								</tr>
 							</table>
 
@@ -248,7 +250,7 @@ header {
 											<div id="title">${review.content}</div>
 										</div>
 										<div class="review-content">
-											<p>별점</p>
+											<p>만족도</p>
 											<p>${review.point}</p>
 										</div>
 									</div>

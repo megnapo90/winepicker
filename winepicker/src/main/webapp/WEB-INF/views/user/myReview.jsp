@@ -149,7 +149,7 @@ header {
 
 <c:if test="${not empty errorMsg}">
 	<script>
-	    	alert("",'${errorMsg}');	
+	    	alert('${errorMsg}');	
 	    </script>
 	<c:remove var="errorMsg" />
 </c:if>
@@ -169,16 +169,15 @@ header {
 
 			<div class="page-name">리뷰 관리</div>
 			<div class="content">
-				<!-- <div class="page-detail">리뷰 관리</div> -->
 			
 				<div class="review-list-search">
 
 					<div class="date-filter">
 						<form action="searchMyReview" method="post">
 							<input type="date" name="startDate"
-								value="${not empty paramMap.startDate ? paramMap.startDate : today}">&nbsp;~&nbsp;
+								value=${not empty paramMap.startDate ? paramMap.startDate : today}>&nbsp;~&nbsp;
 							<input type="date" name="endDate"
-								value="${not empty paramMap.endDate ? paramMap.endDate : today }">&nbsp;
+								value=${not empty paramMap.endDate ? paramMap.endDate : today }>&nbsp;
 							<input type="submit" value="조회">
 						</form>
 					</div>

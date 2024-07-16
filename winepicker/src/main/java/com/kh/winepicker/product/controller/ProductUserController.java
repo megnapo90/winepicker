@@ -210,8 +210,17 @@ public class ProductUserController {
 	
 	@GetMapping("/product/order")
 	public String orderPage(@RequestParam("cart") String cartJSON,
+			@ModelAttribute("loginUser") User loginUser,
 			Model model
 			) {
+		
+		
+		 if (loginUser == null) {
+		        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+		        return "common/errorPage";
+		    }
+
+		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -263,19 +272,19 @@ public class ProductUserController {
 			@RequestParam Map<String, Object> paramMap,
 			@RequestParam List<Integer> quantities,
 	        @RequestParam List<Integer> wineNos,
-	       // @ModelAttribute("loginUser") User loginUser,
+	        @ModelAttribute("loginUser") User loginUser,
 			Model model
 			
 			) {
 		
 		
-//	    if (loginUser == null) {
-//	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
-//	        return "common/errorPage";
-//	    }
+	    if (loginUser == null) {
+	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	        return "common/errorPage";
+	    }
 
-	  //  int userNo = loginUser.getUserNo();
-		int userNo = 2;
+		int userNo = loginUser.getUserNo();
+		
 	
 		String address = (String) paramMap.get("address");
         String postcode = (String) paramMap.get("postcode");
@@ -319,6 +328,16 @@ public class ProductUserController {
         }
     }
 
+	
+	 @GetMapping("/product/orderConfirm")
+	    public String showOrderConfirmPage(Model model) {
+	       
+	        return "product/orderConfirm";
+	    }
+	
+	
+	
+	
 	
 	
 	
@@ -370,8 +389,20 @@ public class ProductUserController {
 	
 
 	@GetMapping("/product/cart")
-	public String productCart(HttpSession session, Model model) {
+	public String productCart(HttpSession session,
+			@ModelAttribute("loginUser") User loginUser,
+			Model model) {
+		
+		
 	    // 세션에서 장바구니 정보 가져오기
+		
+
+	    if (loginUser == null) {
+	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	        return "common/errorPage";
+	    }
+		
+		
 	    List<Cart> sessionCarts = (List<Cart>) session.getAttribute("cart");
 	    if (sessionCarts == null) {
 	        sessionCarts = new ArrayList<>();
@@ -403,6 +434,7 @@ public class ProductUserController {
 
 	        return "redirect:/product/cart";
 	    }
+
 	
 }	
 	

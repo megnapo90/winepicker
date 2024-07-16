@@ -477,8 +477,8 @@
 	            whiteSubTypes: selectedWhiteSubTypes,
 	            sparklingSubTypes: selectedSparklingSubTypes,
 	            countries: selectedCountries,
-	            minPrices: minPrices,  // 추가: 슬라이더의 최소 가격
-	            maxPrices: maxPrices,  // 추가: 슬라이더의 최대 가격
+	            minPrices: minPrices,  
+	            maxPrices: maxPrices,  
 	            sortOption: sortOption
 	        },
 	        success: function(result) {

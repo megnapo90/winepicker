@@ -379,12 +379,12 @@
 				<div class="line"></div>
 			</div>
 			
-			<div class="portugal">
+			<div class="Portugal">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>
 			
-			<div class="spain">
+			<div class="Spain">
 				<div class="flag"></div>
 				<div class="line"></div>
 			</div>

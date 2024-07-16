@@ -246,7 +246,7 @@ li, ul, a {
 		</a>
 		<div class="nav">
 			<ul id="navi">
-				<li><a href="${contextPath}/product/listView">WINE</a></li>
+				<li><a href="${contextPath}/product/list">WINE</a></li>
 				<li><a href="${contextPath}/admin/info/main">INFORMATION</a></li>
 			</ul>
 		</div>

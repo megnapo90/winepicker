@@ -203,9 +203,8 @@ button[type="submit"]:hover {
 								data-price="${wineExt.price}" data-wine-no="${wineExt.wineNo}">
 							<input type="hidden" name="wineNos" value="${wineExt.wineNo}">
 						</p>
-						<button type="button" class="remove-item" data-wine-no="${wineExt.wineNo}">
-                        삭제
-                    </button>
+						<button type="button" class="remove-item"
+							data-wine-no="${wineExt.wineNo}">삭제</button>
 					</div>
 				</div>
 			</c:forEach>
@@ -290,8 +289,7 @@ button[type="submit"]:hover {
 		//카카오 주소등록 끝  
 
 		//갯수가 변할떄 처리
-		document
-				.addEventListener(
+		document.addEventListener(
 						'DOMContentLoaded',
 						function() {
 							document
@@ -337,20 +335,19 @@ button[type="submit"]:hover {
 		
 		
 		document.addEventListener('DOMContentLoaded', () => {
-		    // 모든 삭제 버튼을 선택합니다.
+
 		    const removeButtons = document.querySelectorAll('.remove-item');
 		    
 		    removeButtons.forEach(button => {
 		        button.addEventListener('click', () => {
-		            // 버튼의 data-wine-no 속성에서 wineNo를 가져옵니다.
+		            
 		            const wineNo = button.getAttribute('data-wine-no');
 		            
-		            // 해당 아이템을 DOM에서 제거합니다.
+		          
 		            const productInfo = button.closest('.product-info');
 		            productInfo.remove();
 
-		            // 폼에서 삭제된 아이템의 wineNo를 제거합니다.
-		            // wineNos를 모두 가져와서 삭제할 wineNo를 제외한 새 배열을 만듭니다.
+		           
 		            const wineNosInput = document.querySelector('input[name="wineNos"]');
 		            if (wineNosInput) {
 		                const wineNos = Array.from(document.querySelectorAll('input[name="wineNos"]'));

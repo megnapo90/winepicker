@@ -1,11 +1,7 @@
 package com.kh.winepicker.product.controller;
 
-import java.io.IOException;
-import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -13,10 +9,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,26 +22,22 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.winepicker.common.Pagination;
 import com.kh.winepicker.common.Utils;
 import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.Cart;
-import com.kh.winepicker.model.vo.History;
 import com.kh.winepicker.model.vo.HistoryExt;
-import com.kh.winepicker.model.vo.ProductFilters;
 import com.kh.winepicker.model.vo.User;
 import com.kh.winepicker.model.vo.Wine;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.product.model.service.ProductService;
+import com.kh.winepicker.user.model.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +50,7 @@ public class ProductUserController {
 	private final ProductService productService;
 	private final ServletContext application;
 	private final ResourceLoader resourceLoader;
-
+	private final UserService userService;
 	
 	@GetMapping("/")
 	public String getNewProductList(@RequestParam Map<String, Object>paramMap,
@@ -166,6 +158,37 @@ public class ProductUserController {
 
 	}
 	
+	
+	/*
+	 * // 관심상품 등록
+	 * 
+	 * @GetMapping("/product/insert/myWishItem") public String insertWishItem(
+	 * 
+	 * @ModelAttribute("loginUser") User loginUser, Model model,
+	 * 
+	 * @RequestParam("wineNo") int wineNo, HttpSession session ) {
+	 * if(loginUser.getUserId() == null) { model.addAttribute("alertMsg",
+	 * "로그인 후 이용해주세요."); return ""; }
+	 * 
+	 * int userNo = loginUser.getUserNo();
+	 * 
+	 * Map<String, Object> wishItem = new HashMap<String, Object>();
+	 * wishItem.put("userNo", userNo); wishItem.put("wineNo", wineNo);
+	 * 
+	 * int result = userService.insertWishItem(wishItem);
+	 * 
+	 * if(result > 0) { model.addAttribute("alertMsg", "관심상품이 등록되었습니다."); }else {
+	 * model.addAttribute("alertMsg", "관심상품이 등록이 실패하였습니다."); }
+	 * 
+	 * return "";
+	 * 
+	 * }
+	 */
+			
+	
+	
+	
+	
 	//오더페이지 화면처리 
 	//로그인기능 연결 후 userNo처리 
 //	@GetMapping("/product/order/userNo")
@@ -210,8 +233,26 @@ public class ProductUserController {
 	
 	@GetMapping("/product/order")
 	public String orderPage(@RequestParam("cart") String cartJSON,
-			Model model
+
+			Model model,
+			@ModelAttribute("loginUser") User loginUser
+
 			) {
+
+		log.info("loginUser ? {}", loginUser);
+		
+	    if (loginUser.getUserId() == null) {
+	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	        return "common/errorPage";
+	    }
+		
+		
+		 if (loginUser == null) {
+		        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+		        return "common/errorPage";
+		    }
+
+		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
@@ -256,27 +297,32 @@ public class ProductUserController {
 		
 	}
 	
-
-	
 	@PostMapping("/product/order")
 	public String orderPage2(
 			@RequestParam Map<String, Object> paramMap,
 			@RequestParam List<Integer> quantities,
 	        @RequestParam List<Integer> wineNos,
-	       // @ModelAttribute("loginUser") User loginUser,
-			Model model
-			
+	        @ModelAttribute("loginUser") User loginUser,
+
+			Model model,
+			RedirectAttributes ra
+
 			) {
 		
+		log.info("loginUser ? {}", loginUser);
 		
-//	    if (loginUser == null) {
-//	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
-//	        return "common/errorPage";
-//	    }
 
-	  //  int userNo = loginUser.getUserNo();
-		int userNo = 2;
-	
+	    if (loginUser.getUserId() == null) {
+
+	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
+	        return "common/errorPage";
+	    }
+
+
+	    int userNo = loginUser.getUserNo();
+//		int userNo = 2;
+
+
 		String address = (String) paramMap.get("address");
         String postcode = (String) paramMap.get("postcode");
         String detailAddress = (String) paramMap.get("detailAddress");
@@ -312,7 +358,7 @@ public class ProductUserController {
 
         // 루프 종료 후 최종 결과 처리
         if (isSuccess) {
-            return "redirect:/product/orderConfirm";
+            return "product/orderConfirm";
         } else {
             model.addAttribute("errorMsg", "구매실패");
             return "common/errorPage";
@@ -320,14 +366,32 @@ public class ProductUserController {
     }
 
 	
+	 @GetMapping("/product/orderConfirm")
+	    public String showOrderConfirmPage(Model model) {
+	       
+	        return "product/orderConfirm";
+	    }
+	
+	
+	
+	
+	
 	
 	
 	@PostMapping(value = "/product/addToCart", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<String> addToCart(
 	        @RequestBody Map<String, Object> cartData,
-	        HttpSession session) {
-
+	        HttpSession session, Model model, @ModelAttribute("loginUser") User loginUser) {		
+		
+		if (loginUser.getUserId() == null) {
+			
+			String errorMsg = "로그인이 필요합니다.";
+			
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(errorMsg);
+	    }
+		
 	    int wineNo = (Integer) cartData.get("wineNo");
 	    int quantity = (Integer) cartData.get("quantity");
 	    System.out.println(wineNo);
@@ -363,15 +427,20 @@ public class ProductUserController {
 	    System.out.println("Post Updated Cart: " + sessionCarts);
 	    
 	    return ResponseEntity.ok("정상적으로 장바구니에 담겼습니다.");
-	    
-	  
-	   
+	}
+	
+	@GetMapping("/common/errorPage")
+	public String errorPage(Model model){
+		model.addAttribute("errorMsg", "로그인이 필요합니다.");
+		return "common/errorPage";
 	}
 	
 
 	@GetMapping("/product/cart")
-	public String productCart(HttpSession session, Model model) {
-	    // 세션에서 장바구니 정보 가져오기
+	public String productCart(HttpSession session, Model model, @ModelAttribute("loginUser") User loginUser) {
+	
+		// 세션에서 장바구니 정보 가져오기
+
 	    List<Cart> sessionCarts = (List<Cart>) session.getAttribute("cart");
 	    if (sessionCarts == null) {
 	        sessionCarts = new ArrayList<>();
@@ -382,12 +451,6 @@ public class ProductUserController {
 	    
 	    return "product/cart";
 	}
-	
-	
-	
-	
-	
-	
 	
 	  @PostMapping("/product/cart/remove")
 	  public String removeFromCart(@RequestParam("wineNo") String wineNo, HttpSession session) {
@@ -403,6 +466,7 @@ public class ProductUserController {
 
 	        return "redirect:/product/cart";
 	    }
+
 	
 }	
 	

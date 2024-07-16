@@ -25,6 +25,12 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 */
             overflow: hidden; /* 자식 요소가 컨테이너를 넘어서지 않도록 함 */
             width: 800px;
+            
+        }
+        
+        .search form{
+         display: flex;
+         width: 100%;
         }
 
         .search-input {
@@ -34,7 +40,7 @@
             border-radius: 24px; /* 둥근 모서리 */
             outline: none;
             font-size: 16px; /* 글자 크기 */
-            width:728px;
+            width:90%;
             
         }
 
@@ -50,7 +56,7 @@
             color: #fff;
             font-size: 16px;
             cursor: pointer;
-            
+            width: 10%
             transition: background-color 0.3s ease;
             
         }
@@ -268,6 +274,9 @@
 
 	</div>
 
+	
+
+		
 
 
 

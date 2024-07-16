@@ -254,8 +254,8 @@ header {
 						</div>
 					</div>
 					</div>
-			</form>
 			<input type="hidden" id="fullAddress" name="address">
+			</form>
 
 
 		</main>

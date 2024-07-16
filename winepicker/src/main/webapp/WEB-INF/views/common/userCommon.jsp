@@ -106,7 +106,7 @@ a:hover {
 		<ul class="side-bar">
 				<li><a href="${contextPath}/user/myPage">주문 배송 조회</a></li>
 				<li><a href="${contextPath}/user/myReview">리뷰 관리</a></li>
-				<li><a href="${contextPath}/user/myRecentProduct">최근 본 상품</a></li>
+				<%-- <li><a href="${contextPath}/user/myRecentProduct">최근 본 상품</a></li> --%>
 				<li><a href="${contextPath}/user/myWishList">관심 상품</a></li>
 				<li><a href="${contextPath}/user/myInfoChange">내 정보 변경</a></li>
 				<li><a href="${contextPath}/user/callCenter">고객 센터</a></li>

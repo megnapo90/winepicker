@@ -8,8 +8,11 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/common.css">
 <style>
+.section{
+	overflow: scroll;
+}
 table{
-	width: 1200px;
+	width: 1150px;
 	border-collapse: separate;
 }
 table th{
@@ -71,6 +74,9 @@ td{
 </div>	
 
 
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+
 
 	<script>
 		function updateWine(no){
@@ -79,7 +85,6 @@ td{
 		}
 	</script>
 	
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 
 </body>
 </html>

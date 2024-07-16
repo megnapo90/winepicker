@@ -486,7 +486,7 @@ public class AdminController {
 		model.addAttribute("wine", wine);
 		
 		
-		return "admin/updateWineForm2";
+		return "admin/updateWineForm";
 	}
 	
 	
@@ -502,7 +502,6 @@ public class AdminController {
 			@RequestParam(value="upfile", required = false) MultipartFile upfile
 			) {
 		
-		System.err.println(upfile);
 		
 		if(upfile != null && !upfile.isEmpty()) {
 			String webpath = "/resources/images/product/";
@@ -513,17 +512,14 @@ public class AdminController {
 				dir.mkdirs();
 			}
 			
-			//String changeName = serverFolderPath.replace("\\", "/") + Utils.saveFile(upfile, serverFolderPath);
 			String changeName = Utils.saveFile(upfile, serverFolderPath);
-			
-			wineImage = new WineImage();
+		
 			wineImage.setChangeName(changeName);
 			wineImage.setOriginName(upfile.getOriginalFilename());
 			
 			wine.setWineImage(wineImage);
 		}
 		
-		//System.err.println(wineImage);
 		
 		wine.setCharacteristic(characteristic);
 		

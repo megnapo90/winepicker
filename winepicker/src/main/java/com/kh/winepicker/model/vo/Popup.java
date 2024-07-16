@@ -14,4 +14,5 @@ public class Popup {
 	private String popupTitle;
 	private String originName;
 	private String changeName;
+	private String status;
 }

@@ -69,7 +69,8 @@
                       <td>${p.popupNo}</td>
                       <td>${p.popupTitle}</td>
                       <td>${p.originName}</td>
-                      <td>${p.status}</td>
+                      <td>${p.status} &nbsp&nbsp&nbsp&nbsp<input type="button" onclick="deletePopup(this)" value="게시 상태 변경"></td>
+                      
                   </tr>
               </c:forEach>
              </c:otherwise>
@@ -84,6 +85,18 @@
 	function popupEnroll(){
 		location.href = "${contextPath}/admin/popupEnroll";
 	}
+	
+	function deletePopup(e){
+		console.log(e)
+		console.log( $(e).parent("td").text() )
+		
+		var status = $(e).parent("td").text();
+		
+		if(status == 'Y'){
+			console.log("ㅇㅇ");
+		}
+	}
+	
 </script>
 
 

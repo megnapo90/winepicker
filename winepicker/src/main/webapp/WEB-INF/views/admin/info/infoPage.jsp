@@ -86,7 +86,7 @@ pre{
         </div>
     </div>
     
-   	<div class="link">
+   	<%-- <div class="link">
    		<c:choose>
    			<c:when test="${info.infoName eq 'Red'}">
    				<c:set var="num" value="1"/>
@@ -102,7 +102,7 @@ pre{
 				</script>
    			</c:when>
    		</c:choose>
-	</div>
+	</div> --%>
     
     
     

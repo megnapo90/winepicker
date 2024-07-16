@@ -75,6 +75,7 @@ button:hover {
 	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 	<jsp:include page="/WEB-INF/views/admin/adminList.jsp" />
 
+<div class="section">
 
    <div class="container">
         <h1>와인 등록</h1>
@@ -151,6 +152,8 @@ button:hover {
             <button type="submit">등록</button>
         </form>
     </div>
+    
+</div>
     
     <script>
 		function selectWineType() {

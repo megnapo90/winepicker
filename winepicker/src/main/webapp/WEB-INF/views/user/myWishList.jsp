@@ -200,9 +200,9 @@ header {
 										</tr>
 									</c:forEach>
 								</table>
-								<div class="addShoppingBag">
+								<!-- <div class="addShoppingBag">
 									<input type="button" onclick=purchaseAllItem(); value="전체구매">
-								</div>
+								</div> -->
 							</div>
 						</c:otherwise>
 					</c:choose>
@@ -283,7 +283,7 @@ header {
 		
 	}
 	
-	function addToCart(wineNo) {
+	/* function addToCart(wineNo) {
         const quantityInput = document.querySelector(`input[data-wine-id='\${wineNo}']`);
         const quantity = parseInt(quantityInput.value);
 	
@@ -304,7 +304,7 @@ header {
         } else {
             alert('유효한 수량을 입력하세요.');
         }
-    }
+    } */
 
 </script>
 

@@ -2,7 +2,7 @@ package com.kh.winepicker.user.model.service;
 
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -169,6 +169,10 @@ public class UserServiceImpl implements UserService {
 		return userDao.updateUserStatus(userNo);
 	}
 	
+	@Override
+	public int insertWishItem(Map<String, Object> wishItem) {
+		return userDao.insertWishItem(wishItem);
+	}
 	
 	
 	
@@ -222,6 +226,8 @@ public class UserServiceImpl implements UserService {
     public List<User> getUsersByNo(List<Integer> userNo) {
         return userDao.getUsersByNo(userNo);
     }
+
+
 // ============================ 민욱 끝 =============================================	
 	
 	

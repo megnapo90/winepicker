@@ -162,10 +162,17 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public int updateUserStatus(int userNo) {
-		System.out.println(3);
 		return sqlSession.update("user.updateUserStatus", userNo);
 	}
 
+	@Override
+	public int insertWishItem(Map<String, Object> wishItem) {
+		return sqlSession.insert("user.insertWishItem", wishItem);
+	}
+	
+	
+	
+	
 	
 // ============================ 민욱 시작 =============================================
 	@Override
@@ -212,6 +219,8 @@ public class UserDaoImpl implements UserDao {
     public List<User> getUsersByNo(List<Integer> userNo) {
         return sqlSession.selectList("user.getUsersByNo", userNo);
     }
+
+
 // ============================ 민욱 끝 =============================================		
 	
 

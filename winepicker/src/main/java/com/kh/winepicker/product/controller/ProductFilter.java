@@ -1,8 +1,10 @@
 package com.kh.winepicker.product.controller;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.winepicker.common.Pagination;
 import com.kh.winepicker.common.Utils;
+import com.kh.winepicker.common.model.vo.PageInfo;
 import com.kh.winepicker.model.vo.ProductFilters;
 import com.kh.winepicker.model.vo.WineExt;
 import com.kh.winepicker.product.model.service.ProductService;
@@ -45,12 +49,13 @@ public class ProductFilter {
     		@RequestParam(value="sparklingSubTypes", required = false) List<Integer> sparklingSubTypes,
     		@RequestParam(value="minPrices", required = false) List<Integer> minPrices,
     		@RequestParam(value="maxPrices", required = false) List<Integer> maxPrices,
-    		
-    		
+    		@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+    		@RequestParam(value="sortOption", defaultValue="recent") String sortOption,
     		
     		Model model
     		
     		) {
+		
 		
 		if (volumes == null) volumes = new ArrayList<>();
 	    if (countries == null) countries = new ArrayList<>();
@@ -62,7 +67,6 @@ public class ProductFilter {
 	    if (maxPrices == null) maxPrices = new ArrayList<>();
 	    
 	    
-	    
 		Map<String, Object> params = new HashMap<>();
 	    params.put("volumes", volumes);
 	    params.put("countries", countries);
@@ -72,16 +76,35 @@ public class ProductFilter {
 	    params.put("sparklingSubTypes", sparklingSubTypes);
 	    params.put("minPrices", minPrices);
 	    params.put("maxPrices", maxPrices);
+	    params.put("sortOption", sortOption);
+	   
 	   
 	    
-	    System.out.println(params);
+	  
+	    
+	    int listCount = productService.selectListCount(params);
+		int pageLimit = 16;
+		int boardLimit = 10;
 
-		List<WineExt> result = productService.searchByAjax(params);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+	    
+
+		List<WineExt> result = productService.getWineList(pi, params);
 		
+		NumberFormat currencyFormat = NumberFormat.getNumberInstance(Locale.US);
+
+		for (WineExt wine : result) {
+			String formattedPrice = currencyFormat.format(wine.getPrice());
+			wine.setFormattedPrice(formattedPrice); // 포맷된 가격을 WineExt 객체에 추가
+		}
+		
+		System.out.println(params);
 		model.addAttribute("wine", result);
 		
 		return result;
 	}
+	
+	
 	
 	
 	

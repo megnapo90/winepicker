@@ -182,13 +182,19 @@ hr {
 
    <div class="products-container">
    
-   
+   <%-- 
     <div class="sort-options">
-        <a href="#recent" class="${sortOption == 'recent' ? 'active' : ''}" data-sort="recent" onclick="sortProducts('recent')">최신순</a>
-        <a href="#pricehigh" class="${sortOption == 'pricehigh' ? 'active' : ''}" data-sort="pricehigh" onclick="sortProducts('pricehigh')">가격 높은 순</a>
-        <a href="#pricelow" class="${sortOption == 'pricelow' ? 'active' : ''}" data-sort="pricelow" onclick="sortProducts('pricelow')">가격 낮은 순</a>
+        <a href="#recent" class="${sortOption == 'recent' ? 'active' : ''}" data-sort="recent" onclick="searchProducts('recent')">최신순</a>
+        <a href="#pricehigh" class="${sortOption == 'pricehigh' ? 'active' : ''}" data-sort="pricehigh" onclick="searchProducts('pricehigh')">가격 높은 순</a>
+        <a href="#pricelow" class="${sortOption == 'pricelow' ? 'active' : ''}" data-sort="pricelow" onclick="searchProducts('pricelow')">가격 낮은 순</a>
     </div>
-    
+     --%>
+     
+     <div class="sort-options">
+    <a href="#recent" class="${sortOption == 'recent' ? 'active' : ''}" data-sort="recent" onclick="sortProducts('recent')">최신순</a>
+    <a href="#pricehigh" class="${sortOption == 'pricehigh' ? 'active' : ''}" data-sort="pricehigh" onclick="sortProducts('pricehigh')">가격 높은 순</a>
+    <a href="#pricelow" class="${sortOption == 'pricelow' ? 'active' : ''}" data-sort="pricelow" onclick="sortProducts('pricelow')">가격 낮은 순</a>
+</div>
  	 <div class="content-container">
 
 	  <jsp:include page="/WEB-INF/views/product/filter.jsp" />
@@ -235,45 +241,37 @@ hr {
 
 
 
-
-	<c:set var="url" value="?currentPage=" />
+		<c:set var="url" value="?currentPage=" />
 
 	<div id="pagingArea">
-		<ul class="pagination"
-			style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center;">
-			<c:if test="${pi.currentPage eq 1}">
-				<li class="page-item"><a class='page-link'>Prev</a></li>
-			</c:if>
-			<c:if test="${pi.currentPage ne 1}">
-				<li class="page-item"><a class='page-link'
-					href="${url }${pi.currentPage -1 }${sParam}">Previous</a></li>
-			</c:if>
-
-			<c:forEach var="i" begin="${pi.startPage }" end="${pi.endPage }">
-				<li class="page-item"><a
-					class="page-link ${i eq pi.currentPage ? 'on' : ''}"
-					href="${url }${i}${sParam}">${i }</a></li>
-			</c:forEach>
-
-
-			<c:if test="${pi.currentPage eq pi.maxPage}">
-				<li class="page-item"><a class='page-link'>Next</a></li>
-			</c:if>
-			<c:if test="${pi.currentPage ne pi.maxPage}">
-				<li class="page-item"><a class='page-link'
-					href="${url }${pi.currentPage +1 }${sParam}">Next</a></li>
-			</c:if>
-		</ul>
-	</div>
+    <ul class="pagination" style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center;">
+        <c:if test="${pi.currentPage eq 1}">
+            <li class="page-item"><a class='page-link'>Prev</a></li>
+        </c:if>
+        <c:if test="${pi.currentPage ne 1}">
+            <li class="page-item"><a class='page-link' href="${url }${pi.currentPage -1 }${sParam}&sortOption=${sortOption}" onclick="loadPage(${pi.currentPage - 1}); return false;">Previous</a></li>
+        </c:if>
+        <c:forEach var="i" begin="${pi.startPage}" end="${pi.endPage}">
+            <li class="page-item"><a class="page-link ${i eq pi.currentPage ? 'on' : ''}" href="${url }${i}${sParam}&sortOption=${sortOption}" onclick="loadPage(${i}); return false;">${i}</a></li>
+        </c:forEach>
+        <c:if test="${pi.currentPage eq pi.maxPage}">
+            <li class="page-item"><a class='page-link'>Next</a></li>
+        </c:if>
+        <c:if test="${pi.currentPage ne pi.maxPage}">
+            <li class="page-item"><a class='page-link' href="${contextPath}/product/list?currentPage=${pi.currentPage + 1}&sortOption=${sortOption}" onclick="loadPage(${pi.currentPage + 1}); return false;">Next</a></li>
+        </c:if>
+    </ul>
+</div>
 
 
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
 
+	
 	<script>
 	
 	/* 소팅 */
-	function sortProducts(sortOption) {
+	/* function sortProducts(sortOption) {
 			const form = document.createElement('form');
 			form.method = 'GET';
 			form.action = 'list'; // 컨트롤러의 매핑 경로
@@ -287,18 +285,75 @@ hr {
 			document.body.appendChild(form);
 			form.submit();
 		}
-		
+		 */
 		
 		document.querySelectorAll('.wine-card-info-wrap').forEach(product => {
 		    product.addEventListener('click', () => {
 		        window.location.href = product.getAttribute('data-href');
 		    });
 		});
-	 
-		
+	
+		 function sortProducts(sortOption) {
+			    console.log('sortOption in sortProducts:', sortOption);  // 확인용
+
+			    document.querySelectorAll('.sort-options a').forEach(function(el) {
+			        el.classList.remove('active');
+			    });
+
+			    document.querySelector(`.sort-options a[data-sort="${sortOption}"]`).classList.add('active');
+
+			    
+			    searchProducts(sortOption);
+
+			    
+			    
+			    
+			}
+		 
+		 
+		 
+	/* 
+	function sortProducts(sortOption) {
+	    $.ajax({
+	        url: '${contextPath}/product/list',
+	        type: 'GET',
+	        data: { 
+	            sortOption: sortOption,
+	            currentPage: 1 
+	        },
+	        success: function(data) {
+	            $('#productList').html($(data).find('#productList').html());
+	            $('#pagingArea').html($(data).find('#pagingArea').html());
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('Error occurred:', error);
+	        }
+	    });
+	}
+
+	function loadPage(pageNumber) {
+	    const sortOption = $('.sort-options .active').data('sort') || 'recent';
+	    $.ajax({
+	        url: '/product/list',
+	        type: 'GET',
+	        data: { 
+	            sortOption: sortOption,
+	            currentPage: pageNumber 
+	        },
+	        success: function(data) {
+	            $('#productList').html($(data).find('#productList').html());
+	            $('#pagingArea').html($(data).find('#pagingArea').html());
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('Error occurred:', error);
+	        }
+	    });
+	}
+		 */
 		
 	</script>
 
+	
 
 
 

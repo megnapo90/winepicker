@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+.title {
+	text-align: center;
+	margin-top: 60px;
+	margin-bottom: 30px;
+	font-size: 36px;
+	font-weight: bold;
+	color: #333;
+}
+
+	
+
+
+hr {
+	width: 100%;
+	margin: 20px auto;
+	border-top: 2px solid #D8D8D8;
+}
+
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 20px;
+}
+
+
+
+.content-container {
+    display: flex; /* 필터와 와인 컨테이너를 가로로 배치 */
+    flex: 1;
+    gap: 20px; /* 필터와 와인 컨테이너 사이의 간격 설정 */
+}
+
+
+.filter-container {
+    width: 250px; /* 필터 컨테이너의 너비 설정 */
+}
+
+
+.wine-container {
+    flex: 1; /* 와인 컨테이너가 남은 공간을 채우도록 설정 */
+}
+
+
+
+
+
+.products-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+}
+
+.sort-options {
+	display: flex;
+	justify-content: flex-end;
+	padding-bottom: 20px;
+}
+
+.sort-options a {
+	margin-left: 20px;
+	color: #333;
+	text-decoration: none;
+}
+
+.sort-options a.active {
+	color: red !important; /* 선택된 소팅 옵션의 텍스트 색상 */
+	font-weight: bold; /* 선택된 소팅 옵션의 텍스트 굵게 */
+}
+
+.sort-options a:hover {
+	text-decoration: underline; /* 마우스를 올렸을 때 텍스트에 밑줄 */
+}
+
+
+/* 전체 컨테이너 */
+.wine-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 슬라이드 랩 */
+.wine-list-wrap {
+    display: flex;
+    overflow: hidden; /* 슬라이드가 넘치지 않게 숨김 */
+    position: relative;
+}
+
+/* 각 와인 카드 */
+.wine-card-info-wrap {
+    flex: 0 0 25%; /* 4개의 카드가 화면에 보이도록 설정 */
+    box-sizing: border-box;
+    padding: 10px;
+    transition: transform 0.5s ease; /* 슬라이드 전환 애니메이션 */
+}
+
+/* 와인 이미지 */
+.wine-image-wrap {
+    position: relative;
+}
+
+.wine-image-wrap img {
+    width: 100%;
+    height: auto;
+}
+
+
+.type-country {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+}
+
+.type-country .country-image {
+    width: 32px;  
+    height: 32px; 
+    margin : 1px; 
+}
+
+/* .type-image 클래스의 이미지 크기 설정 */
+.type-country .type-image {
+    width: 32px;   
+    height: 32px; 
+    margin : 1px;  
+}
+
+/* 와인 제목 */
+.wine-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* 가격 정보 */
+.wine-price-info {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* 기타 정보 */
+.wine-etc-info {
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
+}

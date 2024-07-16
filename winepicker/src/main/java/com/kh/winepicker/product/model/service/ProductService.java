@@ -33,9 +33,9 @@ public interface ProductService {
 
 	List<WineExt> getwineList(List<Integer> volumes);
 
-	List<WineExt> searchByAjax(Map<String, Object> params);
+	List<WineExt> searchByAjax( Map<String, Object> params);
 
-	List<WineExt> orderPage(Map<String, Object> params);
+	List<WineExt> orderPage(Map<String, Object> paramss);
 
 	int orderPage2(HistoryExt historyExt);
 

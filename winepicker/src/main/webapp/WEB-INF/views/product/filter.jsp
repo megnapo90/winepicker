@@ -416,8 +416,10 @@
 	    searchProducts();
 	}
 
-	// 제품 목록을 검색하고 업데이트하는 함수
-	function searchProducts() {
+ 	// 제품 목록을 검색하고 업데이트하는 함수
+	function searchProducts(sortOption) {
+ 		
+ 		
 	    var selectedVolumes = [];
 	    document.querySelectorAll('#volumeOptions input[name="volume-option"]:checked').forEach(function(el) {
 	        selectedVolumes.push(parseInt(el.value));
@@ -448,6 +450,10 @@
 	        selectedCountries.push(parseInt(el.value));
 	    });
 
+	    //소팅
+	  
+	    
+	    
 	    // 슬라이더의 값 가져오기
 	    if (priceSlider && priceSlider.noUiSlider) {
 	        var priceRange = priceSlider.noUiSlider.get();
@@ -457,6 +463,8 @@
 	        console.error('noUiSlider가 초기화되지 않았습니다.');
 	        return;
 	    }
+	    
+	    
 
 	    $.ajax({
 	        url: `${contextPath}/product/searchByAjax`,
@@ -470,7 +478,8 @@
 	            sparklingSubTypes: selectedSparklingSubTypes,
 	            countries: selectedCountries,
 	            minPrices: minPrices,  // 추가: 슬라이더의 최소 가격
-	            maxPrices: maxPrices  // 추가: 슬라이더의 최대 가격
+	            maxPrices: maxPrices,  // 추가: 슬라이더의 최대 가격
+	            sortOption: sortOption
 	        },
 	        success: function(result) {
 	            console.log('서버 응답 데이터:', result);
@@ -509,6 +518,10 @@
 	        }
 	    });
 	}
+ 	
+	document.addEventListener('DOMContentLoaded', function() {
+	    sortProducts('recent');
+	});
 
 </script>
 </body>

@@ -92,6 +92,7 @@
 		COUNTRY_NO, C.COUNTRY_NAME, VINTAGE, PRICE, VOLUME,
 		QUANTITY, CONTENT,
 		STATUS,
+		WT.WINE_TYPE_NO, WT.WINE_TYPE_NAME,
 
 		ORIGIN_NAME, CHANGE_NAME,
 
@@ -106,6 +107,7 @@
 		=
 		W.WINE_NO)
 		LEFT JOIN CHARACTERISTIC T ON (T.WINE_NO = W.WINE_NO)
+		LEFT JOIN WINE_TYPE WT ON WT.WINE_TYPE_NO = G.WINE_TYPE_NO
 		WHERE
 		W.WINE_NO = #{wineNo}
 
@@ -181,6 +183,57 @@
         </foreach>
        </if>
        
+        <if test="volumes != null and volumes.size() > 0">
+            AND W.VOLUME IN
+            <foreach item="volume" collection="volumes" open="(" close=")" separator=",">
+                #{volume}
+            </foreach>
+        </if>
+        <if test="countries != null and countries.size() > 0">
+            AND W.COUNTRY_NO IN
+            <foreach item="country" collection="countries" open="(" close=")" separator=",">
+                #{country}
+            </foreach>
+        </if>
+         <if test="types != null and types.size() > 0">
+            AND G.WINE_TYPE_NO IN
+            <foreach item="type" collection="types" open="(" close=")" separator=",">
+                #{type}
+            </foreach>
+        </if>
+        <if test="redSubTypes != null and redSubTypes.size() > 0">
+            AND W.GRAPE_NO IN
+            <foreach item="grapeNo" collection="redSubTypes" open="(" close=")" separator=",">
+                #{grapeNo}
+            </foreach> 
+        </if>
+         <if test="whiteSubTypes != null and whiteSubTypes.size() > 0">
+            AND W.GRAPE_NO IN
+            <foreach item="grapeNo" collection="whiteSubTypes" open="(" close=")" separator=",">
+                #{grapeNo}
+            </foreach> 
+        </if>
+         <if test="sparklingSubTypes != null and sparklingSubTypes.size() > 0">
+            AND W.GRAPE_NO IN
+            <foreach item="grapeNo" collection="sparklingSubTypes" open="(" close=")" separator=",">
+                #{grapeNo}
+            </foreach> 
+        </if>
+        
+        <if test="minPrices != null and minPrices.size() > 0">
+             AND W.PRICE >=
+            <foreach item="minPrice" collection="minPrices" open="(" close=")" separator=",">
+                 #{minPrice}
+            </foreach>
+        </if>
+        
+        
+        <if test="maxPrices != null and maxPrices.size() > 0">
+        	AND W.PRICE &lt;=
+            <foreach item="maxPrice" collection="maxPrices" open="(" close=")" separator=",">
+                 ${maxPrice}
+            </foreach>
+        </if>
 		
 		<if test="minPrice != null">
             AND W.PRICE >= #{minPrice}
@@ -262,7 +315,7 @@
 
 
 	<!-- 필터  --> 
-	    <select id="searchByVolume" resultMap="wineExtMap">
+	    <select id="searchByAjax" resultMap="wineExtMap">
         SELECT
             W.WINE_NO,
             W.WINE_NAME,

@@ -360,33 +360,53 @@ public class UserController {
 	}
 
 	@PostMapping("/myInfoChange")
-	public String myInfoChange(User user, @RequestParam("userPwd") String userPwd, RedirectAttributes ra,
+	public String myInfoChange(User user, @RequestParam(value = "userPwd", required = false) String userPwd,
+			@RequestParam(value = "verificationCode", required = false) String verificationCode, RedirectAttributes ra,
 			HttpSession session, Model model) {
 
 		User loginUser = (User) session.getAttribute("loginUser");
-		
 
-		String encodedPwd = encoder.encode(userPwd);
-		user.setUserPwd(encodedPwd);
+		// 새 비밀번호가 입력된 경우에만 변경
+		if (userPwd != null && !userPwd.trim().isEmpty()) {
+			String encodedPwd = encoder.encode(userPwd);
+			user.setUserPwd(encodedPwd);
+		} else {
+			// 비밀번호 변경이 없는 경우 기존 비밀번호 유지
+			user.setUserPwd(loginUser.getUserPwd());
+		}
 
+		// 이메일이 변경된 경우에만 인증 로직 처리
+		if (!loginUser.getUserEmail().equals(user.getUserEmail())) {
+			if (verificationCode == null || verificationCode.trim().isEmpty()) {
+				model.addAttribute("errorMsg", "이메일 변경 시 인증 코드를 입력해야 합니다.");
+				return "common/errorPage";
+			}
+
+			String sessionVerificationCode = (String) session.getAttribute("verificationCode");
+			if (sessionVerificationCode == null || !sessionVerificationCode.equals(verificationCode)) {
+				model.addAttribute("errorMsg", "이메일 인증 코드가 일치하지 않습니다.");
+				return "common/errorPage";
+			}
+		}
 
 		int result = userService.myInfoChange(user);
-
-		String url = "";
+		String url;
 
 		if (result > 0) {
-
-			loginUser = userService.login(user);
-			session.setAttribute("loginUser", loginUser);
+			// 내정보 수정 성공
+			loginUser = userService.login(user); // 변경된 정보로 로그인 정보 업데이트
+			session.setAttribute("loginUser", loginUser); // 세션 업데이트
 			ra.addFlashAttribute("alertMsg", "내정보 수정 성공");
 			url = "redirect:/user/myPage";
 		} else {
+			// 내정보 수정 실패
 			model.addAttribute("errorMsg", "내정보 수정 실패");
 			url = "common/errorPage";
 		}
 
 		return url;
 	}
+
 	
 	//---------------------------------------------------------------------------------------------------------
 	

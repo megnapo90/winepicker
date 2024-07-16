@@ -299,7 +299,7 @@ li, ul, a {
 							class="icon"
 							data-hover-src="${contextPath}/resources/common/logout-hover.png">
 						</a>
-						<a href="${contextPath}/cart/view"> <img
+						<a href="${contextPath}/product/cart"> <img
 							src="${contextPath}/resources/common/cart.png" alt="Cart"
 							class="icon"
 							data-hover-src="${contextPath}/resources/common/cart-hover.png">

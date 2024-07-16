@@ -97,6 +97,7 @@
 <body>
    	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"/>
+	<jsp:include page="/WEB-INF/views/admin/adminList.jsp"/>
 
 
 <div class="section">

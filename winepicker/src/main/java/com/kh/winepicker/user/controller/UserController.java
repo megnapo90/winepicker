@@ -742,6 +742,8 @@ public class UserController {
 			
 			return "user/myWishList";
 		}
+		
+			
 
 		// 관심상품에서 삭제
 		@GetMapping("/delete/myWishItem")

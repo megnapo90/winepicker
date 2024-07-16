@@ -3,6 +3,7 @@ package com.kh.winepicker.user.model.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.winepicker.model.vo.Faq;
 import com.kh.winepicker.model.vo.History;
@@ -63,6 +64,7 @@ public interface UserDao {
 
 	int updateUserStatus(int userNo);
 
+	int insertWishItem(Map<String, Object> wishItem);
 
 	
 // ============================ 민욱 시작 =============================================
@@ -76,6 +78,7 @@ public interface UserDao {
     int updateUser(User user);
     public List<User> getUsersByNo(List<Integer> userNo);
 // ============================ 민욱 끝 =============================================	
+
 	
 	
 

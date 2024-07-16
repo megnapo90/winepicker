@@ -91,7 +91,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	@Override
 	public List<WineExt> searchByAjax(Map<String, Object> params) {
-		return sqlSession.selectList("product.searchByVolume", params);
+		return sqlSession.selectList("product.searchByAjax", params);
 	}
 
 	@Override

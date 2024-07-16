@@ -391,18 +391,18 @@ public class ProductUserController {
 	
 	  @PostMapping("/product/cart/remove")
 	  public String removeFromCart(@RequestParam("wineNo") String wineNo, HttpSession session) {
-		  Cart cart = (Cart) session.getAttribute("cart");
+		   List<Cart> sessionCarts = (List<Cart>) session.getAttribute("cart");
 
-	        if (cart != null && wineNo != null) {
-	          
-	            cart.removeWine(wineNo);
-	            session.setAttribute("cart", cart);
-	        }
+		    // List<Cart> 객체가 null이 아닌지 확인
+		    if (sessionCarts != null && wineNo != null) {
+		        // List<Cart>에서 제품 제거
+		        sessionCarts.removeIf(cart -> cart.getWine().getWineNo() == Integer.parseInt(wineNo));
+		        // 업데이트된 List<Cart> 객체를 세션에 다시 저장
+		        session.setAttribute("cart", sessionCarts);
+		    }
 
-	        return "redirect:/cart";
+	        return "redirect:/product/cart";
 	    }
-
-	
 	
 }	
 	

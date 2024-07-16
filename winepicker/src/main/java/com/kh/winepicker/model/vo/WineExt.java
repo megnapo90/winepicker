@@ -24,7 +24,8 @@ public class WineExt extends Wine{
 	private String formattedPrice;
 	private int bQuantities;
 	private int orderNo;
-	
+	private String sortOption;
+	private int currentPage;
 	 
 	 
 }

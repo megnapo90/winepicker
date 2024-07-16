@@ -65,6 +65,19 @@ public interface UserDao {
 
 
 	
+// ============================ 민욱 시작 =============================================
+	List<User> getAllUsers();
+    User getUserById(String userId);
+    int deleteUser(String userId);
+    int removeUser(String userId);
+    List<User> searchUsers(String keyword);
+    int deleteUsers(List<String> userIds);
+    User selectUserByNo(int userNo);
+    int updateUser(User user);
+    public List<User> getUsersByNo(List<Integer> userNo);
+// ============================ 민욱 끝 =============================================	
+	
+	
 
 }
 

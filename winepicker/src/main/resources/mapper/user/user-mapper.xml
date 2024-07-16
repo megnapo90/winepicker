@@ -358,6 +358,81 @@
 			STATUS = 'N'
 		WHERE USER_NO = #{userNo}
 	</update>
+
+
+
+
+<!-- =================================== 민욱 시작 =================================== -->
+	<!-- 모든 사용자 선택 -->
+    <select id="selectAllUsers" resultType="com.kh.winepicker.model.vo.User">
+        SELECT USER_NO, GRADE_NO, USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_SSN, PHONE, ADDRESS, ENROLL_DATE, MODIFY_DATE, STATUS
+        FROM "USER"
+    </select>
+
+    <!-- ID로 사용자 선택 -->
+    <select id="selectUserById" parameterType="String" resultType="com.kh.winepicker.model.vo.User">
+        SELECT USER_NO, GRADE_NO, USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_SSN, PHONE, ADDRESS, ENROLL_DATE, MODIFY_DATE, STATUS
+        FROM "USER"
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <!-- 새로운 사용자 삽입 -->
+    <!-- <insert id="insertUser" parameterType="com.kh.winepicker.model.vo.User">
+        INSERT INTO "USER" (USER_NO, GRADE_NO, USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_SSN, PHONE, ADDRESS, ENROLL_DATE, MODIFY_DATE, STATUS)
+        VALUES (#{userNo}, #{gradeNo}, #{userId}, #{userPwd}, #{userName}, #{userEmail}, #{userSsn}, #{phone}, #{address}, #{enrollDate}, #{modifyDate}, #{status})
+    </insert> -->
+
+    <!-- ID로 사용자 삭제 -->
+    <delete id="deleteUser" parameterType="String">
+        DELETE FROM "USER" WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 키워드로 사용자 검색 -->
+    <select id="searchUsers" resultType="com.kh.winepicker.model.vo.User">
+        SELECT USER_NO, GRADE_NO, USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_SSN, PHONE, ADDRESS, ENROLL_DATE, MODIFY_DATE, STATUS
+        FROM "USER"
+        WHERE USER_NAME LIKE '%' || #{keyword} || '%'
+        OR USER_EMAIL LIKE '%' || #{keyword} || '%'
+    </select>
+
+    <!-- 사용자 No로 사용자 삭제 -->
+    <delete id="removeUser" parameterType="String">
+        DELETE FROM "USER" WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 여러 사용자 삭제 -->
+    <delete id="deleteUsers" parameterType="java.util.List">
+        DELETE FROM "USER" WHERE USER_ID IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 사용자 No로 사용자 선택 -->
+    <select id="selectUserByNo" parameterType="int" resultType="com.kh.winepicker.model.vo.User">
+        SELECT USER_NO, GRADE_NO, USER_ID, USER_PWD, USER_NAME, USER_EMAIL, USER_SSN, PHONE, ADDRESS, ENROLL_DATE, MODIFY_DATE, STATUS
+        FROM "USER"
+        WHERE USER_NO = #{userNo}
+    </select>
+
+    <!-- 사용자 정보 업데이트 -->
+    <update id="updateUser" parameterType="com.kh.winepicker.model.vo.User">
+        UPDATE "USER"
+        SET 
+            USER_PWD = #{userPwd},
+            USER_NAME = #{userName},
+            USER_SSN = #{userSsn},
+            PHONE = #{phone},
+            USER_EMAIL = #{userEmail},
+            ADDRESS = #{address},
+            MODIFY_DATE = CURRENT_TIMESTAMP
+        WHERE USER_NO = #{userNo}
+    </update>
+<!-- =================================== 민욱 끝 =================================== -->
+
+
+
+
 	
 	
 	

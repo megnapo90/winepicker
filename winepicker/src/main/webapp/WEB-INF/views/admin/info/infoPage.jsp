@@ -27,19 +27,24 @@
     
     position: absolute;
     top: 0px;
-    left: 550px;
+    left: 580px;
 
     font-size: xx-large;
     font-weight: bolder;
-    text-align: center;
 }
 #info-main-content{
 
 	position: absolute;
-	top: 50px;
-	left: 510px;
+	top: 80px;
+	left: 550px;
     box-sizing: content-box;
+    
+    font-size: x-large;
 
+}
+pre{
+	overflow : auto;
+	white-space: pre-wrap;
 }
 </style>
 </head>
@@ -58,11 +63,11 @@
 
 	<div id="info-main">
         <div id="main-img">
-            <img src="${contextPath}/resources/admin/shop.jpg" alt="메인인포 사진">
+            <img src="${contextPath}/resources/admin/info/${info.changeName}" alt="인포 사진">
         </div>
-        <div id="subtitle">${info.subtitle}</div>
+        <div id="subtitle"><p>${info.subtitle}</p></div>
         <div id="info-main-content">
-			${info.content}
+			<pre width="inherit">${info.content}</pre>
         </div>
     </div>
     
@@ -75,7 +80,7 @@
             })();
 		</script>
 		
-		<form action="${contextPath}/admin/infoEnroll" method="post" enctype="multipart/form-data">
+		<form action="${contextPath}/admin/infoUpdate" method="post" enctype="multipart/form-data">
         <table align="center">
         	<tr>
         		<th>INFO_NAME</th>
@@ -107,6 +112,18 @@
                     <textarea  name="depth"  id="depth" style="resize: none;" rows="1" class="form-control" required="required" readonly>${info.depth}</textarea>                
                 </td>
         	</tr>
+        	<tr>
+        		<th>ORIGIN_NAME</th>
+        		<td>
+                    <textarea  name="originName"  id="originName" style="resize: none;" rows="1" class="form-control" required="required" readonly>${info.originName}</textarea>                
+                </td>
+        	</tr>
+        	<tr>
+        		<th>CHANGE_NAME</th>
+        		<td>
+                    <textarea  name="changeName"  id="changeName" style="resize: none;" rows="1" class="form-control" required="required" readonly>${info.changeName}</textarea>                
+                </td>
+        	</tr>
         	
             <tr>
                 <th>부제목</th>
@@ -124,7 +141,7 @@
             <tr>
                 <th>내용</th>
                 <td>
-                    <textarea name="content" id="content" style="resize: none;" rows="10" class="form-control"  required="required">${info.content}</textarea>
+                    <textarea name="content" id="content" style="resize: none;" cols="80" rows="15" class="form-control"  required="required">${info.content}</textarea>
                 </td>
             </tr>
         </table>
@@ -150,12 +167,12 @@
     			<c:forEach var="i" items="${iList}">
     			<c:if test="${i.wineTypeNo gt 0 and i.depth eq 2}">
 	    			<li class="depth${i.depth} wineTypeNo${i.wineTypeNo}">
-	    				<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName} 정보글</a>
+	    				<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName}</a>
 	    				<ul>
 	    					<c:forEach var="j" items="${iList}">
 	    					<c:if test="${j.wineTypeNo eq i.wineTypeNo and j.depth eq 3}">
 	    						<li class="depth${j.depth} wineTypeNo${j.wineTypeNo}">
-	    							<a href="${contextPath}/admin/info/${j.infoName}">${j.infoName} 정보글</a>
+	    							<a href="${contextPath}/admin/info/${j.infoName}">${j.infoName}</a>
 	    						</li>
 	    					</c:if>
 	    					</c:forEach>
@@ -174,7 +191,7 @@
     				<c:forEach var="i" items="${iList}">
     				<c:if test="${i.countryNo gt 0}">
     					<li class="depth${i.depth} country">
-    						<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName} 정보글</a>
+    						<a href="${contextPath}/admin/info/${i.infoName}">${i.infoName}</a>
     					</li>
     				</c:if>
     				</c:forEach>
@@ -249,6 +266,7 @@
 		
 		(()=>{
 			if(${depth} == 3 && ${wineTypeNo} == 3){
+				$(".country").css("display", "none");
 				$(".depth3.wineTypeNo1").css("display", "none");
 				$(".depth3.wineTypeNo2").css("display", "none");
 			}

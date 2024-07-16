@@ -72,6 +72,9 @@ button:hover {
 <body>
 
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	<jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
+	<jsp:include page="/WEB-INF/views/admin/adminList.jsp" />
+
 
    <div class="container">
         <h1>와인 등록</h1>

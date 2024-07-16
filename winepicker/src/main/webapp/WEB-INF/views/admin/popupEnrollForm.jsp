@@ -24,26 +24,18 @@
 		<br>
 		<br>
 		<div class="innerOuter">
-			<h2>공지 작성</h2>
+			<h2>팝업 등록</h2>
 			<br>
-			<form action="${contextPath}/admin/noticeEnroll" id="enrollForm" method="post" enctype="multipart/form-data">
+			<form action="${contextPath}/admin/popupEnroll" id="enrollForm" method="post" enctype="multipart/form-data">
 				<table align="center">
 					<tr>
 						<th>제목</th>
-						<td><input type="text" id="title" class="form-control" name="noticeTitle" required></td>
+						<td><input type="text" id="title" class="form-control" name="popupTitle" required></td>
 					</tr>
 
 					<tr>
 						<th>첨부파일</th>
 						<td><input type="file" id="upfile" class="form-control" name="upfile"></td>
-					</tr>
-
-
-					<tr>
-						<th>내용</th>
-						<td>
-							<textarea id="content" style="resize: none;" rows="10" class="form-control" name="noticeContent" required="required"></textarea>
-						</td>
 					</tr>
 				</table>
 				<div align="center">

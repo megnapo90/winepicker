@@ -68,7 +68,18 @@ public interface UserService {
 	int updateUserStatus(int userNo);
 
 	
-	
+// ============================ 민욱 시작 =============================================	
+	List<User> getAllUsers();
+    User getUserById(String userId);
+    int updateUser(User user);
+    int deleteUser(String userId);
+    int removeUser(String userId);
+    List<User> searchUsers(String keyword);
+    int deleteUsers(List<String> userIds);
+    User getUserByNo(int userNo);
+    int modifyUser(User user);
+    public List<User> getUsersByNo(List<Integer> userNo);
+// ============================ 민욱 끝 =============================================		
 
 
 

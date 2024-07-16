@@ -21,8 +21,30 @@
 	<select id="noticeList" resultType="notice">
 		SELECT * FROM NOTICE
 		WHERE STATUS = 'Y'
+		<if test="keyword != null and keyword != ''">
+			AND
+			<choose>
+			
+				<when test="condition == 'title'">
+					NOTICE_TITLE LIKE '%'||#{keyword}||'%'
+				</when>
+				
+				<when test="condition == 'content'">
+					NOTICE_CONTENT LIKE '%'||#{keyword}||'%'
+				</when>
+				
+				<when test="condition == 'titleAndContent'">
+					(NOTICE_TITLE LIKE '%'||#{keyword}||'%'
+						OR
+					NOTICE_CONTENT LIKE '%'||#{keyword}||'%')
+				</when>
+				
+			</choose>
+		</if>
+		
 		ORDER BY NOTICE_NO DESC
 	</select>
+	
 	
 	<select id="noticeDetail" resultType="notice" parameterType="int">
 		SELECT * FROM NOTICE
@@ -47,6 +69,33 @@
 		SET STATUS = 'N'
 		WHERE NOTICE_NO = #{noticeNo}
 	</update>
+	
+	<select id="noticeListCount" resultType="int">
+		SELECT COUNT(*) FROM NOTICE
+		WHERE STATUS = 'Y'
+		
+		<if test="keyword != null and keyword != ''">
+			AND
+			<choose>
+			
+				<when test="condition == 'title'">
+					NOTICE_TITLE LIKE '%'||#{keyword}||'%'
+				</when>
+				
+				<when test="condition == 'content'">
+					NOTICE_CONTENT LIKE '%'||#{keyword}||'%'
+				</when>
+				
+				<when test="condition == 'titleAndContent'">
+					(NOTICE_TITLE LIKE '%'||#{keyword}||'%'
+						OR
+					NOTICE_CONTENT LIKE '%'||#{keyword}||'%')
+				</when>
+				
+			</choose>
+		</if>
+		
+	</select>
 	
 	
 	
@@ -84,6 +133,7 @@
 	
 	<select id="selectInfoList" resultType="info2">
 		SELECT * FROM INFO2
+		ORDER BY INFO_NO ASC
 	</select>
 	
 	<select id="selectInfo" resultType="info2">
@@ -101,6 +151,13 @@
 		UPDATE INFO2
 		SET SUBTITLE = #{subtitle},
 			CONTENT = #{content}
+			
+			<if test="#{originName} != null and #{changeName} != null and #{originName} != '' and #{changeName} != ''">	
+				,		
+				ORIGIN_NAME = #{originName},
+				CHANGE_NAME = #{changeName}
+			</if>
+			
 		WHERE INFO_NAME = #{infoName}
 	</update>
 	
@@ -294,6 +351,137 @@
 			#{wineImage.changeName}
 		)
 	</insert>
+	
+	
+	
+	
+<!-- ============================== 민욱 시작 ============================== -->
+	<!-- FAQ 관련 쿼리 -->
+    <select id="selectAllFaqs" resultType="com.kh.winepicker.model.vo.Faq">
+        SELECT * FROM FAQ
+    </select>
+
+    <select id="searchFaqs" parameterType="String" resultType="com.kh.winepicker.model.vo.Faq">
+        SELECT * FROM FAQ WHERE FAQ_TITLE LIKE '%' || #{keyword} || '%'
+    </select>
+
+    <select id="selectFaq" parameterType="int" resultType="com.kh.winepicker.model.vo.Faq">
+        SELECT * FROM FAQ WHERE FAQ_NO = #{faqNo}
+    </select>
+
+    <update id="updateFaq" parameterType="com.kh.winepicker.model.vo.Faq">
+        UPDATE FAQ SET FAQ_TITLE = #{faqTitle}, FAQ_CONTENT = #{faqContent} WHERE FAQ_NO = #{faqNo}
+    </update>
+
+    <delete id="deleteFaq" parameterType="list">
+        DELETE FROM FAQ WHERE FAQ_NO IN
+        <foreach item="faqNo" collection="list" open="(" separator="," close=")">
+            #{faqNo}
+        </foreach>
+    </delete>
+
+    <insert id="insertFaq" parameterType="com.kh.winepicker.model.vo.Faq">
+        INSERT INTO FAQ (FAQ_TITLE, FAQ_CONTENT) VALUES (#{faqTitle}, #{faqContent})
+    </insert>
+
+    <!-- Ask 관련 쿼리 -->
+    <select id="selectAllAsk" resultType="com.kh.winepicker.model.vo.Ask">
+        SELECT ASK_NO, ASK_TITLE, ASK_CONTENT, CREATE_DATE, MODIFY_DATE, RESPONSE_CONTENT, ORIGIN_NAME, CHANGE_NAME, USER_NO, RESPONSE_STATUS
+        FROM ASK
+    </select>
+    
+    <select id="searchAsks" parameterType="String" resultType="com.kh.winepicker.model.vo.Ask">
+        SELECT ASK_NO, ASK_TITLE, ASK_CONTENT, CREATE_DATE, MODIFY_DATE, RESPONSE_CONTENT, ORIGIN_NAME, CHANGE_NAME, USER_NO, RESPONSE_STATUS
+        FROM ASK
+        WHERE ASK_TITLE LIKE '%' || #{keyword} || '%'
+    </select>
+
+    <!-- ASK 추가 -->
+    <insert id="insertAsk" parameterType="com.kh.winepicker.model.vo.Ask">
+	    INSERT INTO ASK (ASK_NO, ASK_TITLE, ASK_CONTENT, CREATE_DATE, MODIFY_DATE, RESPONSE_CONTENT, ORIGIN_NAME, CHANGE_NAME, USER_NO, RESPONSE_STATUS)
+	    VALUES (ask_seq.NEXTVAL, #{askTitle}, #{askContent}, SYSDATE, NVL(#{modifyDate}, SYSDATE), #{responseContent}, #{originName}, #{changeName}, #{userNo}, #{responseStatus})
+	</insert>
+     
+    <delete id="deleteAsk" parameterType="list">
+        DELETE FROM ASK WHERE ASK_NO IN
+        <foreach item="askNo" collection="list" open="(" separator="," close=")">
+            #{askNo}
+        </foreach>
+    </delete>
+    
+    <select id="selectAskByNo" parameterType="int" resultType="com.kh.winepicker.model.vo.Ask">
+        SELECT ASK_NO, ASK_TITLE, ASK_CONTENT, CREATE_DATE, MODIFY_DATE, RESPONSE_CONTENT, ORIGIN_NAME, CHANGE_NAME, USER_NO, RESPONSE_STATUS
+        FROM ASK
+        WHERE ASK_NO = #{askNo}
+    </select>
+
+    <update id="updateAsk" parameterType="com.kh.winepicker.model.vo.Ask">
+        UPDATE ASK
+        SET ASK_TITLE = #{askTitle},
+            ASK_CONTENT = #{askContent},
+            MODIFY_DATE = SYSDATE
+        WHERE ASK_NO = #{askNo}
+    </update>
+
+    <!-- Review 관련 쿼리 -->
+    <!-- 모든 리뷰 가져오기 -->
+    <select id="selectAllReviews" resultType="com.kh.winepicker.model.vo.Review">
+        SELECT * FROM REVIEW
+    </select>
+
+    <!-- 검색된 리뷰 가져오기 -->
+    <select id="searchReviews" parameterType="String" resultType="com.kh.winepicker.model.vo.Review">
+        SELECT * FROM REVIEW WHERE CONTENT LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <!-- 리뷰 추가 -->
+    <insert id="insertReview" parameterType="com.kh.winepicker.model.vo.Review">
+        INSERT INTO REVIEW (ORDER_NO, CONTENT, CREATE_DATE, POINT, STATUS, MODIFY_DATE)
+        VALUES (#{orderNo}, #{content}, #{createDate}, #{point}, #{status}, #{modifyDate})
+    </insert>
+
+    <!-- 선택된 리뷰 삭제 -->
+    <delete id="deleteReview" parameterType="list">
+        DELETE FROM REVIEW WHERE REVIEW_NO IN
+        <foreach item="reviewNo" collection="list" open="(" separator="," close=")">
+            #{reviewNo}
+        </foreach>
+    </delete>
+
+    <!-- 리뷰 번호로 리뷰 가져오기 -->
+    <select id="getReviewByNo" parameterType="int" resultType="com.kh.winepicker.model.vo.Review">
+        SELECT * FROM REVIEW WHERE REVIEW_NO = #{reviewNo}
+    </select>
+
+    <!-- 리뷰 답변 업데이트 -->
+    <update id="updateReviewReply" parameterType="map">
+        UPDATE REVIEW
+        SET CONTENT = #{replyContent}, MODIFY_DATE = SYSDATE
+        WHERE REVIEW_NO = #{reviewNo}
+    </update>
+<!-- ============================== 민욱 끝 ============================== -->	
+	
+	<select id="popupList" resultType="popup">
+		SELECT * FROM POPUP
+	</select>
+	
+	<insert id="popupEnroll" parameterType="popup">
+		INSERT INTO POPUP
+		VALUES(
+			SEQ_POPUP.NEXTVAL,
+			#{popupTitle},
+			#{originName},
+			#{changeName},
+			DEFAULT
+		)
+	</insert>
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

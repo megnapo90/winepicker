@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -889,8 +890,40 @@ public class UserController {
 		}
 		
 		
+
+// ====================== 민욱 =========================
 		
-	
+		// 사용자 제거
+	    @DeleteMapping("/removeUser/{userId}")
+	    public String removeUser(@PathVariable String userId, Model model) {
+	        int result = userService.removeUser(userId);
+	        if (result > 0) {
+	            model.addAttribute("alertMsg", "사용자 삭제 성공");
+	        } else {
+	            model.addAttribute("alertMsg", "사용자 삭제 실패...");
+	        }
+	        return "redirect:/user/userList";
+	    }
+	    
+		
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 
 	
 

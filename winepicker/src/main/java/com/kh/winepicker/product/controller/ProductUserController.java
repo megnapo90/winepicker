@@ -235,26 +235,15 @@ public class ProductUserController {
 	public String orderPage(@RequestParam("cart") String cartJSON,
 
 			Model model,
-			@ModelAttribute("loginUser") User loginUser
-
+			HttpSession session
 			) {
-
-		log.info("loginUser ? {}", loginUser);
 		
-	    if (loginUser.getUserId() == null) {
-	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
-	        return "common/errorPage";
-	    }
+		if(session.getAttribute("loginUser")==null) {
+			model.addAttribute("errorMsg", "로그인이 필요합니다.");
+			return "common/errorPage";
+		}
 		
-		
-		 if (loginUser == null) {
-		        model.addAttribute("errorMsg", "로그인이 필요합니다.");
-		        return "common/errorPage";
-		    }
-
-		
-		
-		ObjectMapper objectMapper = new ObjectMapper();
+	  ObjectMapper objectMapper = new ObjectMapper();
 		
 		try {
 			List<Map<String, Integer>> cart = objectMapper.readValue(cartJSON, new TypeReference<List<Map<String, Integer>>>() {});
@@ -301,23 +290,17 @@ public class ProductUserController {
 	public String orderPage2(
 			@RequestParam Map<String, Object> paramMap,
 			@RequestParam List<Integer> quantities,
-	        @RequestParam List<Integer> wineNos,
-	        @ModelAttribute("loginUser") User loginUser,
-
+	    @RequestParam List<Integer> wineNos,
 			Model model,
-			RedirectAttributes ra
-
+			HttpSession session
 			) {
+
+		if(session.getAttribute("loginUser")==null) {
+			model.addAttribute("errorMsg", "로그인이 필요합니다.");
+			return "common/errorPage";
+		}
 		
-		log.info("loginUser ? {}", loginUser);
-		
-
-	    if (loginUser.getUserId() == null) {
-
-	        model.addAttribute("errorMsg", "로그인이 필요합니다.");
-	        return "common/errorPage";
-	    }
-
+		User loginUser = (User) session.getAttribute("loginUser");
 
 	    int userNo = loginUser.getUserNo();
 //		int userNo = 2;
@@ -382,16 +365,16 @@ public class ProductUserController {
 	@ResponseBody
 	public ResponseEntity<String> addToCart(
 	        @RequestBody Map<String, Object> cartData,
-	        HttpSession session, Model model, @ModelAttribute("loginUser") User loginUser) {		
+	        HttpSession session, Model model) {		
 		
-		if (loginUser.getUserId() == null) {
-			
-			String errorMsg = "로그인이 필요합니다.";
-			
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                .body(errorMsg);
+	    if (session.getAttribute("loginUser")==null) {
+	    	
+	    	String errorMsg = "로그인이 필요합니다.";
+	    	
+	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	    			.body(errorMsg);
 	    }
-		
+	
 	    int wineNo = (Integer) cartData.get("wineNo");
 	    int quantity = (Integer) cartData.get("quantity");
 	    System.out.println(wineNo);

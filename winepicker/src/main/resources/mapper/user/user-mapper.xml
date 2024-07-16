@@ -359,6 +359,12 @@
 		WHERE USER_NO = #{userNo}
 	</update>
 
+	<insert id="insertWishItem">
+		INSERT "WISH"
+		VALUES (#{userNo}, #{wineNo})
+		
+	</insert>
+
 
 
 

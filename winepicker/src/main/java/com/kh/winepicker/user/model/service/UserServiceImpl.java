@@ -171,6 +171,14 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public int insertWishItem(Map<String, Object> wishItem) {
+		
+		//userNo, wineNo 이용하여 이미 등록된 내용이면 "이미 등록된 관심 상품입니다. " 돌려주기. -> 결과값 0일 경우?
+		Wish item =	userDao.selectMyWishItem(wishItem);
+		
+		if(item != null) {
+			return 0;
+		}
+		
 		return userDao.insertWishItem(wishItem);
 	}
 	

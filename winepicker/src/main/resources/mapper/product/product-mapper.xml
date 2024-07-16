@@ -521,6 +521,7 @@
 	</resultMap>
 	
  	<insert id="insertHistroy">
+ 		 			
  		INSERT INTO HISTORY
  		( 
  			ORDER_NO,
@@ -533,7 +534,7 @@
 			DELIVERY_ADDRESS
 			
 			)VALUES(
-			1,
+			SEQ_ORDER_NO.NEXTVAL,
 			#{userNo},
 			#{wineNo},
 			DEFAULT,

@@ -300,7 +300,7 @@ hr {
 			        el.classList.remove('active');
 			    });
 
-			    document.querySelector(`.sort-options a[data-sort="${sortOption}"]`).classList.add('active');
+			    document.querySelector(`.sort-options a[data-sort="\${sortOption}"]`).classList.add('active');
 
 			    
 			    searchProducts(sortOption);

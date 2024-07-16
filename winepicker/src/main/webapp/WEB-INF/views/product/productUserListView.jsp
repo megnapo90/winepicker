@@ -116,9 +116,10 @@ hr {
     position: relative;
 }
 
-.wine-image-wrap img {
-    width: 100%;
-    height: auto;
+.wine-image-wrap img{
+    width: ;
+    height: 330px;
+    overflow: hidden;
 }
 
 

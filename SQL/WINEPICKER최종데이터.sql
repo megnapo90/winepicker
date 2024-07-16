@@ -430,4 +430,26 @@ VALUES(
 );
 
 
+--FAQ
+INSERT INTO "FAQ"
+VALUES(SEQ_FAQ_NO.NEXTVAL,'배송은 언제 되나요?','공휴일의 경우 다음 영업일에 출고됩니다.',NULL, NULL);
+
+INSERT INTO "FAQ"
+VALUES(SEQ_FAQ_NO.NEXTVAL,'교환/반품시 배송비는 어떻게 되나요?','단순 변심으로 인한 교환/환불 시 왕복 배송비 발생 됩니다.',NULL, NULL);
+
+INSERT INTO "FAQ"
+VALUES(SEQ_FAQ_NO.NEXTVAL,'비회원으로 주문이 가능한가요?','비회원 주문은 불가합니다.',NULL, NULL);
+
+--HISTORY
+INSERT INTO "HISTORY"
+VALUES (SEQ_ORDER_NO.NEXTVAL, 21, 1, DEFAULT, DEFAULT, DEFAULT, 1, '서울시 강남구');
+
+--WISH 
+INSERT INTO "WISH"
+VALUES(21, 1);
+
+--USER
+--UPDATE "USER" SET USER_NO = 21 WHERE USER_NO = ?;
+
+
 COMMIT;

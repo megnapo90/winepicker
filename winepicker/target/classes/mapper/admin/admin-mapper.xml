@@ -97,34 +97,7 @@
 		
 	</select>
 	
-	
-	
-	
-	
-	<insert id="insertInfo">
-		INSERT INTO INFO2(
-			INFO_NAME
-			CONTENT
-			SUBTITLE
-			ORIGIN_NAME
-			CHANGE_NAME
-			COUNTRY_NO
-			WINE_TYPE_NO
-			GRAPE_NO
-			DEPTH
-			)
-		VALUES(
-			#{infoName},
-			#{content},
-			#{subtitle},
-			#{originName},
-			#{changeName},
-			#{countryNo},
-			#{wineTypeNo},
-			#{grapeNo},
-			#{depth}
-		)
-	</insert>
+
 	
 	<!-- <select id="selectInfoList" resultType="info2">
 		SELECT * FROM INFO2

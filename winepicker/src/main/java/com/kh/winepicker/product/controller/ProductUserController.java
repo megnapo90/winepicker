@@ -233,6 +233,7 @@ public class ProductUserController {
 	
 	@GetMapping("/product/order")
 	public String orderPage(@RequestParam("cart") String cartJSON,
+
 			Model model,
 			HttpSession session
 			) {
@@ -242,7 +243,7 @@ public class ProductUserController {
 			return "common/errorPage";
 		}
 		
-		ObjectMapper objectMapper = new ObjectMapper();
+	  ObjectMapper objectMapper = new ObjectMapper();
 		
 		try {
 			List<Map<String, Integer>> cart = objectMapper.readValue(cartJSON, new TypeReference<List<Map<String, Integer>>>() {});
@@ -289,7 +290,7 @@ public class ProductUserController {
 	public String orderPage2(
 			@RequestParam Map<String, Object> paramMap,
 			@RequestParam List<Integer> quantities,
-	        @RequestParam List<Integer> wineNos,
+	    @RequestParam List<Integer> wineNos,
 			Model model,
 			HttpSession session
 			) {
@@ -300,9 +301,11 @@ public class ProductUserController {
 		}
 		
 		User loginUser = (User) session.getAttribute("loginUser");
+
 	    int userNo = loginUser.getUserNo();
 //		int userNo = 2;
-	
+
+
 		String address = (String) paramMap.get("address");
         String postcode = (String) paramMap.get("postcode");
         String detailAddress = (String) paramMap.get("detailAddress");
@@ -345,6 +348,16 @@ public class ProductUserController {
         }
     }
 
+	
+	 @GetMapping("/product/orderConfirm")
+	    public String showOrderConfirmPage(Model model) {
+	       
+	        return "product/orderConfirm";
+	    }
+	
+	
+	
+	
 	
 	
 	
@@ -410,6 +423,7 @@ public class ProductUserController {
 	public String productCart(HttpSession session, Model model, @ModelAttribute("loginUser") User loginUser) {
 	
 		// 세션에서 장바구니 정보 가져오기
+
 	    List<Cart> sessionCarts = (List<Cart>) session.getAttribute("cart");
 	    if (sessionCarts == null) {
 	        sessionCarts = new ArrayList<>();
@@ -435,6 +449,7 @@ public class ProductUserController {
 
 	        return "redirect:/product/cart";
 	    }
+
 	
 }	
 	

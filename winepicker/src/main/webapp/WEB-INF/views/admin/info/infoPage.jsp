@@ -46,6 +46,21 @@ pre{
 	overflow : auto;
 	white-space: pre-wrap;
 }
+.link{
+	position: absolute;
+	top: 500px;
+	left: 50px;
+	
+	font-size: x-large;
+	font-weight: bold;
+	font-style: italic;
+	
+}
+
+.link a{
+	color: black;
+	
+}
 </style>
 </head>
 <body>
@@ -58,7 +73,7 @@ pre{
     <c:set var="infoName" value="${info.infoName}" scope="session"/>
     
     
-    <div class="section">
+<div class="section">
 
 
 	<div id="info-main">
@@ -70,6 +85,24 @@ pre{
 			<pre width="inherit">${info.content}</pre>
         </div>
     </div>
+    
+   	<div class="link">
+   		<c:choose>
+   			<c:when test="${info.infoName eq 'Red'}">
+   				<c:set var="num" value="1"/>
+				<a onclick="sendPost()">${info.infoName} 상품 보러 가기</a>
+				<script>
+					function sendPost(){
+						var f = document.createElement('form');
+						f.setAttribute('method', 'post');
+						f.setAttribute('action', `${contextPath}/product/list?types=${num}`);
+						document.body.appendChild(f);
+						f.submit();
+					}
+				</script>
+   			</c:when>
+   		</c:choose>
+	</div>
     
     
     
@@ -154,7 +187,9 @@ pre{
 	</c:if>
 
 
-    </div>
+
+
+</div>
     
     
     
@@ -280,6 +315,60 @@ pre{
 			}
 		})();
 		
+		
+		
+		
+		/* $.ajax({
+	        url: `${contextPath}/product/searchByAjax`,
+	        type: 'GET',
+	        traditional: true,
+	        data: {
+	            volumes: selectedVolumes,
+	            types: selectedTypes,
+	            redSubTypes: selectedRedSubTypes,
+	            whiteSubTypes: selectedWhiteSubTypes,
+	            sparklingSubTypes: selectedSparklingSubTypes,
+	            countries: selectedCountries,
+	            minPrices: minPrices,  // 추가: 슬라이더의 최소 가격
+	            maxPrices: maxPrices,  // 추가: 슬라이더의 최대 가격
+	            sortOption: sortOption
+	        },
+	        success: function(result) {
+	            console.log('서버 응답 데이터:', result);
+				
+	            var wineExts = '';
+	            for (var wineExt of result) {
+	           	var formattedPrice = wineExt.price.toLocaleString();
+	            	
+	                wineExts += `<div class="wine-card-info-wrap" data-href="${contextPath}/product/detail/\${wineExt.wineNo}">`;
+	                wineExts += `  <div class="wine-image-wrap">`;
+	                wineExts += `    <img src="${contextPath}/resources/images/product/\${wineExt.wineImage.changeName}" alt="\{wineExt.wineName}">`;
+	                wineExts += `    <p class="wine-title">\${wineExt.wineName}</p>`;
+	                wineExts += `  </div>`;
+	                wineExts += `  <div class="wine-price-info">`;
+	                wineExts += `    <p>\${formattedPrice}원</p>`;
+	                wineExts += `  </div>`;
+	                wineExts += `  <div class="type-country">`;
+	                wineExts += `    <img src="${contextPath}/resources/css/images/product/country/country\${wineExt.countryNo}.png" alt="\${wineExt.countryNo} Image" class="country-image" />`;
+	                wineExts += `    <img src="${contextPath}/resources/css/images/product/type/type\${wineExt.grape.wineTypeNo}.svg" alt="\${wineExt.grape.wineTypeNo} Image" class="type-image" />`;
+	                wineExts += `  </div>`;
+	                wineExts += `</div>`;
+	            }
+
+	            document.getElementById('productList').innerHTML = wineExts;
+
+	            document.querySelectorAll('.wine-card-info-wrap').forEach(function(product) {
+	                product.addEventListener('click', function() {
+	                    var href = product.getAttribute('data-href');
+	                    window.location.href = href;
+	                });
+	            });
+	        },
+	        error: function(error) {
+	            console.error('AJAX 요청 에러:', error);
+	            document.getElementById('productList').innerHTML = '<p>데이터를 불러오는 중 오류가 발생했습니다.</p>';
+	        }
+	    }); */
 		
 		
     </script>

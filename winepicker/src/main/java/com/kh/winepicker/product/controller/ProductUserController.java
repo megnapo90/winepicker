@@ -159,31 +159,44 @@ public class ProductUserController {
 	}
 	
 	
-	/*
-	 * // 관심상품 등록
-	 * 
-	 * @GetMapping("/product/insert/myWishItem") public String insertWishItem(
-	 * 
-	 * @ModelAttribute("loginUser") User loginUser, Model model,
-	 * 
-	 * @RequestParam("wineNo") int wineNo, HttpSession session ) {
-	 * if(loginUser.getUserId() == null) { model.addAttribute("alertMsg",
-	 * "로그인 후 이용해주세요."); return ""; }
-	 * 
-	 * int userNo = loginUser.getUserNo();
-	 * 
-	 * Map<String, Object> wishItem = new HashMap<String, Object>();
-	 * wishItem.put("userNo", userNo); wishItem.put("wineNo", wineNo);
-	 * 
-	 * int result = userService.insertWishItem(wishItem);
-	 * 
-	 * if(result > 0) { model.addAttribute("alertMsg", "관심상품이 등록되었습니다."); }else {
-	 * model.addAttribute("alertMsg", "관심상품이 등록이 실패하였습니다."); }
-	 * 
-	 * return "";
-	 * 
-	 * }
-	 */
+	
+	  // 관심상품 등록
+		@ResponseBody
+		@PostMapping("/product/insert/myWishItem")
+		public ResponseEntity<Map<String, String>> insertWishItem(
+				Model model,
+				@RequestParam("wineNo") int wineNo, 
+				HttpSession session) {
+			
+			Map<String, String> msgMap = new HashMap<String, String>();			
+			String msg = "";
+			
+			if (session.getAttribute("loginUser")== null) {
+				msg = "로그인이 필요합니다.";
+				msgMap.put("msg", msg);
+		    	return ResponseEntity.ok(msgMap);
+			}
+			
+			User loginUser = (User) session.getAttribute("loginUser");
+			int userNo = loginUser.getUserNo();
+
+			Map<String, Object> wishItem = new HashMap<String, Object>();
+
+			wishItem.put("userNo", userNo);
+			wishItem.put("wineNo", wineNo);
+
+			int result = userService.insertWishItem(wishItem);
+
+			if (result > 0) {
+				msg = "관심상품이 등록되었습니다.";
+			} else {
+				msg = "이미 등록된 관심상품입니다.";
+			}
+			msgMap.put("msg", msg);
+			return ResponseEntity.ok(msgMap);
+
+		}
+	 
 			
 	
 	
@@ -354,11 +367,6 @@ public class ProductUserController {
 	       
 	        return "product/orderConfirm";
 	    }
-	
-	
-	
-	
-	
 	
 	
 	@PostMapping(value = "/product/addToCart", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -252,18 +252,21 @@
 	};
 	
 		
-   	/* function insertWish(wineNo){
+   function insertWish(wineNo){
    		$.ajax({
    			url : "${contextPath}/product/insert/myWishItem",
    			data : {
    				wineNo : wineNo
    			},
-   			success : function(){
-   				alert(${alertMsg});
+   			type : "POST",
+   			success : function(msgMap){
+   				alert(msgMap.msg);
    			},
-   			error : console.log()
+   			error : function(){
+   				alert("오류가 발생했습니다.");
+   			}
    		});
-   	}; */
+   	};
    	 
 	
 	

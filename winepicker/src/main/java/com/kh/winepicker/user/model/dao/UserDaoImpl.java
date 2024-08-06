@@ -170,7 +170,11 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.insert("user.insertWishItem", wishItem);
 	}
 	
-	
+	@Override
+	public Wish selectMyWishItem(Map<String, Object> wishItem) {
+		return sqlSession.selectOne("user.selectMyWishItem", wishItem);
+	}
+
 	
 	
 	
@@ -219,9 +223,10 @@ public class UserDaoImpl implements UserDao {
     public List<User> getUsersByNo(List<Integer> userNo) {
         return sqlSession.selectList("user.getUsersByNo", userNo);
     }
-
-
 // ============================ 민욱 끝 =============================================		
+
+
+
 	
 
 }

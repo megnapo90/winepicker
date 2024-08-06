@@ -66,6 +66,7 @@ public interface UserDao {
 
 	int insertWishItem(Map<String, Object> wishItem);
 
+	Wish selectMyWishItem(Map<String, Object> wishItem);
 	
 // ============================ 민욱 시작 =============================================
 	List<User> getAllUsers();
@@ -78,6 +79,7 @@ public interface UserDao {
     int updateUser(User user);
     public List<User> getUsersByNo(List<Integer> userNo);
 // ============================ 민욱 끝 =============================================	
+
 
 	
 	
